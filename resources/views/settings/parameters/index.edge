@@ -1,0 +1,96 @@
+@layouts.app()
+  @slot('main')
+    <div class="col d-flex justify-content-start align-content-between align-items-center gx-4 gy-2">
+      <div class="me-auto">
+        <span class="h5 text-secondary inline-block">Settings</span>
+        <h1 class="fw-bold pb-2">Parameters</h1>
+        <p class="lead">View and manage the parameters that are available to be measured in reports</p>
+      </div>
+      <a class="btn btn-primary" href="{{route('settings.parameters.export')}}">Export</a>
+    </div>
+    <hr />
+    <div class="container g-0">
+      <ul class="row justify-content-start align-content-between px-0">
+        @each(parameter in parameters)
+          <li class="col d-flex justify-content-start align-content-between align-items-center col-md-4 gx-4 gy-3">
+            <div class="me-auto">
+              <div class="fw-bold">{{parameter.name}}</div>
+              <div>
+                Unit: {{parameter.unit.abbreviation}}
+              </div>
+              <div>
+                Reference:
+                <span>
+                  @if(parameter.referenceType == 'range')
+                    {{parameter.referenceMinimum}} - {{parameter.referenceMaximum}}
+                  @end
+                  @if(parameter.referenceType == 'less_than')
+                    &lt; {{parameter.referenceMaximum}}
+                  @end
+                  @if(parameter.referenceType == 'less_than_or_equal')
+                    &lt;&equals; {{parameter.referenceMaximum}}
+                  @end
+                  @if(parameter.referenceType == 'greater_than')
+                    &gt; {{parameter.referenceMinimum}}
+                  @end
+                  @if(parameter.referenceType == 'greater_than_or_equal')
+                    &gt;&equals; {{parameter.referenceMinimum}}
+                  @end
+                </span>
+              </div>
+            </div>
+            <a class="btn btn-outline-secondary" href="{{route('settings.parameters.edit', { id: parameter.id })}}">Edit</a>
+          </li>
+        @end
+      </ul>
+    </div>
+    <hr />
+    <form action="{{route('settings.parameters.store')}}" method="POST">
+      {{ csrfField() }}
+      @inputError('name')
+        @each(message in $messages)
+          <p>{{ message }}</p>
+        @end
+      @end
+
+      <div class="mb-3">
+        <label for="name" class="form-label">Name</label>
+        <input type="text" class="form-control" id="name" name="name" value="{{ old('name') || '' }}" data-1p-ignore />
+      </div>
+
+      @inputError('unitId')
+        @each(message in $messages)
+          <p>{{ message }}</p>
+        @end
+      @end
+      <div class="mb-3">
+        <label for="unitId" class="form-label">Unit</label>
+        <select class="form-control" name="unitId">
+          <option value="" disabled></option>
+          @each(unit in units)
+            <option value="{{unit.id}}" {{ old('unitId') == unit.id ? 'selected' : '' }}>{{unit.name}} ({{unit.abbreviation}})</option>
+          @end
+        </select>
+      </div>
+      <div class="row mb-3">
+        <div class="col">
+          <label for="referenceType" class="form-label">Reference Type</label>
+          <select class="form-control" name="referenceType">
+            @each(type in referenceTypes)
+              <option value="{{type}}" {{ old('referenceType') == type ? 'selected' : '' }}>{{type.replaceAll('_', ' ')}}</option>
+            @end
+          </select>
+        </div>
+        <div class="col">
+          <label for="referenceMinimum" class="form-label">Reference Minimum</label>
+          <input class="form-control" name="referenceMinimum" type="number" step="0.001" min="0" value="{{ old('referenceMinimum') || '' }}">
+        </div>
+        <div class="col">
+          <label for="referenceMaximum" class="form-label">Reference Maximum</label>
+          <input class="form-control" name="referenceMaximum" type="number" step="0.001" min="0" value="{{ old('referenceMaximum') || '' }}">
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary">Add Parameter</button>
+    </form>
+  @endslot
+@end

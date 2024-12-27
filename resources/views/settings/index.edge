@@ -1,0 +1,32 @@
+@layouts.app()
+  @slot('main')
+    <h2>Settings</h2>
+
+    <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
+      <div class="col">
+        <a href="{{route('settings.units.index')}}" class="card text-decoration-none">
+          <div class="card-body">
+            <div class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3">
+              <i class="bi bi-rulers "></i>
+            </div>
+            <h3 class="fs-2 text-body-emphasis">Units</h3>
+            <p>View and manage the units of measurement for values in report findings and parameters</p>
+            <span class="btn btn-primary">Manage</span>
+          </div>
+        </a>
+      </div>
+      <div class="col">
+        <a href="{{route('settings.parameters.index')}}" class="card text-decoration-none">
+          <div class="card-body">
+            <div class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3">
+              <i class="bi bi-rulers "></i>
+            </div>
+            <h3 class="fs-2 text-body-emphasis">Parameters</h3>
+            <p>View and manage the parameters that are available to be measured in reports</p>
+            <span class="btn btn-primary">Manage</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  @endslot
+@end
