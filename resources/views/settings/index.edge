@@ -1,4 +1,4 @@
-@layouts.app()
+@layouts.app({ title: "Settings"})
   @slot('main')
     <h2>Settings</h2>
 
@@ -19,7 +19,7 @@
         <a href="{{route('settings.parameters.index')}}" class="card text-decoration-none">
           <div class="card-body">
             <div class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3">
-              <i class="bi bi-rulers "></i>
+              <i class="bi bi-bar-chart-fill "></i>
             </div>
             <h3 class="fs-2 text-body-emphasis">Parameters</h3>
             <p>View and manage the parameters that are available to be measured in reports</p>

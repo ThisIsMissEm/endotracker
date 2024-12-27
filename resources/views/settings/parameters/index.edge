@@ -1,51 +1,49 @@
-@layouts.app()
-  @slot('main')
-    <div class="col d-flex justify-content-start align-content-between align-items-center gx-4 gy-2">
-      <div class="me-auto">
-        <span class="h5 text-secondary inline-block">Settings</span>
-        <h1 class="fw-bold pb-2">Parameters</h1>
-        <p class="lead">View and manage the parameters that are available to be measured in reports</p>
-      </div>
-      <a class="btn btn-primary" href="{{route('settings.parameters.export')}}">Export</a>
-    </div>
-    <hr />
-    <div class="container g-0">
-      <ul class="row justify-content-start align-content-between px-0">
-        @each(parameter in parameters)
-          <li class="col d-flex justify-content-start align-content-between align-items-center col-md-4 gx-4 gy-3">
-            <div class="me-auto">
-              <div class="fw-bold">{{parameter.name}}</div>
-              <div>
-                Unit: {{parameter.unit.abbreviation}}
-              </div>
-              <div>
-                Reference:
-                <span>
-                  @if(parameter.referenceType == 'range')
-                    {{parameter.referenceMinimum}} - {{parameter.referenceMaximum}}
-                  @end
-                  @if(parameter.referenceType == 'less_than')
-                    &lt; {{parameter.referenceMaximum}}
-                  @end
-                  @if(parameter.referenceType == 'less_than_or_equal')
-                    &lt;&equals; {{parameter.referenceMaximum}}
-                  @end
-                  @if(parameter.referenceType == 'greater_than')
-                    &gt; {{parameter.referenceMinimum}}
-                  @end
-                  @if(parameter.referenceType == 'greater_than_or_equal')
-                    &gt;&equals; {{parameter.referenceMinimum}}
-                  @end
-                </span>
-              </div>
+@layouts.settings({
+  title: "Parameters",
+  description: "View and manage the parameters that are available to be measured in reports"
+})
+  @slot('headerActions')
+    <a class="btn btn-primary" href="{{route('settings.parameters.export')}}">Export</a>
+  @endslot
+
+  @slot('content')
+    <ul class="row justify-content-start align-content-between px-0 pb-2">
+      @each(parameter in parameters)
+        <li class="col d-flex justify-content-start align-content-between align-items-center col-md-6 col-lg-4 gx-4 gy-3">
+          <div class="me-auto pe-1">
+            <div class="fw-bold">{{parameter.name}}</div>
+            <div>
+              Unit: {{parameter.unit.abbreviation}}
             </div>
-            <a class="btn btn-outline-secondary" href="{{route('settings.parameters.edit', { id: parameter.id })}}">Edit</a>
-          </li>
-        @end
-      </ul>
-    </div>
+            <div>
+              Reference:
+              <span>
+                @if(parameter.referenceType == 'range')
+                  {{parameter.referenceMinimum}} - {{parameter.referenceMaximum}}
+                @end
+                @if(parameter.referenceType == 'less_than')
+                  &lt; {{parameter.referenceMaximum}}
+                @end
+                @if(parameter.referenceType == 'less_than_or_equal')
+                  &lt;&equals; {{parameter.referenceMaximum}}
+                @end
+                @if(parameter.referenceType == 'greater_than')
+                  &gt; {{parameter.referenceMinimum}}
+                @end
+                @if(parameter.referenceType == 'greater_than_or_equal')
+                  &gt;&equals; {{parameter.referenceMinimum}}
+                @end
+              </span>
+            </div>
+          </div>
+          <a class="btn btn-outline-secondary" href="{{route('settings.parameters.edit', { id: parameter.id })}}">Edit</a>
+        </li>
+      @end
+    </ul>
+
     <hr />
-    <form action="{{route('settings.parameters.store')}}" method="POST">
+
+    <form action="{{route('settings.parameters.store')}}" method="POST" class="pt-2">
       {{ csrfField() }}
       @inputError('name')
         @each(message in $messages)

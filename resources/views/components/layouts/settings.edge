@@ -1,0 +1,18 @@
+@layouts.app({ title: `${title} - Settings`})
+  @slot('main')
+    <div class="col d-flex justify-content-start align-content-between align-items-center gx-4 gy-2">
+      <div class="me-auto pe-2">
+        <span class="h5 text-secondary inline-block">Settings</span>
+        <h1 class="fw-bold pb-2">{{ title }}</h1>
+        <p class="lead">{{ description }}</p>
+      </div>
+      <div>
+        {{{ await $slots.headerActions() }}}
+      </div>
+    </div>
+    <hr />
+    <div class="container g-0">
+      {{{ await $slots.content() }}}
+    </div>
+  @endslot
+@end

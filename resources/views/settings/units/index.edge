@@ -1,29 +1,27 @@
-@layouts.app()
-  @slot('main')
-    <div class="col d-flex justify-content-start align-content-between align-items-center gx-4 gy-2">
-      <div class="me-auto pe-2">
-        <span class="h5 text-secondary inline-block">Settings</span>
-        <h1 class="fw-bold pb-2">Units</h1>
-        <p class="lead">View and manage the units of measurement for values in report findings and parameters</p>
-      </div>
-      <a class="btn btn-primary" href="{{route('settings.units.export')}}">Export</a>
-    </div>
+@layouts.settings({
+  title: 'Units',
+  description: 'View and manage the units of measurement for values in report findings and parameters'
+})
+  @slot('headerActions')
+    <a class="btn btn-primary" href="{{route('settings.units.export')}}">Export</a>
+  @endslot
+
+  @slot('content')
+    <ul class="row justify-content-start px-0 pb-2">
+      @each(unit in units)
+        <li class="col d-flex justify-content-start align-content-between align-items-center col-md-6 col-lg-4 gx-4 gy-3">
+          <div class="me-auto">
+            <div class="fw-bold">{{unit.name}}</div>
+            {{unit.abbreviation}}
+          </div>
+          <a class="btn btn-outline-secondary" href="{{route('settings.parameters.edit', { id: unit.id })}}">Edit</a>
+        </li>
+      @end
+    </ul>
+
     <hr />
-    <div class="container g-0">
-      <ul class="row justify-content-between px-0">
-        @each(unit in units)
-          <li class="col d-flex justify-content-between align-items-start col-md-4 gx-5 gy-4">
-            <div class="me-auto">
-              <div class="fw-bold">{{unit.name}}</div>
-              {{unit.abbreviation}}
-            </div>
-            <a class="btn btn-outline-secondary" href="{{route('settings.parameters.edit', { id: unit.id })}}">Edit</a>
-          </li>
-        @end
-      </ul>
-    </div>
-    <hr />
-    <form action="{{route('settings.units.store')}}" method="POST">
+
+    <form action="{{route('settings.units.store')}}" method="POST" class="pt-2">
       {{ csrfField() }}
       @inputError('name')
         @each(message in $messages)
