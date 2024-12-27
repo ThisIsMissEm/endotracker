@@ -12,7 +12,7 @@
     "db:drop": "node database drop",
     "db:recreate": "node database recreate",
     "test": "node ace test",
-    "lint": "eslint .",
+    "lint": "eslint . && npm run typecheck",
     "format": "prettier --write .",
     "typecheck": "tsc --noEmit"
   },
