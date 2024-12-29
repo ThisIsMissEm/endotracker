@@ -33,3 +33,11 @@ body {
   width: 3rem;
   height: 3rem;
 }
+
+#template-sections fieldset:only-child .remove-section {
+  display: none;
+}
+
+#template-sections ol li:only-child .remove-parameter {
+  display: none;
+}

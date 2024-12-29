@@ -1,0 +1,35 @@
+@layouts.settings({
+  title: "Report Templates",
+  description: "View and manage the templates for Reports, predefining the parameters present for creating a new report from the template."
+})
+  @slot('headerActions')
+    <a class="btn btn-primary" href="{{route('settings.report_templates.create')}}">New</a>
+  @endslot
+
+  @slot('content')
+    <ul class="row justify-content-between px-0">
+      @each(tpl in templates)
+        <li class="col col-md-8 d-flex justify-content-between align-items-start gx-5 gy-4">
+          <div class="me-auto">
+            <div class="fw-bold">{{tpl.name}}</div>
+            <div>Created: <time title="{{i18n.formatDate(tpl.createdAt, {
+              dateStyle: 'long',
+              timeStyle: 'long'
+              })}}">{{i18n.formatRelativeTime(tpl.createdAt, 'auto')}}</time></div>
+            <div>Updated: <time title="{{i18n.formatDate(tpl.updatedAt, {
+              dateStyle: 'long',
+              timeStyle: 'long'
+              })}}">{{i18n.formatRelativeTime(tpl.updatedAt, 'auto')}}</time></div>
+          </div>
+          <div class="d-grid gap-2 d-md-block">
+            <a class="btn btn-outline-secondary" href="{{route('settings.report_templates.edit', { id: tpl.id })}}">Edit</a>
+            <form class="d-inline" method="POST" action="{{route('settings.report_templates.destroy', { id: tpl.id })}}?_method=DELETE">
+              {{ csrfField() }}
+              <button type="submit" class="btn btn-outline-danger">Delete</button>
+            </form>
+          </div>
+        </li>
+      @end
+    </ul>
+  @endslot
+@end

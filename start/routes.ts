@@ -30,6 +30,13 @@ router
       ])
       .as('parameters.export')
 
+    router
+      .resource(
+        'report-templates',
+        () => import('#controllers/settings/report_templates_controller')
+      )
+      .only(['index', 'show', 'create', 'store', 'edit', 'update', 'destroy'])
+
     router.on('/').render('settings/index').as('index')
   })
   .prefix('settings')

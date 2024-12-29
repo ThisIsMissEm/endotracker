@@ -1,0 +1,9 @@
+@layouts.settings({
+  title: "Report Templates: Edit",
+  description: ``
+})
+  @slot('content')
+    @let(formAction = `${route('settings.report_templates.update', { id: tpl.id })}?_method=PUT`)
+    @include('settings/report-templates/_form')
+  @endslot
+@end

@@ -1,0 +1,10 @@
+@layouts.settings({
+  title: "Report Templates: Create",
+  description: ""
+})
+  @slot('content')
+    @let(formAction = `${route('settings.report_templates.store')}`)
+    @let(tpl = { name: "", contents: { sections: [ { name: "", parameters: [] }] }})
+    @include('settings/report-templates/_form')
+  @endslot
+@end
