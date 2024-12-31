@@ -3,6 +3,7 @@
   description: "View and manage the parameters that are available to be measured in reports"
 })
   @slot('headerActions')
+    <a class="btn btn-primary" href="{{route('settings.parameters.import')}}">Import</a>
     <a class="btn btn-primary" href="{{route('settings.parameters.export')}}">Export</a>
   @endslot
 

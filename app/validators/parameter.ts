@@ -49,3 +49,48 @@ export const createParameterValidator = vine.compile(
  * an existing unit.
  */
 export const updateUnitValidator = vine.compile(vine.object({}))
+
+export const importParametersValidator = vine.compile(
+  vine
+    .object({
+      items: vine.array(
+        vine.object({
+          name: vine.string(),
+          referenceType: vine.enum(Parameter.referenceTypes),
+          referenceMinimum: vine
+            .number()
+            .positive()
+            .decimal([0, 3])
+            .optional()
+            .requiredWhen((field) => {
+              return ['range', 'greater_than', 'greater_than_or_equal'].includes(
+                field.parent.referenceType
+              )
+            }),
+
+          referenceMaximum: vine
+            .number()
+            .positive()
+            .decimal([0, 3])
+            .optional()
+            .requiredWhen((field) => {
+              return ['range', 'less_than', 'less_than_or_equal'].includes(
+                field.parent.referenceType
+              )
+            }),
+
+          createdAt: vine.string(),
+          updatedAt: vine.string(),
+          unit: vine.object({
+            name: vine.string(),
+            abbreviation: vine.string(),
+          }),
+        })
+      ),
+    })
+    .parse((input) => {
+      if (typeof input === 'string') {
+        return JSON.parse(input)
+      }
+    })
+)

@@ -31,6 +31,20 @@ router
       .as('parameters.export')
 
     router
+      .get('parameters/import', [
+        () => import('#controllers/settings/parameters_controller'),
+        'import',
+      ])
+      .as('parameters.import')
+
+    router
+      .post('parameters/import', [
+        () => import('#controllers/settings/parameters_controller'),
+        'doImport',
+      ])
+      .as('parameters.doImport')
+
+    router
       .resource(
         'report-templates',
         () => import('#controllers/settings/report_templates_controller')

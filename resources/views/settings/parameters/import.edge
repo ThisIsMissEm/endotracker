@@ -1,0 +1,26 @@
+@layouts.settings({
+  title: "Parameters: Import",
+  description: "Import parameters from an exported file"
+})
+  @slot('content')
+  <form method="POST" enctype="multipart/form-data" action="{{route('settings.parameters.doImport')}}">
+    {{ csrfField() }}
+
+    {{-- The field is empty due to how we use vine --}}
+    @inputError("")
+      @each(message in $messages)
+        <p>{{ message }}</p>
+      @end
+    @end
+
+    <div class="my-3">
+      <input type="file" name="parameters" class="form-control" />
+    </div>
+
+    <div class="d-flex flex-row-reverse gap-2 justify-content-end">
+      <button type="submit" class="btn btn-primary">Import</button>
+      <a href="{{route('settings.parameters.index')}}" class="btn btn-outline-primary">Back</a>
+    </div>
+  </form>
+  @endslot
+@end
