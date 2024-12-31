@@ -15,14 +15,6 @@ export const createParameterValidator = vine.compile(
       caseInsensitive: true,
     }),
 
-    // categoryId: vine
-    //   .number()
-    //   .exists({
-    //     table: ParameterCategory.table,
-    //     column: 'id',
-    //   })
-    //   .optional(),
-
     unitId: vine.number().exists(async (db, value) => {
       const row = await db.from(Unit.table).select('id').where({ id: value }).first()
       return row ? true : false

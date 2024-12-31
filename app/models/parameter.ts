@@ -2,7 +2,6 @@ import type { BelongsTo, HasMany } from '@adonisjs/lucid/types/relations'
 import { BaseModel, belongsTo, column, hasMany } from '@adonisjs/lucid/orm'
 import { DateTime } from 'luxon'
 import Unit from './unit.js'
-import ParameterCategory from './parameter_category.js'
 import ReportFinding from './report_finding.js'
 
 export default class Parameter extends BaseModel {
@@ -11,12 +10,6 @@ export default class Parameter extends BaseModel {
 
   @column()
   declare name: string
-
-  @column({ serializeAs: null })
-  declare categoryId: number
-
-  @belongsTo(() => ParameterCategory)
-  declare category: BelongsTo<typeof ParameterCategory>
 
   @column({ serializeAs: null })
   declare unitId: number
