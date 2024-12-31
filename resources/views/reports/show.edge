@@ -1,0 +1,71 @@
+@layouts.app({ title: `Report #${report.id}`})
+  @slot('main')
+    <h1 class="fw-bold pb-2">Report #{{report.id}}</h1>
+    <hr class="border-top border-2 opacity-100" />
+
+    @include('partials/flash-messages')
+
+    <div class="pb-3 border-bottom border-2">
+      <span class="fw-bold">Tested:</span> {{i18n.formatDate(report.testedAt, { dateStyle: 'full' })}}
+    </div>
+
+    <div id="template-sections">
+      <table class="table">
+        @each((section, sectionIndex) in tpl.sections)
+          <tr>
+            <th class="pt-5" colspan="5">
+              <h4 class="fw-bold">{{section.name}}</h4>
+            </th>
+          </tr>
+          <tr>
+            <th>Parameter</th>
+            <th>Units</th>
+            <th class="text-center">Reference Value</th>
+            <th class="text-end">Test Value</th>
+            <th class="finding-result"></th>
+          </tr>
+          @let(parameter = null)
+          @each((parameterId, paramIndex) in section.parameters)
+            @assign(parameter = parameters.get(parameterId))
+            @assign(finding = findingsByParameter.get(parameterId))
+            @assign(comparison = compareFindingWithParameter(finding, parameter))
+            <tr>
+              <th class="col col-md-6 ps-5">{{parameter.name}}</th>
+              <td class="text-start col col-md-2">{{parameter.unit.abbreviation.toLowerCase()}}</td>
+              <td class="col col-md-2 text-center">
+                @include('partials/parameter')
+              </td>
+              <td class="text-end col col-md-2">
+                @if(finding)
+                  @if(comparison == 'within')
+                    {{ i18n.formatNumber(finding) }}
+                  @else
+                    <strong>{{ i18n.formatNumber(finding) }}</strong>
+                  @end
+                @else
+                  &ndash;
+                @endif
+              </td>
+              <td>
+                @if(finding)
+                  <strong>
+                    @if(comparison == 'exceeds')
+                      &plus;
+                    @elseif(comparison == 'subceeds')
+                      &minus;
+                    @end
+                  </strong>
+                @else
+                  &nbsp;&nbsp;
+                @endif
+              </td>
+            </tr>
+          @end
+        @end
+      </table>
+    </div>
+    <div class="d-flex flex-row-reverse gap-2 justify-content-end">
+      <a href="{{route('reports.index')}}" class="btn btn-outline-primary">Back</a>
+    </div>
+  @endslot
+@end

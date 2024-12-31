@@ -18,7 +18,16 @@ export default class ReportFinding extends BaseModel {
       return (value * 1000).toFixed(0)
     },
     consume: (value) => {
-      return (value / 1000).toFixed(3)
+      const hundreds = value % 1000
+      const tens = hundreds % 100
+      const ones = tens % 100
+      if (ones) {
+        return (value / 1000).toFixed(3)
+      } else if (tens) {
+        return (value / 1000).toFixed(2)
+      } else {
+        return (value / 1000).toFixed(1)
+      }
     },
   })
   declare value: number

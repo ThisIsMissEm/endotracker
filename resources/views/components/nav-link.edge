@@ -1,0 +1,14 @@
+<li class="nav-item">
+  <a class="{{
+    html.classNames([
+      "nav-link",
+      {
+        "active": isActive
+      }
+    ])
+    }}"
+    {{html.attrs({
+      "aria-current": isActive && "page"
+    })}}
+    href="{{href}}">{{title}}</a>
+</li>

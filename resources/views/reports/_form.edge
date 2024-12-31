@@ -1,0 +1,71 @@
+<form method="POST" action="{{formAction}}">
+  {{ csrfField() }}
+  <input type="hidden" name="template" value="{{templateId}}" />
+
+  <div class="mb-3 pb-3 border-bottom border-1">
+    <label for="testedAt" class="form-label fw-bold">Tested at</label>
+    <div class="col col-sm-4">
+    @inputError('name')
+      <input type="date" class="form-control is-invalid" id="testedAt" name="testedAt" value="{{ old('testedAt') || today() }}" />
+      <div class="invalid-feedback">
+        @each(message in $messages)
+          <p>{{ message }}</p>
+        @end
+      </div>
+    @else
+      <input type="date" class="form-control {{old('name') ? 'is-valid' : ''}}" id="testedAt" name="testedAt" value="{{ old('testedAt') || today() }}" />
+    @end
+    </div>
+  </div>
+
+  <div id="template-sections">
+    @let(parameterIndex = -1)
+    @each((section, sectionIndex) in tpl.sections)
+      <h4 class="fw-bold">{{section.name}}</h4>
+      <table class="table border-top mb-5 mt-3">
+        <tr>
+          <th>Parameter</th>
+          <th>Units</th>
+          <th class="text-center">Reference Value</th>
+          <th></th>
+          <th class="text-center">Test Value</th>
+        </tr>
+        @each((parameterId, paramIndex) in section.parameters)
+          @assign(parameter = parameters.get(parameterId))
+          @assign(parameterIndex = parameterIndex + 1)
+          <tr class="align-middle">
+            <th class="col col-md-4 ps-5">
+              <label for="parameters-{{parameterIndex}}">{{parameter.name}}</label>
+              <input type="hidden" name="parameters[{{parameterIndex}}][parameter]" value="{{parameterId}}"/>
+            </th>
+            <td class="text-start col col-md-2">{{parameter.unit.abbreviation.toLowerCase()}}</td>
+            <td class="col col-md-2 text-center">
+              @include('partials/parameter')
+            </td>
+            <td class="text-end col col-md-1"></td>
+            <td class="text-end col col-md-3 ms-2">
+              @let(parameterValue = old(`parameters.${parameterIndex}.value`) || '')
+              @if(!parameterValue && findingsByParameter.has(parameterId))
+                @assign(parameterValue = findingsByParameter.get(parameterId))
+              @endif
+              <input
+                type="text"
+                inputmode="numeric"
+                pattern="\d+(,|\.)?(\d+)?"
+                class="form-control text-end flex-grow-1"
+                id="parameters-{{parameterIndex}}"
+                name="parameters[{{parameterIndex}}][value]"
+                value="{{parameterValue}}"
+                data-1p-ignore
+              />
+            </td>
+          </tr>
+        @end
+      </table>
+    @end
+  </div>
+  <div class="d-flex flex-row-reverse gap-2 justify-content-end">
+    <button type="submit" class="btn btn-primary">Save Report</button>
+    <a href="{{route('reports.create')}}" class="btn btn-outline-primary">Back</a>
+  </div>
+</form>

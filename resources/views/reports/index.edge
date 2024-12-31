@@ -1,0 +1,58 @@
+@layouts.app({ title: `Reports`})
+  @slot('main')
+    <h1 class="fw-bold pb-2">Reports</h1>
+    <hr class="border-top border-2 opacity-100" />
+
+    @include('partials/flash-messages')
+
+    <div class="table-responsive">
+      <table class="table {{ reports.length > 0 ? 'table-hover' : ''}}">
+        <thead>
+          <th>#</th>
+          <th>Tested</th>
+          <th>Created</th>
+          <th>Updated</th>
+          <th></th>
+        </thead>
+        @each(report in reports)
+          <tr>
+            <td>{{report.id}}</td>
+            <td>
+              @!component('components/timestamp', { value: report.testedAt, format: 'full' })
+            </td>
+            <td>
+              @!component('components/timestamp', { value: report.createdAt, format: 'medium' })
+            </td>
+            <td>
+              @if(report.updatedAt)
+                @!component('components/timestamp', { value: report.updatedAt, format: 'relative' })
+              @end
+            </td>
+            <td>
+              <a class="btn btn-outline-secondary" href="{{route('reports.show', { id: report.id })}}">View</a>
+              <a class="btn btn-outline-primary" href="{{route('reports.edit', { id: report.id })}}">Edit</a>
+              <form class="d-inline" method="POST" action="{{route('reports.destroy', { id: report.id })}}?_method=DELETE">
+                {{ csrfField() }}
+                <button type="submit" class="btn btn-outline-danger">Delete</button>
+              </form>
+            </td>
+          </tr>
+        @else
+          <tr>
+            <td colspan="5" class="text-center py-5">
+              There are currently no reports saved.
+              <div class="pt-3">
+                <a class="btn btn-primary" href="{{route('reports.create')}}">Create Report</a>
+              </div>
+            </td>
+          </tr>
+        @end
+      </table>
+      @if(reports.length)
+        <div class="pt-3">
+          <a class="btn btn-primary" href="{{route('reports.create')}}">Create Report</a>
+        </div>
+      @end
+    </div>
+  @endslot
+@end

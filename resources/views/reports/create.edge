@@ -1,0 +1,25 @@
+@layouts.app({ title: `Create Report`})
+  @slot('main')
+    <h1 class="fw-bold pb-2">Create Report</h1>
+    <hr class="border-top border-2 opacity-100" />
+
+    @include('partials/flash-messages')
+
+    @if(templates)
+      <form method="GET" action="{{request.url()}}">
+        <div class="mb-3">
+          <label for="template" class="form-label fw-bold mb-2">Select Template</label>
+          <select class="form-select" name="template">
+            @each(tpl in templates)
+              <option value="{{tpl.id}}">{{tpl.name}}</option>
+            @end
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Continue</button>
+      </form>
+    @else
+      @let(formAction = `${route('reports.store')}`)
+      @include('reports/_form')
+    @end
+  @endslot
+@end

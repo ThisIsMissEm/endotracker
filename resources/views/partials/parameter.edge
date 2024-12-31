@@ -1,0 +1,26 @@
+@if(parameter.referenceType == 'range')
+  {{ formatRange(parameter.referenceMinimum, parameter.referenceMaximum, {
+    maximumSignificantDigits: 3,
+    maximumFractionDigits: 3
+  }) }}
+@endif
+@if(parameter.referenceType == 'less_than')
+  &lt;&nbsp;{{i18n.formatNumber(parameter.referenceMaximum, {
+    maximumSignificantDigits: 3
+  })}}
+@endif
+@if(parameter.referenceType == 'less_than_or_equal')
+  &lt;&equals;&nbsp;{{i18n.formatNumber(parameter.referenceMaximum, {
+    maximumSignificantDigits: 3
+  })}}
+@endif
+@if(parameter.referenceType == 'greater_than')
+  &gt; {{i18n.formatNumber(parameter.referenceMinimum, {
+    maximumSignificantDigits: 3
+  })}}
+@endif
+@if(parameter.referenceType == 'greater_than_or_equal')
+  &gt;&equals; {{i18n.formatNumber(parameter.referenceMinimum, {
+    maximumSignificantDigits: 3
+  })}}
+@endif

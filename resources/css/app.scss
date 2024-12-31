@@ -41,3 +41,20 @@ body {
 #template-sections ol li:only-child .remove-parameter {
   display: none;
 }
+
+input[inputmode="numeric"]:invalid {
+  color: red;
+}
+
+input[inputmode="numeric"]:valid + .error span {
+  display: none;
+}
+
+input[inputmode="numeric"]:invalid + .error span {
+  display: inline-block;
+  color: red;
+}
+
+.finding-result {
+  min-width: 2ch;
+}

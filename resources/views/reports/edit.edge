@@ -1,0 +1,11 @@
+@layouts.app({ title: `Create Report`})
+  @slot('main')
+    <h1 class="fw-bold pb-2">Update Report</h1>
+    <hr class="border-top border-2 opacity-100" />
+
+    @include('partials/flash-messages')
+
+    @let(formAction = `${route('reports.update', { id: report.id })}?_method=PUT`)
+    @include('reports/_form')
+  @endslot
+@end

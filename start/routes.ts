@@ -42,4 +42,8 @@ router
   .prefix('settings')
   .as('settings')
 
+router
+  .resource('reports', () => import('#controllers/reports_controller'))
+  .only(['index', 'show', 'create', 'store', 'edit', 'update', 'destroy'])
+
 router.on('/').render('home').as('home')

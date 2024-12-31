@@ -10,21 +10,15 @@
   <body>
     <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
       <div class="container-fluid">
-        <a class="navbar-brand" href="#">Endotracker</a>
+        <span class="navbar-brand">Endotracker</span>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
           <ul class="navbar-nav me-auto mb-2 mb-md-0">
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="{{route('home')}}">Dashboard</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link disabled" aria-disabled="true" href="#">Reports</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{{route('settings.index')}}">Settings</a>
-            </li>
+            @!component('components/nav-link', { title: 'Home', href: route('home'), isActive: request.url() == route('home') })
+            @!component('components/nav-link', { title: 'Reports', href: route('reports.index'), isActive: request.url().startsWith(route('reports.index')) })
+            @!component('components/nav-link', { title: 'Settings', href: route('settings.index'), isActive: request.url().startsWith(route('settings.index')) })
           </ul>
         </div>
       </div>

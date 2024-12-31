@@ -1,0 +1,10 @@
+<time title="{{i18n.formatDate(value, {
+  dateStyle: 'long',
+  timeStyle: 'long'
+})}}">
+  @if(format == 'relative')
+    {{i18n.formatRelativeTime(value, 'auto')}}
+  @else
+    {{i18n.formatDate(value, { dateStyle: format })}}
+  @end
+</time>

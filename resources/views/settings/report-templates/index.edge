@@ -12,14 +12,12 @@
         <li class="col col-md-8 d-flex justify-content-between align-items-start gx-5 gy-4">
           <div class="me-auto">
             <div class="fw-bold">{{tpl.name}}</div>
-            <div>Created: <time title="{{i18n.formatDate(tpl.createdAt, {
-              dateStyle: 'long',
-              timeStyle: 'long'
-              })}}">{{i18n.formatRelativeTime(tpl.createdAt, 'auto')}}</time></div>
-            <div>Updated: <time title="{{i18n.formatDate(tpl.updatedAt, {
-              dateStyle: 'long',
-              timeStyle: 'long'
-              })}}">{{i18n.formatRelativeTime(tpl.updatedAt, 'auto')}}</time></div>
+            <div>Created:
+              @!component('components/timestamp', { value: tpl.createdAt, format: 'long' })
+            </div>
+            <div>Updated:
+              @!component('components/timestamp', { value: tpl.updatedAt, format: 'relative' })
+            </div>
           </div>
           <div class="d-grid gap-2 d-md-block">
             <a class="btn btn-outline-secondary" href="{{route('settings.report_templates.edit', { id: tpl.id })}}">Edit</a>
