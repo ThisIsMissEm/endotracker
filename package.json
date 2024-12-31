@@ -71,6 +71,7 @@
     "edge.js": "^6.2.0",
     "luxon": "^3.5.0",
     "pg": "^8.13.1",
+    "pino-http": "^10.3.0",
     "reflect-metadata": "^0.2.2"
   },
   "hotHook": {
