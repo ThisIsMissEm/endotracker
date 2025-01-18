@@ -1,6 +1,12 @@
 import Parameter from '#models/parameter'
+import ReportTemplate from '#models/report_template'
+import db from '@adonisjs/lucid/services/db'
 import Unit from '#models/unit'
-import { createParameterValidator, importParametersValidator } from '#validators/parameter'
+import {
+  createParameterValidator,
+  importParametersValidator,
+  updateParameterValidator,
+} from '#validators/parameter'
 import type { HttpContext } from '@adonisjs/core/http'
 import { ModelAttributes } from '@adonisjs/lucid/types/model'
 import { readFile } from 'node:fs/promises'
@@ -104,15 +110,53 @@ export default class ParametersController {
   /**
    * Edit individual record
    */
-  async edit({}: HttpContext) {}
+  async edit({ params, view }: HttpContext) {
+    const units = await Unit.all()
+    const parameter = await Parameter.query()
+      .where({ id: params.id })
+      .preload('unit')
+      .orderBy('created_at', 'asc')
+      .firstOrFail()
+
+    const referenceTypes = Parameter.referenceTypes
+
+    return view.render('settings/parameters/edit', { parameter, units, referenceTypes })
+  }
 
   /**
    * Handle form submission for the edit action
    */
-  async update({}: HttpContext) {}
+  async update({ request, response }: HttpContext) {
+    const { params, ...parameterProperties } = await request.validateUsing(updateParameterValidator)
+
+    const parameter = await Parameter.findOrFail(params.id)
+
+    await parameter.merge(parameterProperties).save()
+
+    return response.redirect().toRoute('settings.parameters.index')
+  }
 
   /**
    * Delete record
    */
-  async destroy({}: HttpContext) {}
+  async destroy({ params, session, response }: HttpContext) {
+    const parameter = await Parameter.findOrFail(params.id)
+
+    const usage = await db.rawQuery(
+      `SELECT id FROM ??, jsonb_array_elements(contents::jsonb->'sections') sections, jsonb_array_elements(sections->'parameters') parameters WHERE ?::jsonb <@ (parameters)`,
+      [ReportTemplate.table, parameter.id]
+    )
+
+    if (usage.rowCount === 0) {
+      await parameter.delete()
+      session.flash('success', 'Deleted parameter!')
+    } else {
+      session.flash(
+        'error',
+        `Unable to delete parameter ${parameter.name} as a report templates use it`
+      )
+    }
+
+    return response.redirect().toRoute('settings.parameters.index')
+  }
 }

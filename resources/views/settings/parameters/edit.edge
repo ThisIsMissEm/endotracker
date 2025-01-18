@@ -1,0 +1,17 @@
+@layouts.settings({
+  title: "Parameters: Edit",
+  description: "View and manage the parameters that are available to be measured in reports"
+})
+  @slot('headerActions')
+    <form class="d-inline" method="POST" action="{{route('settings.parameters.destroy', { id: parameter.id })}}?_method=DELETE">
+      {{ csrfField() }}
+      <button type="submit" class="btn btn-outline-danger">Delete Parameter</button>
+    </form>
+  @endslot
+
+  @slot('content')
+    @let(formAction = `${route('settings.parameters.update', { id: parameter.id })}?_method=PUT`)
+    @let(buttonLabel = 'Update Parameter')
+    @include('settings/parameters/_form')
+  @endslot
+@end

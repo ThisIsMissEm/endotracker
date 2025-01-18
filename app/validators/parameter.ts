@@ -48,7 +48,51 @@ export const createParameterValidator = vine.compile(
  * Validator to validate the payload when updating
  * an existing unit.
  */
-export const updateUnitValidator = vine.compile(vine.object({}))
+export const updateParameterValidator = vine.compile(
+  vine.object({
+    // Validate route params
+    params: vine.object({
+      id: vine.number().positive().withoutDecimals(),
+    }),
+
+    name: vine.string().unique(async (db, value, field) => {
+      const row = await db
+        .from(Parameter.table)
+        .whereRaw(`lower(name) = ?`, [db.raw(`lower(?)`, [value])])
+        .andWhereNot('id', field.parent.params.id)
+        .first()
+
+      return row === null
+    }),
+
+    unitId: vine.number().exists(async (db, value) => {
+      const row = await db.from(Unit.table).select('id').where({ id: value }).first()
+      return row ? true : false
+    }),
+
+    referenceType: vine.enum(Parameter.referenceTypes),
+
+    referenceMinimum: vine
+      .number()
+      .positive()
+      .decimal([0, 3])
+      .optional()
+      .requiredWhen((field) => {
+        return ['range', 'greater_than', 'greater_than_or_equal'].includes(
+          field.parent.referenceType
+        )
+      }),
+
+    referenceMaximum: vine
+      .number()
+      .positive()
+      .decimal([0, 3])
+      .optional()
+      .requiredWhen((field) => {
+        return ['range', 'less_than', 'less_than_or_equal'].includes(field.parent.referenceType)
+      }),
+  })
+)
 
 export const importParametersValidator = vine.compile(
   vine

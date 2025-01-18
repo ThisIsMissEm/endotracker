@@ -42,54 +42,10 @@
       @end
     </ul>
 
-    <hr />
+    <hr class="pb-2" />
 
-    <form action="{{route('settings.parameters.store')}}" method="POST" class="pt-2">
-      {{ csrfField() }}
-      @inputError('name')
-        @each(message in $messages)
-          <p>{{ message }}</p>
-        @end
-      @end
-
-      <div class="mb-3">
-        <label for="name" class="form-label">Name</label>
-        <input type="text" class="form-control" id="name" name="name" value="{{ old('name') || '' }}" data-1p-ignore />
-      </div>
-
-      @inputError('unitId')
-        @each(message in $messages)
-          <p>{{ message }}</p>
-        @end
-      @end
-      <div class="mb-3">
-        <label for="unitId" class="form-label">Unit</label>
-        <select class="form-control" name="unitId">
-          <option value="" disabled></option>
-          @each(unit in units)
-            <option value="{{unit.id}}" {{ old('unitId') == unit.id ? 'selected' : '' }}>{{unit.name}} ({{unit.abbreviation}})</option>
-          @end
-        </select>
-      </div>
-      <div class="row mb-3">
-        <div class="col">
-          <label for="referenceType" class="form-label">Reference Type</label>
-          <select class="form-control" name="referenceType">
-            @each(type in referenceTypes)
-              <option value="{{type}}" {{ old('referenceType') == type ? 'selected' : '' }}>{{type.replaceAll('_', ' ')}}</option>
-            @end
-          </select>
-        </div>
-        <div class="col">
-          <label for="referenceMinimum" class="form-label">Reference Minimum</label>
-          <input class="form-control" name="referenceMinimum" type="number" step="0.001" min="0" value="{{ old('referenceMinimum') || '' }}">
-        </div>
-        <div class="col">
-          <label for="referenceMaximum" class="form-label">Reference Maximum</label>
-          <input class="form-control" name="referenceMaximum" type="number" step="0.001" min="0" value="{{ old('referenceMaximum') || '' }}">
-        </div>
-      </div>
-      <button type="submit" class="btn btn-primary">Add Parameter</button>
-    </form>
+    @let(formAction = `${route('settings.parameters.store')}`)
+    @let(buttonLabel = 'Add Parameter')
+    @include('settings/parameters/_form')
   @endslot
 @end
