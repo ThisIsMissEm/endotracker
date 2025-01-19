@@ -1,5 +1,5 @@
-import type { BelongsTo, HasOne } from '@adonisjs/lucid/types/relations'
-import { BaseModel, belongsTo, column, hasOne } from '@adonisjs/lucid/orm'
+import type { BelongsTo } from '@adonisjs/lucid/types/relations'
+import { BaseModel, belongsTo, column } from '@adonisjs/lucid/orm'
 import Parameter from './parameter.js'
 import Report from './report.js'
 
@@ -18,16 +18,7 @@ export default class ReportFinding extends BaseModel {
       return (value * 1000).toFixed(0)
     },
     consume: (value) => {
-      const hundreds = value % 1000
-      const tens = hundreds % 100
-      const ones = tens % 100
-      if (ones) {
-        return (value / 1000).toFixed(3)
-      } else if (tens) {
-        return (value / 1000).toFixed(2)
-      } else {
-        return (value / 1000).toFixed(1)
-      }
+      return value / 1000
     },
   })
   declare value: number
@@ -35,6 +26,6 @@ export default class ReportFinding extends BaseModel {
   @belongsTo(() => Report)
   declare report: BelongsTo<typeof Report>
 
-  @hasOne(() => Parameter)
-  declare parameter: HasOne<typeof Parameter>
+  @belongsTo(() => Parameter)
+  declare parameter: BelongsTo<typeof Parameter>
 }
