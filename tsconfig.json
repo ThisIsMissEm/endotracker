@@ -3,5 +3,11 @@
   "compilerOptions": {
     "rootDir": "./",
     "outDir": "./build"
-  }
+  },
+  "exclude": ["./resources/*"],
+  "references": [
+    {
+      "path": "./resources/tsconfig.json"
+    }
+  ]
 }

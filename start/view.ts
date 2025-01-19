@@ -3,16 +3,31 @@ import i18nManager from '@adonisjs/i18n/services/main'
 import formatters from '@poppinss/intl-formatter'
 import { NumberFormatOptions } from '@adonisjs/i18n/types'
 import Parameter from '#models/parameter'
+import { DateTime } from 'luxon'
 /**
  * Define a global property
  */
-edge.global('today', () => {
-  // This gives back YYYY-MM-DD which is what date inputs need
-  const shortDate = new Intl.DateTimeFormat('en-CA', {
-    dateStyle: 'short',
-  })
+// This gives back YYYY-MM-DD which is what date inputs need
+const shortDate = new Intl.DateTimeFormat('en-CA', {
+  dateStyle: 'short',
+})
 
+edge.global('today', () => {
   return shortDate.format(Date.now())
+})
+
+edge.global('formatDate', (value: DateTime | Date | string) => {
+  if (value instanceof DateTime) {
+    return value.toFormat('yyyy-MM-dd')
+  }
+
+  if (typeof value === 'string') {
+    return DateTime.fromISO(value).toFormat('yyyy-MM-dd')
+  }
+
+  if (typeof value === 'object' && value.constructor.name === 'Date') {
+    return DateTime.fromJSDate(value).toFormat('yyyy-MM-dd')
+  }
 })
 
 edge.global(

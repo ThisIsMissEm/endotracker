@@ -61,4 +61,4 @@ router
   .resource('reports', () => import('#controllers/reports_controller'))
   .only(['index', 'show', 'create', 'store', 'edit', 'update', 'destroy'])
 
-router.on('/').render('home').as('home')
+router.get('/', [() => import('#controllers/dashboard_controller'), 'index']).as('home')
