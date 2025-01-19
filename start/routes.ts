@@ -51,7 +51,8 @@ router
       )
       .only(['index', 'show', 'create', 'store', 'edit', 'update', 'destroy'])
 
-    router.on('/').render('settings/index').as('index')
+    router.get('/', [() => import('#controllers/settings_controller'), 'index']).as('index')
+    router.post('/', [() => import('#controllers/settings_controller'), 'update']).as('update')
   })
   .prefix('settings')
   .as('settings')
