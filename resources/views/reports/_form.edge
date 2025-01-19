@@ -5,7 +5,7 @@
   <div class="mb-3 pb-3 border-bottom border-1">
     <label for="testedAt" class="form-label fw-bold">Tested at</label>
     <div class="col col-sm-4">
-    @inputError('name')
+    @inputError('testedAt')
       <input type="date" class="form-control is-invalid" id="testedAt" name="testedAt" value="{{ old('testedAt') || today() }}" />
       <div class="invalid-feedback">
         @each(message in $messages)
@@ -13,7 +13,7 @@
         @end
       </div>
     @else
-      <input type="date" class="form-control {{old('name') ? 'is-valid' : ''}}" id="testedAt" name="testedAt" value="{{ old('testedAt') || today() }}" />
+      <input type="date" class="form-control {{old('testedAt') ? 'is-valid' : ''}}" id="testedAt" name="testedAt" value="{{ old('testedAt') || today() }}" />
     @end
     </div>
   </div>
