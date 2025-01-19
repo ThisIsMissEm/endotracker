@@ -26,3 +26,4 @@ yarn-error.log
 
 # Data files
 data/*.json
+data/*.csv
