@@ -3,6 +3,7 @@
   description: 'View and manage the units of measurement for values in report findings and parameters'
 })
   @slot('headerActions')
+    <a class="btn btn-primary" href="#add-unit">Add Unit</a>
     <a class="btn btn-primary" href="{{route('settings.units.export')}}">Export</a>
   @endslot
 
@@ -15,45 +16,18 @@
             {{unit.abbreviation}}
           </div>
           <a
-            class="btn btn-outline-secondary disabled"
-            aria-disabled="true"
-            title="Coming Soon!"
-            {{-- href="{{route('settings.parameters.edit', { id: unit.id })}}" --}}
+            class="btn btn-outline-secondary"
+            href="{{route('settings.units.edit', { id: unit.id })}}"
           >Edit</a>
         </li>
       @end
     </ul>
 
-    <hr />
+    <hr class="pb-2" />
+    <h3 id="add-unit">Add Unit</h3>
 
-    <form action="{{route('settings.units.store')}}" method="POST" class="pt-2">
-      {{ csrfField() }}
-
-      <div class="mb-3">
-        <label for="name" class="form-label">Name</label>
-        <input type="text" class="form-control {{isInputInvalid('name', flashMessages)}}" id="name" name="name" value="{{old('name') ?? ''}}" data-1p-ignore />
-        @inputError('name')
-        <div class="invalid-feedback">
-          @each(message in $messages)
-            <p>{{ message }}</p>
-          @end
-        </div>
-        @end
-      </div>
-
-
-      <div class="mb-3">
-        <label for="abbreviation" class="form-label">Abbreviation</label>
-        <input type="text" class="form-control {{isInputInvalid('abbreviation', flashMessages)}}" id="abbreviation" name="abbreviation" value="{{old('abbreviation') ?? ''}}"  />
-        @inputError('abbreviation')
-        <div class="invalid-feedback">
-          @each(message in $messages)
-            <p>{{ message }}</p>
-          @end
-        </div>
-        @end
-      </div>
-      <button type="submit" class="btn btn-primary">Add Unit</button>
-    </form>
+    @let(formAction = `${route('settings.units.store')}`)
+    @let(buttonLabel = 'Add Unit')
+    @include('settings/units/_form')
   @endslot
 @end

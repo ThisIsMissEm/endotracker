@@ -1,6 +1,7 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import Unit from '#models/unit'
-import { createUnitValidator } from '#validators/unit'
+import Parameter from '#models/parameter'
+import { createUnitValidator, updateUnitValidator } from '#validators/unit'
 
 export default class UnitsController {
   /**
@@ -37,15 +38,39 @@ export default class UnitsController {
   /**
    * Edit individual record
    */
-  async edit({}: HttpContext) {}
+  async edit({ view, params }: HttpContext) {
+    const unit = await Unit.findOrFail(params.id)
+    return view.render('settings/units/edit', { unit })
+  }
 
   /**
    * Handle form submission for the edit action
    */
-  async update({}: HttpContext) {}
+  async update({ request, response, session }: HttpContext) {
+    const { params, ...unitProperties } = await request.validateUsing(updateUnitValidator)
+
+    const unit = await Unit.findOrFail(params.id)
+
+    await unit.merge(unitProperties).save()
+
+    session.flash('success', 'Unit updated!')
+    return response.redirect().toRoute('settings.units.index')
+  }
 
   /**
    * Delete record
    */
-  async destroy({}: HttpContext) {}
+  async destroy({ params, session, response }: HttpContext) {
+    const unit = await Unit.findOrFail(params.id)
+    const usedParameter = await Parameter.findBy({ unitId: unit.id })
+
+    if (usedParameter === null) {
+      await unit.delete()
+      session.flash('success', 'Deleted unit!')
+    } else {
+      session.flash('error', `Unable to delete "${unit.name}" as it is used by a Parameter`)
+    }
+
+    response.redirect().toRoute('settings.units.index')
+  }
 }

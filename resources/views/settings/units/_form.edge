@@ -1,0 +1,32 @@
+<form method="POST" action="{{ formAction }}">
+  {{ csrfField() }}
+
+  <div class="mb-3">
+    <label for="name" class="form-label">Name</label>
+    <input type="text" class="form-control {{isInputInvalid('name', flashMessages)}}" id="name" name="name" value="{{old('name', unit?.name) ?? ''}}" data-1p-ignore />
+    @inputError('name')
+    <div class="invalid-feedback">
+      @each(message in $messages)
+        <p>{{ message }}</p>
+      @end
+    </div>
+    @end
+  </div>
+
+
+  <div class="mb-3">
+    <label for="abbreviation" class="form-label">Abbreviation</label>
+    <input type="text" class="form-control {{isInputInvalid('abbreviation', flashMessages)}}" id="abbreviation" name="abbreviation" value="{{old('abbreviation', unit?.abbreviation) ?? ''}}"  />
+    @inputError('abbreviation')
+    <div class="invalid-feedback">
+      @each(message in $messages)
+        <p>{{ message }}</p>
+      @end
+    </div>
+    @end
+  </div>
+  <button type="submit" class="btn btn-primary">{{ buttonLabel }}</button>
+  @if(showCancelButton)
+    <a href="{{ route('settings.units.index')}}" class="btn btn-outline-secondary">Cancel</a>
+  @end
+</form>

@@ -1,0 +1,18 @@
+@layouts.settings({
+  title: `Units: ${unit.name}`,
+  description: 'View and manage the units of measurement for values in report findings and parameters'
+})
+  @slot('headerActions')
+    <form class="d-inline" method="POST" action="{{route('settings.units.destroy', { id: unit.id })}}?_method=DELETE">
+      {{ csrfField() }}
+      <button type="submit" class="btn btn-outline-danger">Delete Unit</button>
+    </form>
+  @endslot
+
+  @slot('content')
+    @let(formAction = `${route('settings.units.update', { id: unit.id })}?_method=PUT`)
+    @let(buttonLabel = 'Update Unit')
+    @let(showCancelButton = true)
+    @include('settings/units/_form')
+  @endslot
+@end
