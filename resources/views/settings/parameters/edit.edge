@@ -1,5 +1,5 @@
 @layouts.settings({
-  title: "Parameters: Edit",
+  title: `Parameters: ${parameter.name}`,
   description: "View and manage the parameters that are available to be measured in reports"
 })
   @slot('headerActions')
@@ -12,6 +12,7 @@
   @slot('content')
     @let(formAction = `${route('settings.parameters.update', { id: parameter.id })}?_method=PUT`)
     @let(buttonLabel = 'Update Parameter')
+    @let(showCancelButton = true)
     @include('settings/parameters/_form')
   @endslot
 @end

@@ -82,4 +82,7 @@
     </div>
   </div>
   <button type="submit" class="btn btn-primary">{{buttonLabel}}</button>
+  @if(showCancelButton)
+    <a href="{{ route('settings.parameters.index')}}" class="btn btn-outline-secondary">Cancel</a>
+  @end
 </form>
