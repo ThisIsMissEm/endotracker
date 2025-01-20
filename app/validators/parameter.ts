@@ -1,49 +1,52 @@
-import vine, { SimpleMessagesProvider } from '@vinejs/vine'
+import vine from '@vinejs/vine'
 import Unit from '#models/unit'
 import Parameter from '#models/parameter'
+
+const parameterSchema = vine.object({
+  name: vine.string().unique({
+    table: Parameter.table,
+    column: 'name',
+    caseInsensitive: true,
+    filter(db, _value, field) {
+      if (field.parent?.params?.id) {
+        db.andWhereNot('id', field.parent.params.id)
+      }
+    },
+  }),
+
+  unitId: vine.number().exists(async (db, value) => {
+    const row = await db.from(Unit.table).select('id').where({ id: value }).first()
+    return row ? true : false
+  }),
+
+  referenceType: vine.enum(Parameter.referenceTypes),
+
+  referenceMinimum: vine
+    .number()
+    .positive()
+    .decimal([0, 3])
+    .optional()
+    .requiredWhen((field) => {
+      return ['range', 'greater_than', 'greater_than_or_equal'].includes(field.parent.referenceType)
+    }),
+
+  referenceMaximum: vine
+    .number()
+    .positive()
+    .decimal([0, 3])
+    .optional()
+    .requiredWhen((field) => {
+      return ['range', 'less_than', 'less_than_or_equal'].includes(field.parent.referenceType)
+    }),
+
+  showOnDashboard: vine.boolean().optional(),
+})
 
 /**
  * Validator to validate the payload when creating
  * a new unit.
  */
-export const createParameterValidator = vine.compile(
-  vine.object({
-    name: vine.string().unique({
-      table: Parameter.table,
-      column: 'name',
-      caseInsensitive: true,
-    }),
-
-    unitId: vine.number().exists(async (db, value) => {
-      const row = await db.from(Unit.table).select('id').where({ id: value }).first()
-      return row ? true : false
-    }),
-
-    referenceType: vine.enum(Parameter.referenceTypes),
-
-    referenceMinimum: vine
-      .number()
-      .positive()
-      .decimal([0, 3])
-      .optional()
-      .requiredWhen((field) => {
-        return ['range', 'greater_than', 'greater_than_or_equal'].includes(
-          field.parent.referenceType
-        )
-      }),
-
-    referenceMaximum: vine
-      .number()
-      .positive()
-      .decimal([0, 3])
-      .optional()
-      .requiredWhen((field) => {
-        return ['range', 'less_than', 'less_than_or_equal'].includes(field.parent.referenceType)
-      }),
-
-    showOnDashboard: vine.boolean().optional(),
-  })
-)
+export const createParameterValidator = vine.compile(parameterSchema)
 
 /**
  * Validator to validate the payload when updating
@@ -56,44 +59,7 @@ export const updateParameterValidator = vine.compile(
       id: vine.number().positive().withoutDecimals(),
     }),
 
-    name: vine.string().unique(async (db, value, field) => {
-      const row = await db
-        .from(Parameter.table)
-        .whereRaw(`lower(name) = ?`, [db.raw(`lower(?)`, [value])])
-        .andWhereNot('id', field.parent.params.id)
-        .first()
-
-      return row === null
-    }),
-
-    unitId: vine.number().exists(async (db, value) => {
-      const row = await db.from(Unit.table).select('id').where({ id: value }).first()
-      return row ? true : false
-    }),
-
-    referenceType: vine.enum(Parameter.referenceTypes),
-
-    referenceMinimum: vine
-      .number()
-      .positive()
-      .decimal([0, 3])
-      .optional()
-      .requiredWhen((field) => {
-        return ['range', 'greater_than', 'greater_than_or_equal'].includes(
-          field.parent.referenceType
-        )
-      }),
-
-    referenceMaximum: vine
-      .number()
-      .positive()
-      .decimal([0, 3])
-      .optional()
-      .requiredWhen((field) => {
-        return ['range', 'less_than', 'less_than_or_equal'].includes(field.parent.referenceType)
-      }),
-
-    showOnDashboard: vine.boolean().optional(),
+    ...parameterSchema.getProperties(),
   })
 )
 
