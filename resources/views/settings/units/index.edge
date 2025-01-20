@@ -23,25 +23,30 @@
 
     <form action="{{route('settings.units.store')}}" method="POST" class="pt-2">
       {{ csrfField() }}
-      @inputError('name')
-        @each(message in $messages)
-          <p>{{ message }}</p>
-        @end
-      @end
 
       <div class="mb-3">
         <label for="name" class="form-label">Name</label>
-        <input type="text" class="form-control" id="name" name="name" data-1p-ignore />
+        <input type="text" class="form-control {{isInputInvalid('name', flashMessages)}}" id="name" name="name" value="{{old('name') ?? ''}}" data-1p-ignore />
+        @inputError('name')
+        <div class="invalid-feedback">
+          @each(message in $messages)
+            <p>{{ message }}</p>
+          @end
+        </div>
+        @end
       </div>
 
-      @inputError('abbreviation')
-        @each(message in $messages)
-          <p>{{ message }}</p>
-        @end
-      @end
+
       <div class="mb-3">
         <label for="abbreviation" class="form-label">Abbreviation</label>
-        <input type="text" class="form-control" id="abbreviation" name="abbreviation" />
+        <input type="text" class="form-control {{isInputInvalid('abbreviation', flashMessages)}}" id="abbreviation" name="abbreviation" value="{{old('abbreviation') ?? ''}}"  />
+        @inputError('abbreviation')
+        <div class="invalid-feedback">
+          @each(message in $messages)
+            <p>{{ message }}</p>
+          @end
+        </div>
+        @end
       </div>
       <button type="submit" class="btn btn-primary">Add Unit</button>
     </form>
