@@ -7,13 +7,13 @@ export default class UnitsController {
    * Display a list of resource
    */
   async index({ view }: HttpContext) {
-    const units = await Unit.all()
+    const units = await Unit.query().orderBy('id', 'asc')
 
     return view.render('settings/units/index', { units })
   }
 
   async export({ response }: HttpContext) {
-    const units = await Unit.all()
+    const units = await Unit.query().orderBy('id', 'asc')
 
     response.safeHeader('Content-Disposition', 'attachment; filename="endotracker-units.json"')
     response.json({

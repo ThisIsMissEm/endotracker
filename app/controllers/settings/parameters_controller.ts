@@ -17,14 +17,14 @@ export default class ParametersController {
    */
   async index({ view }: HttpContext) {
     const units = await Unit.all()
-    const parameters = await Parameter.query().preload('unit').orderBy('created_at', 'asc')
+    const parameters = await Parameter.query().preload('unit').orderBy('id', 'asc')
     const referenceTypes = Parameter.referenceTypes
 
     return view.render('settings/parameters/index', { parameters, units, referenceTypes })
   }
 
   async export({ response }: HttpContext) {
-    const parameters = await Parameter.query().preload('unit').orderBy('created_at', 'asc')
+    const parameters = await Parameter.query().preload('unit').orderBy('id', 'asc')
 
     response.safeHeader('Content-Disposition', 'attachment; filename="endotracker-parameters.json"')
     response.json({
