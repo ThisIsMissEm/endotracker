@@ -1,7 +1,6 @@
-import vine from '@vinejs/vine'
+import vine, { SimpleMessagesProvider } from '@vinejs/vine'
 import Unit from '#models/unit'
 import Parameter from '#models/parameter'
-// import ParameterCategory from '#models/parameter_category'
 
 /**
  * Validator to validate the payload when creating
@@ -41,6 +40,8 @@ export const createParameterValidator = vine.compile(
       .requiredWhen((field) => {
         return ['range', 'less_than', 'less_than_or_equal'].includes(field.parent.referenceType)
       }),
+
+    showOnDashboard: vine.boolean().optional(),
   })
 )
 
@@ -91,6 +92,8 @@ export const updateParameterValidator = vine.compile(
       .requiredWhen((field) => {
         return ['range', 'less_than', 'less_than_or_equal'].includes(field.parent.referenceType)
       }),
+
+    showOnDashboard: vine.boolean().optional(),
   })
 )
 
@@ -122,6 +125,8 @@ export const importParametersValidator = vine.compile(
                 field.parent.referenceType
               )
             }),
+
+          showOnDashboard: vine.boolean().optional(),
 
           createdAt: vine.string(),
           updatedAt: vine.string(),

@@ -85,3 +85,7 @@ edge.global(
     return result
   }
 )
+
+edge.global('isInputInvalid', (name: string, flashMessages: any) => {
+  return flashMessages.get('inputErrorsBag', {})[name] ? 'is-invalid' : ''
+})

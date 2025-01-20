@@ -12,7 +12,12 @@
       @each(parameter in parameters)
         <li class="col d-flex justify-content-start align-content-between align-items-center col-md-6 col-lg-4 gx-4 gy-3">
           <div class="me-auto pe-1">
-            <div class="fw-bold">{{parameter.name}}</div>
+            <div class="fw-bold">
+              {{parameter.name}}
+              @if(parameter.showOnDashboard)
+                <i class="bi bi-file-earmark-bar-graph-fill" title="Shown on dashboard"></i>
+              @end
+            </div>
             <div>
               Unit: {{parameter.unit.abbreviation}}
             </div>

@@ -131,6 +131,11 @@ export default class ParametersController {
 
     const parameter = await Parameter.findOrFail(params.id)
 
+    // Allow toggling the visibility to off:
+    if (!parameterProperties.showOnDashboard) {
+      parameterProperties.showOnDashboard = false
+    }
+
     await parameter.merge(parameterProperties).save()
 
     return response.redirect().toRoute('settings.parameters.index')
