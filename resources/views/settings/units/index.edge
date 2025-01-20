@@ -14,7 +14,12 @@
             <div class="fw-bold">{{unit.name}}</div>
             {{unit.abbreviation}}
           </div>
-          <a class="btn btn-outline-secondary" href="{{route('settings.parameters.edit', { id: unit.id })}}">Edit</a>
+          <a
+            class="btn btn-outline-secondary disabled"
+            aria-disabled="true"
+            title="Coming Soon!"
+            {{-- href="{{route('settings.parameters.edit', { id: unit.id })}}" --}}
+          >Edit</a>
         </li>
       @end
     </ul>
