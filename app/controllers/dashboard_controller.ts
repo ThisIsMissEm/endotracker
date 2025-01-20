@@ -4,11 +4,17 @@ import ReportFinding from '#models/report_finding'
 import Setting from '#models/setting'
 import type { HttpContext } from '@adonisjs/core/http'
 import db from '@adonisjs/lucid/services/db'
-import { ModelAttributes } from '@adonisjs/lucid/types/model'
 import { DateTime } from 'luxon'
 
+type Recording = {
+  value: number
+  parameterId: number
+  testedAt: string
+  reportId: number
+}
+
 export default class DashboardController {
-  async index({ view, logger }: HttpContext) {
+  async index({ view }: HttpContext) {
     const recordStartDate = await Setting.findBy({ key: 'record_start_date' })
     let startYear: DateTime = DateTime.now().startOf('year')
 
@@ -19,13 +25,6 @@ export default class DashboardController {
       }
     }
 
-    type Recording = {
-      value: number
-      parameterId: number
-      testedAt: string
-      reportId: number
-    }
-
     const records = await db
       .query<Recording>()
       .from(ReportFinding.table)
@@ -34,8 +33,8 @@ export default class DashboardController {
       .select([
         'report_findings.value as value',
         'report_findings.parameter_id as parameterId',
+        'report_findings.report_id as reportId',
         'reports.tested_at as testedAt',
-        'reports.id as reportId',
       ])
       .where('parameters.show_on_dashboard', true)
       .whereRaw('reports.tested_at >= :start', {
