@@ -1,0 +1,26 @@
+@layouts.settings({
+  title: "Units: Import",
+  description: "Import units from an exported file"
+})
+  @slot('content')
+  <form method="POST" enctype="multipart/form-data" action="{{route('settings.units.performImport')}}">
+    {{ csrfField() }}
+
+    {{-- The field is empty due to how we use vine --}}
+    @inputError("")
+      @each(message in $messages)
+        <p>{{ message }}</p>
+      @end
+    @end
+
+    <div class="my-3">
+      <input type="file" name="units" class="form-control" />
+    </div>
+
+    <div class="d-flex flex-row-reverse gap-2 justify-content-end">
+      <button type="submit" class="btn btn-primary">Import</button>
+      <a href="{{route('settings.units.index')}}" class="btn btn-outline-primary">Back</a>
+    </div>
+  </form>
+  @endslot
+@end

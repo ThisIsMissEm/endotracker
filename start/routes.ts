@@ -20,6 +20,17 @@ router
       .as('units.export')
 
     router
+      .get('units/import', [() => import('#controllers/settings/units_controller'), 'import'])
+      .as('units.import')
+
+    router
+      .post('units/import', [
+        () => import('#controllers/settings/units_controller'),
+        'performImport',
+      ])
+      .as('units.performImport')
+
+    router
       .resource('parameters', () => import('#controllers/settings/parameters_controller'))
       .only(['index', 'store', 'edit', 'update', 'destroy'])
 

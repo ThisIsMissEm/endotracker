@@ -46,3 +46,19 @@ export const updateUnitValidator = vine.compile(
   })
 )
 
+export const importUnitsValidator = vine.compile(
+  vine
+    .object({
+      items: vine.array(
+        vine.object({
+          name: vine.string(),
+          abbreviation: vine.string(),
+        })
+      ),
+    })
+    .parse((input) => {
+      if (typeof input === 'string') {
+        return JSON.parse(input)
+      }
+    })
+)

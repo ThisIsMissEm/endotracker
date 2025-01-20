@@ -1,7 +1,8 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import Unit from '#models/unit'
 import Parameter from '#models/parameter'
-import { createUnitValidator, updateUnitValidator } from '#validators/unit'
+import { createUnitValidator, importUnitsValidator, updateUnitValidator } from '#validators/unit'
+import { readFile } from 'node:fs/promises'
 
 export default class UnitsController {
   /**
@@ -22,6 +23,40 @@ export default class UnitsController {
         return unit.serialize({ fields: ['name', 'abbreviation'] })
       }),
     })
+  }
+
+  async import({ view }: HttpContext) {
+    return view.render('settings/units/import')
+  }
+
+  async performImport({ request, response, session }: HttpContext) {
+    const importFile = request.file('units', {
+      size: '2mb',
+      extnames: ['json'],
+    })
+
+    if (!importFile || !importFile.tmpPath) {
+      session.flash('error', 'Failed to upload file')
+      return response.redirect().toRoute('settings.units.import')
+    }
+
+    const data = await readFile(importFile.tmpPath, { encoding: 'utf-8' })
+    const parsed = await importUnitsValidator.validate(data)
+    const results = await Unit.fetchOrCreateMany('name', parsed.items)
+
+    const updatedCount = results.reduce((count, row) => {
+      if (row.$isLocal) {
+        count++
+      }
+      return count
+    }, 0)
+
+    session.flash(
+      'success',
+      updatedCount > 0 ? `Imported ${updatedCount} units successfully` : 'All units already exist'
+    )
+
+    response.redirect().toRoute('settings.units.index')
   }
 
   /**
