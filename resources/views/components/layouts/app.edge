@@ -25,7 +25,16 @@
     </nav>
     <main class="container">
       @flashMessage('notification')
-        <div class="notification {{ $message.type }}">
+        <div class="{{
+          html.classNames([
+            'alert',
+            {
+              'alert-success': $message.type === 'success',
+              'alert-danger': $message.type === 'error',
+              'alert-warning': $message.type === 'warning',
+            },
+          ])
+        }}" role="alert">
           {{ $message.message }}
         </div>
       @end

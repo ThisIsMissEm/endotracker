@@ -73,3 +73,5 @@ router
   .only(['index', 'show', 'create', 'store', 'edit', 'update', 'destroy'])
 
 router.get('/', [() => import('#controllers/dashboard_controller'), 'index']).as('home')
+
+router.on('/setup').render('setup/index').as('setup')
