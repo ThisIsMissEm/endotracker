@@ -3,6 +3,8 @@
     <h1 class="fw-bold pb-2">Dashboard</h1>
     <p class="lead">This is an overview of your graphed parameters over time.</p>
 
+    <hr class="border-top border-2 opacity-100 pb-3" />
+
     <div class="row">
     @each(parameter in parameters)
     <div class="col-sm-6 mb-5" data-chart-id="{{parameter.id}}" data-start-date="{{startYear}}">
