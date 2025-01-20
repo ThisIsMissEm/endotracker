@@ -43,7 +43,7 @@ export default class ParametersController {
     return view.render('settings/parameters/import')
   }
 
-  async doImport({ request, response, session }: HttpContext) {
+  async performImport({ request, response, session }: HttpContext) {
     const parametersFile = request.file('parameters', {
       size: '2mb',
       extnames: ['json'],
@@ -69,7 +69,7 @@ export default class ParametersController {
 
     const units = await Unit.fetchOrCreateMany('name', Array.from(unitsMap.values()))
 
-    await Parameter.fetchOrCreateMany(
+    const results = await Parameter.fetchOrCreateMany(
       'name',
       parameters.items.reduce<Partial<ModelAttributes<InstanceType<typeof Parameter>>>[]>(
         (acc, parameter) => {
@@ -93,6 +93,19 @@ export default class ParametersController {
       )
     )
 
+    const updatedCount = results.reduce((count, row) => {
+      if (row.$isLocal) {
+        count++
+      }
+      return count
+    }, 0)
+
+    session.flash(
+      'success',
+      updatedCount > 0
+        ? `Imported ${updatedCount} parameters successfully`
+        : 'All parameters already exist'
+    )
     response.redirect().toRoute('settings.parameters.index')
   }
 
@@ -156,10 +169,7 @@ export default class ParametersController {
       await parameter.delete()
       session.flash('success', 'Deleted parameter!')
     } else {
-      session.flash(
-        'error',
-        `Unable to delete parameter ${parameter.name} as a report templates use it`
-      )
+      session.flash('error', `Unable to delete "${parameter.name}" as report template(s) use it`)
     }
 
     return response.redirect().toRoute('settings.parameters.index')

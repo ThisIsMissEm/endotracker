@@ -3,7 +3,7 @@
   description: "Import parameters from an exported file"
 })
   @slot('content')
-  <form method="POST" enctype="multipart/form-data" action="{{route('settings.parameters.doImport')}}">
+  <form method="POST" enctype="multipart/form-data" action="{{route('settings.parameters.performImport')}}">
     {{ csrfField() }}
 
     {{-- The field is empty due to how we use vine --}}

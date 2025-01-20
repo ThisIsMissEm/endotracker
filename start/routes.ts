@@ -40,9 +40,9 @@ router
     router
       .post('parameters/import', [
         () => import('#controllers/settings/parameters_controller'),
-        'doImport',
+        'performImport',
       ])
-      .as('parameters.doImport')
+      .as('parameters.performImport')
 
     router
       .resource(
