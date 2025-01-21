@@ -1,10 +1,7 @@
 import Setting from '#models/setting'
 import { updateSettingsValidator } from '#validators/settings'
 import type { HttpContext } from '@adonisjs/core/http'
-
-const shortDate = new Intl.DateTimeFormat('en-CA', {
-  dateStyle: 'short',
-})
+import { shortDate } from '../utils/dates.js'
 
 export default class SettingsController {
   async index({ view }: HttpContext) {
@@ -19,9 +16,8 @@ export default class SettingsController {
     })
   }
 
-  async update({ request, response, logger }: HttpContext) {
+  async update({ request, response }: HttpContext) {
     const settings = await request.validateUsing(updateSettingsValidator)
-    logger.debug(settings)
 
     if (settings.record_start_date) {
       await Setting.updateOrCreate(
