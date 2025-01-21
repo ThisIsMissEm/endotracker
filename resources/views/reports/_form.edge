@@ -25,7 +25,6 @@
       <table class="table border-top mb-5 mt-3">
         <tr>
           <th>Parameter</th>
-          <th>Units</th>
           <th class="text-center">Reference Value</th>
           <th></th>
           <th class="text-center">Test Value</th>
@@ -38,9 +37,9 @@
               <label for="parameters-{{parameterIndex}}">{{parameter.name}}</label>
               <input type="hidden" name="parameters[p{{parameterIndex}}][parameter]" value="{{parameterId}}"/>
             </th>
-            <td class="text-start col col-md-2">{{parameter.unit.abbreviation.toLowerCase()}}</td>
             <td class="col col-md-2 text-center">
               @include('partials/parameter')
+              &nbsp;{{parameter.unit.abbreviation.toLowerCase()}}
             </td>
             <td class="text-end col col-md-1"></td>
             <td class="text-end col col-md-3 ms-2">
