@@ -1,0 +1,24 @@
+@use 'sass:color';
+@import 'bootstrap/scss/bootstrap';
+
+$bootstrap-icons-font-dir: 'bootstrap-icons/font/fonts/';
+@import 'bootstrap-icons/font/bootstrap-icons.scss';
+
+body {
+  padding-bottom: 3rem;
+}
+
+.logo-large {
+  font-size: 120px;
+
+  &::before {
+    color: color.adjust($primary, $lightness: -10%);
+  }
+}
+
+.btn-md {
+  --bs-btn-padding-y: 0.5rem;
+  --bs-btn-padding-x: 1.2rem;
+  --bs-btn-font-size: 1rem;
+  --bs-btn-border-radius: var(--bs-border-radius-lg);
+}

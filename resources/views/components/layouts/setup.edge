@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+  <html lang="en" x-data>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{ title ? `${title} - Endotracker` : 'Setup - Endotracker' }}</title>
+
+    @vite(['resources/css/setup.scss', 'resources/js/setup.ts'])
+  </head>
+  <body>
+    <div class="container min-vh-100 text-center">
+      <div class="row min-vh-100 align-items-center justify-content-center">
+        <div class="col col-sm-8 align-self-center align-content-center">
+          @flashMessage('notification')
+            <div class="{{
+              html.classNames([
+                'alert',
+                {
+                  'alert-success': $message.type === 'success',
+                  'alert-danger': $message.type === 'error',
+                  'alert-warning': $message.type === 'warning',
+                },
+              ])
+            }}" role="alert">
+              {{ $message.message }}
+            </div>
+          @end
+
+          <div class="d-flex flex-column align-items-center mb-5">
+            {{{ await $slots.main() }}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

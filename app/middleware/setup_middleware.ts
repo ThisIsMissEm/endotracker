@@ -8,7 +8,7 @@ export default class SetupMiddleware {
 
     const isConfigured = await Setting.findBy({ key: 'configured' })
     if (!isSetupRoute && isConfigured?.value !== 'true') {
-      return ctx.response.redirect().toRoute('setup')
+      return ctx.response.redirect().toRoute('setup.show')
     }
 
     if (isSetupRoute && isConfigured?.value === 'true') {
