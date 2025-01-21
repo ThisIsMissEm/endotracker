@@ -6,9 +6,9 @@
     <hr class="border-top border-2 opacity-100 pb-3" />
 
     <div class="row">
-      @unless(recordings.size > 0)
+      @if(reportCount < 2 && parameters.length > 0)
         <div class="text-center py-5">
-          You currently have no reports in Endotracker
+          You don't have enough reports in Endotracker to view the dashboard.
           <div class="pt-3">
             <a class="btn btn-primary" href="{{route('reports.create')}}">Add a report</a>
           </div>
@@ -37,6 +37,8 @@
                   <td class="text-end">{{ recording.value }}</td>
                   <td class="w-25">&nbsp;&nbsp;{{parameter.unit.abbreviation}}</td>
                 </tr>
+              @else
+                <tr><td colspan="3">There is currently no data available for this parameter.</td></tr>
               @end
               </tbody>
             </table>

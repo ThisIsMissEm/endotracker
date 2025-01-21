@@ -30,6 +30,8 @@ export default class DashboardController {
       .where('show_on_dashboard', true)
       .exec()
 
+    const reports = await db.query<{ count: string }>().from(Report.table).count('id').first()
+
     const records = await db
       .query<Recording>()
       .from(ReportFinding.table)
@@ -64,6 +66,7 @@ export default class DashboardController {
       startYear: startYear,
       parameters,
       recordings,
+      reportCount: Number.parseInt(reports?.count ?? '0'),
     })
   }
 }
