@@ -4,7 +4,7 @@ import { shortDate } from '../utils/dates.js'
 import Setting from '#models/setting'
 import { ImportUnitsService } from '#services/import_unit_service'
 
-const steps = ['basics', 'import-units', 'done']
+const steps = ['basics', 'import-units', 'finish']
 
 export default class SetupController {
   async index({ request, response, view }: HttpContext) {
