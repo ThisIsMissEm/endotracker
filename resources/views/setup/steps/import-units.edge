@@ -1,0 +1,19 @@
+<h4 class="fw-normal">Import Units of Measurement</h4>
+<p class="fs-5 text-body-secondary">You can <a href="https://github.com/ThisIsMissEm/endotracker/blob/main/dist/units.json" target="_blank" rel="noreferrer noopener">download an import file</a> on the Endotracker website.</p>
+
+<form action="{{route('setup.importUnits')}}" enctype="multipart/form-data" method="POST">
+  {{ csrfField() }}
+  @include('partials/flash-messages')
+  <div class="mt-3 mb-5">
+    <input type="file" name="units" class="form-control" />
+    <p class="my-2 text-secondary">This will be a file with the <code>.json</code> file extension.</p>
+  </div>
+
+  <div class="d-grid gap-2 d-md-flex justify-content-center">
+    <a href="{{route('setup.show', {}, { qs: { step: previousStep } }) }}" class="btn btn-outline-secondary btn-md">Back</a>
+    <button type="submit" class="btn btn-primary btn-md">Import Units</button>
+  </div>
+  <p class="my-3 text-secondary">
+    Or you can <a href="{{route('setup.show', {}, { qs: { step: nextStep } }) }}" class="text-secondary">skip this step</a></p>
+  </p>
+</form>

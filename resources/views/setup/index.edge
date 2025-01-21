@@ -1,0 +1,19 @@
+@layouts.setup()
+  <header class="mb-3">
+    <i class="bi bi-clipboard2-pulse-fill logo-large"></i>
+    <h1>Welcome to Endotracker</h1>
+  </header>
+
+  @if(!step || step === 'introduction')
+    @include('setup/steps/welcome')
+  @elseif(step === 'basics')
+    @include('setup/steps/basics')
+  @elseif(step === 'import-units')
+    @include('setup/steps/import-units')
+  @elseif(step === 'finish')
+    @include('setup/steps/finish')
+  @else
+    <h1>Unknown step</h1>
+    <p class="lead">Something went wrong, please go back.</p>
+  @end
+@end

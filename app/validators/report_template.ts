@@ -8,6 +8,8 @@ import vine from '@vinejs/vine'
  */
 export const createReportTemplateValidator = vine.compile(
   vine.object({
+    returnTo: vine.string().optional(),
+
     name: vine.string().unique({
       table: ReportTemplate.table,
       column: 'name',

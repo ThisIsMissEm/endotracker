@@ -20,10 +20,11 @@
   <div class="mb-3">
     <label for="unitId" class="form-label">Unit</label>
     <select class="form-control {{isInputInvalid('unitId', flashMessages)}}" name="unitId">
-      <option value="" disabled></option>
       @let(selectedUnitId = old('unitId') || parameter.unitId)
+
+      <option value="" {{ !selectedUnitId ? 'selected' : '' }}>Select a unit of measurement</option>
       @each(unit in units)
-      <option value="{{unit.id}}" {{ selectedUnitId == unit.id ? 'selected' : '' }}>{{unit.name}} ({{unit.abbreviation}})</option>
+        <option value="{{unit.id}}" {{ selectedUnitId == unit.id ? 'selected' : '' }}>{{unit.name}} ({{unit.abbreviation}})</option>
       @end
     </select>
     @inputError('unitId')

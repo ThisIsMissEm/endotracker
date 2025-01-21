@@ -126,6 +126,24 @@ function renderChart(rootNode: HTMLDivElement | null) {
   //     .text('value')
   // )
 
+  if (dataset.length === 0) {
+    svg
+      .append('g')
+      .attr('transform', `translate(0,-10)`)
+      .call((g) => {
+        g.append('text')
+          .attr('font-size', '20px')
+          .style('text-align', 'center')
+          .attr('x', '50%')
+          .attr('y', '50%')
+          .attr('dominant-baseline', 'middle')
+          .attr('text-anchor', 'middle')
+          .text('No data available.')
+      })
+
+    rootNode.querySelector('.data-recordings')?.classList.add('d-none')
+  }
+
   // Reference Maximum:
   const extents = y.domain()
   const maxY = Math.max.apply(Math, extents)
@@ -144,7 +162,7 @@ function renderChart(rootNode: HTMLDivElement | null) {
           .attr('y', 3)
           .text('Max')
       })
-  } else {
+  } else if (referenceMaximum > 0 && maxY > referenceMaximum) {
     svg
       .append('g')
       .attr('transform', `translate(${marginLeft},${y(maxY)})`)
@@ -157,7 +175,7 @@ function renderChart(rootNode: HTMLDivElement | null) {
   }
 
   // Reference Minimum:
-  if (referenceMinimum > 0) {
+  if (referenceMinimum > 0 && maxY > referenceMaximum) {
     svg
       .append('g')
       .attr('transform', `translate(${marginLeft},${y(referenceMinimum)})`)

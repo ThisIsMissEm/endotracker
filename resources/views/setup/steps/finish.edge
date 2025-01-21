@@ -1,0 +1,12 @@
+@if(flashMessages.has('importSuccess'))
+  <div class="alert alert-success mb-4" role="alert">
+    {{ flashMessages.get('importSuccess') }}
+  </div>
+@end
+<h4 class="fw-normal">Now you can start using Endotracker!</h4>
+<p class="lead">You'll probably want to visit the settings to add parameters and a report template next.</p>
+
+<form action="{{route('setup.completeSetup')}}" method="POST" class="mt-4">
+  {{ csrfField() }}
+  <button type="submit" class="btn btn-md btn-primary">Continue to Endotracker</button>
+</form>

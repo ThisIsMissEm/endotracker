@@ -25,45 +25,48 @@ export default class DashboardController {
       }
     }
 
+    const parameters = await Parameter.query()
+      .preloadOnce('unit')
+      .where('show_on_dashboard', true)
+      .exec()
+
+    const reports = await db.query<{ count: string }>().from(Report.table).count('id').first()
+
     const records = await db
       .query<Recording>()
       .from(ReportFinding.table)
       .join(Report.table, 'reports.id', '=', 'report_findings.report_id')
-      .join(Parameter.table, 'parameters.id', '=', 'report_findings.parameter_id')
       .select([
         'report_findings.value as value',
         'report_findings.parameter_id as parameterId',
         'report_findings.report_id as reportId',
         'reports.tested_at as testedAt',
       ])
-      .where('parameters.show_on_dashboard', true)
+      .whereIn(
+        'parameter_id',
+        parameters.map((r) => r.id)
+      )
       .whereRaw('reports.tested_at >= :start', {
         start: startYear.toSQL() ?? 0,
       })
       .orderBy('reports.tested_at')
 
-    const parameters = await Parameter.query()
-      .preloadOnce('unit')
-      .whereIn(
-        'id',
-        records.map((r) => r.parameterId)
-      )
-      .exec()
-
-    const recordings = records.reduce<Record<number, Recording[]>>((memo, recording) => {
+    const recordings = records.reduce<Map<number, Recording[]>>((memo, recording) => {
       recording.value = recording.value / 1000
-      if (!Array.isArray(memo[recording.parameterId])) {
-        memo[recording.parameterId] = [recording]
+      const recordingsForParameter = memo.get(recording.parameterId)
+      if (!recordingsForParameter) {
+        memo.set(recording.parameterId, [recording])
       } else {
-        memo[recording.parameterId].push(recording)
+        memo.set(recording.parameterId, recordingsForParameter.concat([recording]))
       }
       return memo
-    }, {})
+    }, new Map<number, Recording[]>())
 
     return view.render('dashboard/index', {
       startYear: startYear,
       parameters,
       recordings,
+      reportCount: Number.parseInt(reports?.count ?? '0'),
     })
   }
 }

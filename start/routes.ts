@@ -73,3 +73,14 @@ router
   .only(['index', 'show', 'create', 'store', 'edit', 'update', 'destroy'])
 
 router.get('/', [() => import('#controllers/dashboard_controller'), 'index']).as('home')
+
+router
+  .group(() => {
+    const SetupController = () => import('#controllers/setup_controller')
+    router.get('/', [SetupController, 'index']).as('show')
+    router.post('store-start-date', [SetupController, 'storeStartDate']).as('storeStartDate')
+    router.post('import-units', [SetupController, 'importUnits']).as('importUnits')
+    router.post('complete-setup', [SetupController, 'completeSetup']).as('completeSetup')
+  })
+  .prefix('setup')
+  .as('setup')
