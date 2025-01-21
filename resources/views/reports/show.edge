@@ -19,7 +19,6 @@
           </tr>
           <tr>
             <th>Parameter</th>
-            <th>Units</th>
             <th class="text-center">Reference Value</th>
             <th class="text-end">Test Value</th>
             <th class="finding-result"></th>
@@ -29,11 +28,11 @@
             @assign(parameter = parameters.get(parameterId))
             @assign(finding = findingsByParameter.get(parameterId))
             @assign(comparison = compareFindingWithParameter(finding, parameter))
-            <tr>
+            <tr id="parameter-{{parameterId}}">
               <th class="col col-md-6 ps-5">{{parameter.name}}</th>
-              <td class="text-start col col-md-2">{{parameter.unit.abbreviation.toLowerCase()}}</td>
               <td class="col col-md-2 text-center">
                 @include('partials/parameter')
+                {{parameter.unit.abbreviation.toLowerCase()}}
               </td>
               <td class="text-end col col-md-2">
                 @if(finding)

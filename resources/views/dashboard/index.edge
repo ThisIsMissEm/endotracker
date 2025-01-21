@@ -5,7 +5,8 @@
 
     <hr class="border-top border-2 opacity-100 pb-3" />
 
-    <div class="row">
+    <div class="container">
+    <div class="row g-5">
       @if(reportCount < 2 && parameters.length > 0)
         <div class="text-center py-5">
           You don't have enough reports in Endotracker to view the dashboard.
@@ -15,27 +16,37 @@
         </div>
       @else
         @each(parameter in parameters)
-        <div class="col-sm-6 mb-5" data-chart-id="{{parameter.id}}" data-start-date="{{startYear}}">
+        <div
+          class="col-lg-6"
+          data-chart-id="{{parameter.id}}"
+          data-start-date="{{startYear}}"
+          data-reference-minimum="{{parameter.referenceMinimum}}"
+          data-reference-maximum="{{parameter.referenceMaximum}}"
+        >
           <h3 class="mb-0">{{ parameter.name }}</h3>
-          <div class="d-flex">
-            <div class="me-3">Reference Maximum: <span class="data-maximum">{{parameter.referenceMaximum}}</span></div>
-            <div class="me-3 {{ parameter.referenceMinimum === 0 ? 'd-none' : 'd-block' }}">Reference Minimum: <span class="data-minimum">{{parameter.referenceMinimum}}</span></div>
-          </div>
+          <p class="text-body-secondary"><strong class="fw-medium">Reference value:</strong>
+            @include('partials/parameter')
+            {{parameter.unit.abbreviation.toLowerCase()}}
+          </p>
           <div class="graph"></div>
           <div class="data">
-            <table class="data-recordings w-100">
+            <table class="data-recordings table table-hover table-sm w-100">
               <thead>
                 <tr>
-                  <th>Tested</th>
-                  <th>Value</th>
+                  <th>Date Tested</th>
+                  <th colspan="2" class="text-center">Value</th>
                 </tr>
               </thead>
               <tbody>
               @each(recording in recordings.get(parameter.id))
                 <tr data-tested-at="{{recording.testedAt}}" data-value="{{recording.value}}" data-report-id="{{recording.reportId}}">
-                  <td class="w-75">{{ formatDate(recording.testedAt) }}</td>
-                  <td class="text-end">{{ recording.value }}</td>
-                  <td class="w-25">&nbsp;&nbsp;{{parameter.unit.abbreviation}}</td>
+                  <td class="w-75">
+                    <a href="{{ route("reports.show", { id: recording.reportId })}}#parameter-{{parameter.id}}" class="link-secondary" title="View report #{{recording.reportId}}">
+                      {{ formatDate(recording.testedAt) }}
+                    </a>
+                  </td>
+                  <td class="text-end w-auto">{{ recording.value }}</td>
+                  <td class="w-auto">{{parameter.unit.abbreviation}}</td>
                 </tr>
               @else
                 <tr><td colspan="3">There is currently no data available for this parameter.</td></tr>
@@ -53,6 +64,7 @@
           </div>
         @end
       @end
+    </div>
     </div>
   @endslot
 @end
