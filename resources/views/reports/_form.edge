@@ -36,7 +36,7 @@
           <tr class="align-middle">
             <th class="col col-md-4 ps-5">
               <label for="parameters-{{parameterIndex}}">{{parameter.name}}</label>
-              <input type="hidden" name="parameters[{{parameterIndex}}][parameter]" value="{{parameterId}}"/>
+              <input type="hidden" name="parameters[p{{parameterIndex}}][parameter]" value="{{parameterId}}"/>
             </th>
             <td class="text-start col col-md-2">{{parameter.unit.abbreviation.toLowerCase()}}</td>
             <td class="col col-md-2 text-center">
@@ -54,7 +54,7 @@
                 pattern="\d+(,|\.)?(\d+)?"
                 class="form-control text-end flex-grow-1"
                 id="parameters-{{parameterIndex}}"
-                name="parameters[{{parameterIndex}}][value]"
+                name="parameters[p{{parameterIndex}}][value]"
                 value="{{parameterValue}}"
                 data-1p-ignore
               />
