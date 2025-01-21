@@ -3,15 +3,14 @@ import * as d3 from 'd3'
 type Recording = {
   testedAt: Date
   value: number
-  // reportId: string
 }
 
 function renderChart(rootNode: HTMLDivElement | null) {
   if (rootNode === null) return
 
   const startDate = new Date(Date.parse(rootNode.dataset.startDate ?? ''))
-  const referenceMinimum = parseFloat(d3.select(rootNode).select('.data-minimum').text())
-  const referenceMaximum = parseFloat(d3.select(rootNode).select('.data-maximum').text())
+  const referenceMinimum = parseFloat(rootNode.dataset.referenceMinimum ?? '0')
+  const referenceMaximum = parseFloat(rootNode.dataset.referenceMaximum ?? '0')
   let dataset: Recording[] = []
 
   const rows = rootNode.querySelectorAll<HTMLTableRowElement>('.data tbody tr')
@@ -65,16 +64,16 @@ function renderChart(rootNode: HTMLDivElement | null) {
   const width = rootNode.clientWidth
   const height = Math.min(300, width / 2)
   const marginTop = 20
-  const marginRight = 30
-  const marginBottom = 30
-  const marginLeft = 40
+  const marginRight = 50
+  const marginBottom = 35
+  const marginLeft = 30
 
   const svg = d3
     .create('svg')
     .attr('viewBox', [0, 0, width, height])
     .attr('width', width)
     .attr('height', height)
-    .attr('style', 'max-width: 100%; height: auto; height: intrinsic; font: 10px sans-serif;')
+    .attr('style', 'max-width: 100%; height: auto; height: intrinsic; font: 14px sans-serif;')
     .style('-webkit-tap-highlight-color', 'transparent')
     .style('overflow', 'visible')
 
@@ -90,24 +89,14 @@ function renderChart(rootNode: HTMLDivElement | null) {
   svg
     .append('g')
     .attr('transform', `translate(0,${height - marginBottom})`)
-    .call(
-      d3
-        .axisBottom(x)
-        .ticks(dataset.length + 4)
-        .tickSizeOuter(0)
-    )
-    .call((g) => g.select('.domain').attr('stroke', '#aaa'))
+    .call(d3.axisBottom(x).ticks(dataset.length + 4))
+    .call((g) => g.attr('font-size', '14px').select('.domain').attr('stroke', '#aaa'))
 
   svg
     .append('g')
     .attr('transform', `translate(${marginLeft},0)`)
-    .call(
-      d3
-        .axisLeft(y)
-        .ticks(height / 40)
-        .tickSizeOuter(0)
-    )
-    .call((g) => g.select('.domain').attr('stroke', '#aaa'))
+    .call(d3.axisLeft(y).ticks(height / 40))
+    .call((g) => g.attr('font-size', '14px').select('.domain').attr('stroke', '#aaa'))
     .call((g) =>
       g
         .selectAll('.tick line')
@@ -116,15 +105,6 @@ function renderChart(rootNode: HTMLDivElement | null) {
         .attr('stroke', '#aaa')
         .attr('stroke-opacity', 0.1)
     )
-  // .call((g) =>
-  //   g
-  //     .append('text')
-  //     .attr('x', -marginLeft)
-  //     .attr('y', 10)
-  //     .attr('fill', 'currentColor')
-  //     .attr('text-anchor', 'start')
-  //     .text('value')
-  // )
 
   if (dataset.length === 0) {
     svg
@@ -150,6 +130,7 @@ function renderChart(rootNode: HTMLDivElement | null) {
   if (referenceMaximum > 0 && referenceMaximum < maxY) {
     svg
       .append('g')
+      .attr('font-size', '12px')
       .attr('transform', `translate(${marginLeft},${y(referenceMaximum)})`)
       .call((g) => {
         g.append('line')
@@ -162,9 +143,10 @@ function renderChart(rootNode: HTMLDivElement | null) {
           .attr('y', 3)
           .text('Max')
       })
-  } else if (referenceMaximum > 0 && maxY > referenceMaximum) {
+  } else if (referenceMaximum > 0 && maxY < referenceMaximum) {
     svg
       .append('g')
+      .attr('font-size', '12px')
       .attr('transform', `translate(${marginLeft},${y(maxY)})`)
       .call((g) => {
         g.append('text')
@@ -178,6 +160,7 @@ function renderChart(rootNode: HTMLDivElement | null) {
   if (referenceMinimum > 0 && maxY > referenceMaximum) {
     svg
       .append('g')
+      .attr('font-size', '12px')
       .attr('transform', `translate(${marginLeft},${y(referenceMinimum)})`)
       .call((g) => {
         g.append('line')
