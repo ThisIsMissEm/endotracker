@@ -6,42 +6,51 @@
     <hr class="border-top border-2 opacity-100 pb-3" />
 
     <div class="row">
-    @each(parameter in parameters)
-    <div class="col-sm-6 mb-5" data-chart-id="{{parameter.id}}" data-start-date="{{startYear}}">
-      <h3 class="mb-0">{{ parameter.name }}</h3>
-      <div class="d-flex">
-        <div class="me-3">Reference Maximum: <span class="data-maximum">{{parameter.referenceMaximum}}</span></div>
-        <div class="me-3 {{ parameter.referenceMinimum === 0 ? 'd-none' : 'd-block' }}">Reference Minimum: <span class="data-minimum">{{parameter.referenceMinimum}}</span></div>
-      </div>
-      <div class="graph"></div>
-      <div class="data">
-        <table class="data-recordings w-100">
-          <thead>
-            <tr>
-              <th>Tested</th>
-              <th>Value</th>
-            </tr>
-          </thead>
-          <tbody>
-          @each(recording in recordings[parameter.id])
-            <tr data-tested-at="{{recording.testedAt}}" data-value="{{recording.value}}" data-report-id="{{recording.reportId}}">
-              <td class="w-75">{{ formatDate(recording.testedAt) }}</td>
-              <td class="text-end">{{ recording.value }}</td>
-              <td class="w-25">&nbsp;&nbsp;{{parameter.unit.abbreviation}}</td>
-            </tr>
-          @end
-          </tbody>
-        </table>
-      </div>
-    </div>
-    @else
-      <div class="text-center py-5">
-        There are currently no parameters to show on the dashboard.
-        <div class="pt-3">
-          <a class="btn btn-primary" href="{{route('settings.parameters.index')}}">Select Parameters</a>
+      @unless(recordings.size > 0)
+        <div class="text-center py-5">
+          You currently have no reports in Endotracker
+          <div class="pt-3">
+            <a class="btn btn-primary" href="{{route('reports.create')}}">Add a report</a>
+          </div>
         </div>
-      </div>
-    @end
+      @else
+        @each(parameter in parameters)
+        <div class="col-sm-6 mb-5" data-chart-id="{{parameter.id}}" data-start-date="{{startYear}}">
+          <h3 class="mb-0">{{ parameter.name }}</h3>
+          <div class="d-flex">
+            <div class="me-3">Reference Maximum: <span class="data-maximum">{{parameter.referenceMaximum}}</span></div>
+            <div class="me-3 {{ parameter.referenceMinimum === 0 ? 'd-none' : 'd-block' }}">Reference Minimum: <span class="data-minimum">{{parameter.referenceMinimum}}</span></div>
+          </div>
+          <div class="graph"></div>
+          <div class="data">
+            <table class="data-recordings w-100">
+              <thead>
+                <tr>
+                  <th>Tested</th>
+                  <th>Value</th>
+                </tr>
+              </thead>
+              <tbody>
+              @each(recording in recordings.get(parameter.id))
+                <tr data-tested-at="{{recording.testedAt}}" data-value="{{recording.value}}" data-report-id="{{recording.reportId}}">
+                  <td class="w-75">{{ formatDate(recording.testedAt) }}</td>
+                  <td class="text-end">{{ recording.value }}</td>
+                  <td class="w-25">&nbsp;&nbsp;{{parameter.unit.abbreviation}}</td>
+                </tr>
+              @end
+              </tbody>
+            </table>
+          </div>
+        </div>
+        @else
+          <div class="text-center py-5">
+            There are currently no parameters to show on the dashboard.
+            <div class="pt-3">
+              <a class="btn btn-primary" href="{{route('settings.parameters.index')}}">Select Parameters</a>
+            </div>
+          </div>
+        @end
+      @end
     </div>
   @endslot
 @end
