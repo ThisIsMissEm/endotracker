@@ -1,0 +1,24 @@
+{
+  "items": [
+    { "name": "Milligrams per litre", "abbreviation": "mg/L" },
+    { "name": "qmmol/ql", "abbreviation": "qmmol/ql" },
+    { "name": "Millimoles per liter", "abbreviation": "mmol/L" },
+    { "name": "Nanomole per litre", "abbreviation": "nmol/l" },
+    { "name": "Nanograms per milliliter", "abbreviation": "ng/ml" },
+    { "name": "Picograms per millilitre", "abbreviation": "pg/ml" },
+    { "name": "International units per liter", "abbreviation": "IU/L" },
+    { "name": "Pikomol per litre", "abbreviation": "pmol/l" },
+    { "name": "Milli units per liter", "abbreviation": "mlU/l" },
+    { "name": "Units per liter", "abbreviation": "U/L" },
+    { "name": "milliliters/minute for 1,73 meters²", "abbreviation": "mL/min / 1,73 m²" },
+    { "name": "Milligrams per decilitre", "abbreviation": "mg/dL" },
+    { "name": "Femtoliters", "abbreviation": "fL" },
+    { "name": "Picograms", "abbreviation": "pg" },
+    { "name": "Grams per liter", "abbreviation": "g/L" },
+    { "name": "Proportion per liter", "abbreviation": "L/L" },
+    { "name": "Grams per deciliter", "abbreviation": "g/dl" },
+    { "name": "Thousand per microliter", "abbreviation": "k/μl" },
+    { "name": "Million per microliter", "abbreviation": "M/μl" },
+    { "name": "Percentage", "abbreviation": "%" }
+  ]
+}
