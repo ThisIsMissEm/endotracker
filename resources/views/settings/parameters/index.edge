@@ -48,7 +48,9 @@
       @end
     </ul>
 
-    <hr class="pb-2" />
+    @if(parameters.length > 0)
+      <hr class="pb-2" />
+    @end
     <h3 id="add-parameter">Add Parameter</h3>
 
     @let(formAction = `${route('settings.parameters.store')}`)
