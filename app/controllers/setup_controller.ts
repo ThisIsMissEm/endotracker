@@ -59,6 +59,8 @@ export default class SetupController {
     }
 
     const results = await ImportUnitsService.import(importFile.tmpPath)
+    // For testing onboarding:
+    // results.importedCount = results.rows.length
 
     if (results.importedCount === 0) {
       session.flash('importSuccess', `There weren't any units of measurement to import, that's ok`)
@@ -69,7 +71,7 @@ export default class SetupController {
       )
     }
 
-    response.redirect().toRoute('setup.show', {}, { qs: { step: 'done' } })
+    response.redirect().toRoute('setup.show', {}, { qs: { step: 'finish' } })
   }
 
   async completeSetup({ response }: HttpContext) {

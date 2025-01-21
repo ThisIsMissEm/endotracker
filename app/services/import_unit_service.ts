@@ -15,6 +15,6 @@ export class ImportUnitsService {
       return count
     }, 0)
 
-    return { importedCount }
+    return { importedCount, rows: results }
   }
 }
