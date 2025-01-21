@@ -3,6 +3,7 @@ import Unit from '#models/unit'
 import Parameter from '#models/parameter'
 import { createUnitValidator, importUnitsValidator, updateUnitValidator } from '#validators/unit'
 import { readFile } from 'node:fs/promises'
+import { ImportUnitsService } from '#services/import_unit_service'
 
 export default class UnitsController {
   /**
@@ -40,20 +41,13 @@ export default class UnitsController {
       return response.redirect().toRoute('settings.units.import')
     }
 
-    const data = await readFile(importFile.tmpPath, { encoding: 'utf-8' })
-    const parsed = await importUnitsValidator.validate(data)
-    const results = await Unit.fetchOrCreateMany('name', parsed.items)
-
-    const updatedCount = results.reduce((count, row) => {
-      if (row.$isLocal) {
-        count++
-      }
-      return count
-    }, 0)
+    const results = await ImportUnitsService.import(importFile.tmpPath)
 
     session.flash(
       'success',
-      updatedCount > 0 ? `Imported ${updatedCount} units successfully` : 'All units already exist'
+      results.importedCount > 0
+        ? `Imported ${results.importedCount} units successfully`
+        : 'All units already exist'
     )
 
     response.redirect().toRoute('settings.units.index')
