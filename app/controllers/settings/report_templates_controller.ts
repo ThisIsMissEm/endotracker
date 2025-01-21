@@ -41,12 +41,21 @@ export default class ReportTemplatesController {
   /**
    * Handle form submission for the create action
    */
-  async store({ request, response }: HttpContext) {
-    const { name, sections } = await request.validateUsing(createReportTemplateValidator)
+  async store({ request, response, session }: HttpContext) {
+    const { returnTo, name, sections } = await request.validateUsing(createReportTemplateValidator)
 
-    await ReportTemplate.create({ name: name, contents: convert(sections) })
+    const template = await ReportTemplate.create({ name: name, contents: convert(sections) })
 
-    return response.redirect().toRoute('settings.report_templates.index')
+    if (returnTo === 'reports.create') {
+      session.flash('notification', {
+        type: 'success',
+        message: 'Report template created!',
+      })
+
+      return response.redirect().toRoute('reports.create', {}, { qs: { template: template.id } })
+    } else {
+      return response.redirect().toRoute('settings.report_templates.index')
+    }
   }
 
   /**

@@ -1,5 +1,8 @@
 <form method="POST" action="{{formAction}}">
   {{ csrfField() }}
+  @if(request.qs().returnTo)
+    <input type="hidden" name="returnTo" value="{{request.qs().returnTo}}" />
+  @end
 
   <div class="mb-3 pb-3 border-bottom border-1">
     <label for="name" class="form-label fw-bold">Template Name</label>
