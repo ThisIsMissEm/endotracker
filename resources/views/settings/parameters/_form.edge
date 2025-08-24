@@ -66,6 +66,17 @@
       </div>
       @end
     </div>
+    <div class="col">
+      <label for="optimalValue" class="form-label">Optimal Value</label>
+      <input class="form-control {{isInputInvalid('optimalValue', flashMessages)}}" name="optimalValue" type="number" step="0.001" min="0" value="{{ old('optimalValue') || parameter.optimalValue }}">
+      @inputError('optimalValue')
+      <div class="invalid-feedback">
+        @each(message in $messages)
+          <p>{{ message }}</p>
+        @end
+      </div>
+      @end
+    </div>
   </div>
   <div class="mb-3">
     <div class="form-check">

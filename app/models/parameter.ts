@@ -46,6 +46,16 @@ export default class Parameter extends BaseModel {
   })
   declare referenceMaximum: number | null
 
+  @column({
+    prepare: (value: any) => {
+      return (value * 1000).toFixed(0)
+    },
+    consume: (value) => {
+      return value / 1000
+    },
+  })
+  declare optimalValue: number | null
+
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
 

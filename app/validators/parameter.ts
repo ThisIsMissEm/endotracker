@@ -39,6 +39,8 @@ const parameterSchema = vine.object({
       return ['range', 'less_than', 'less_than_or_equal'].includes(field.parent.referenceType)
     }),
 
+  optimalValue: vine.number().positive().decimal([0, 3]).optional(),
+
   showOnDashboard: vine.boolean().optional(),
 })
 
@@ -91,6 +93,8 @@ export const importParametersValidator = vine.compile(
                 field.parent.referenceType
               )
             }),
+
+          optimalValue: vine.number().positive().decimal([0, 3]).optional(),
 
           showOnDashboard: vine.boolean().optional(),
 

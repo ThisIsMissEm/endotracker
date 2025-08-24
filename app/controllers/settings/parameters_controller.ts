@@ -84,6 +84,7 @@ export default class ParametersController {
             referenceType: parameter.referenceType,
             referenceMinimum: parameter.referenceMinimum,
             referenceMaximum: parameter.referenceMaximum,
+            optimalValue: parameter.optimalValue,
             unitId: unit.id,
           })
 

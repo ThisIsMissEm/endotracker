@@ -11,6 +11,7 @@ function renderChart(rootNode: HTMLDivElement | null) {
   const startDate = new Date(Date.parse(rootNode.dataset.startDate ?? ''))
   const referenceMinimum = parseFloat(rootNode.dataset.referenceMinimum ?? '0')
   const referenceMaximum = parseFloat(rootNode.dataset.referenceMaximum ?? '0')
+  const optimalValue = parseFloat(rootNode.dataset.optimalValue ?? '0')
   let dataset: Recording[] = []
 
   const rows = rootNode.querySelectorAll<HTMLTableRowElement>('.data tbody tr')
@@ -134,7 +135,7 @@ function renderChart(rootNode: HTMLDivElement | null) {
       .attr('transform', `translate(${marginLeft},${y(referenceMaximum)})`)
       .call((g) => {
         g.append('line')
-          .attr('stroke', '#f00')
+          .attr('stroke', '#e80000')
           .attr('x2', width - marginLeft - marginRight)
       })
       .call((g) => {
@@ -164,7 +165,7 @@ function renderChart(rootNode: HTMLDivElement | null) {
       .attr('transform', `translate(${marginLeft},${y(referenceMinimum)})`)
       .call((g) => {
         g.append('line')
-          .attr('stroke', '#f0f')
+          .attr('stroke', '#74baf7ff')
           .attr('x2', width - marginLeft - marginRight)
       })
       .call((g) => {
@@ -172,6 +173,24 @@ function renderChart(rootNode: HTMLDivElement | null) {
           .attr('x', width - marginLeft - marginRight + 5)
           .attr('y', 3)
           .text('Min')
+      })
+  }
+
+  if (optimalValue > 0 && optimalValue < maxY) {
+    svg
+      .append('g')
+      .attr('font-size', '12px')
+      .attr('transform', `translate(${marginLeft},${y(optimalValue)})`)
+      .call((g) => {
+        g.append('line')
+          .attr('stroke', '#65c92bff')
+          .attr('x2', width - marginLeft - marginRight)
+      })
+      .call((g) => {
+        g.append('text')
+          .attr('x', width - marginLeft - marginRight + 5)
+          .attr('y', 3)
+          .text('Optimal')
       })
   }
 
