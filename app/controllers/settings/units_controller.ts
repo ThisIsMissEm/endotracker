@@ -1,8 +1,7 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import Unit from '#models/unit'
 import Parameter from '#models/parameter'
-import { createUnitValidator, importUnitsValidator, updateUnitValidator } from '#validators/unit'
-import { readFile } from 'node:fs/promises'
+import { createUnitValidator, updateUnitValidator } from '#validators/unit'
 import { ImportUnitsService } from '#services/import_unit_service'
 
 export default class UnitsController {
