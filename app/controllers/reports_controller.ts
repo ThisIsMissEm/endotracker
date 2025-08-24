@@ -30,7 +30,7 @@ export default class ReportsController {
   async create({ request, session, response, view }: HttpContext) {
     const templateId = request.input('template')
     if (!templateId) {
-      const templates = await ReportTemplate.all()
+      const templates = await ReportTemplate.query().orderBy('id', 'asc')
       return view.render('reports/create', { templates })
     }
 
