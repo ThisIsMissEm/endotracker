@@ -9,6 +9,7 @@
       <table class="table {{ reports.length > 0 ? 'table-hover' : ''}}">
         <thead>
           <th>#</th>
+          <th>Report Name</th>
           <th>Tested</th>
           <th>Created</th>
           <th>Updated</th>
@@ -17,6 +18,7 @@
         @each(report in reports)
           <tr>
             <td>{{report.id}}</td>
+            <td>{{report.template.name}}
             <td>
               @!component('components/timestamp', { value: report.testedAt, format: 'full' })
             </td>

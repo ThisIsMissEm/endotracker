@@ -11,8 +11,17 @@ export default class ReportsController {
    * Display a list of resource
    */
   async index({ view }: HttpContext) {
-    const reports = await Report.query().orderBy('tested_at')
-    return view.render('reports/index', { reports: reports.map((report) => report.serialize()) })
+    const reports = await Report.query().orderBy('tested_at', 'asc').orderBy('id', 'asc')
+    const reportTemplates = await ReportTemplate.query().select('id', 'name')
+
+    return view.render('reports/index', {
+      reports: reports.map((report) => ({
+        ...report.serialize(),
+        template: reportTemplates
+          .find((template) => template.id === report.templateId)
+          ?.serialize(),
+      })),
+    })
   }
 
   /**
