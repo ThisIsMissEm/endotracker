@@ -28,6 +28,7 @@ export default class DashboardController {
     const parameters = await Parameter.query()
       .preloadOnce('unit')
       .where('show_on_dashboard', true)
+      .orderBy('id', 'asc')
       .exec()
 
     const reports = await db.query<{ count: string }>().from(Report.table).count('id').first()
