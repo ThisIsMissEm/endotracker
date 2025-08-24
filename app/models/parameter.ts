@@ -19,6 +19,7 @@ export default class Parameter extends BaseModel {
 
   @column()
   declare referenceType:
+    | 'none'
     | 'range'
     | 'greater_than'
     | 'greater_than_or_equal'
@@ -55,6 +56,7 @@ export default class Parameter extends BaseModel {
   declare showOnDashboard: boolean
 
   static referenceTypes = [
+    'none',
     'range',
     'greater_than',
     'greater_than_or_equal',

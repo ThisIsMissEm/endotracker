@@ -25,6 +25,9 @@
             <div>
               Reference:
               <span>
+                @if(parameter.referenceType == 'none')
+                  <em>none</em>
+                @end
                 @if(parameter.referenceType == 'range')
                   {{parameter.referenceMinimum}} - {{parameter.referenceMaximum}}
                 @end
