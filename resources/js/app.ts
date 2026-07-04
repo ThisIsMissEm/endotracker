@@ -1,22 +1,9 @@
-/// <reference types="vite/client" />
-
 // Import all of Bootstrap's JS
 // import * as bootstrap from 'bootstrap'
 import './dashboard.js'
 
-import flatpickrFactory from 'flatpickr'
+import flatpickr from 'flatpickr'
 import 'flatpickr/dist/flatpickr.css'
-
-// flatpickr's runtime export is `module.exports = fn`, but its typings use
-// `export default`; under this project's NodeNext resolution that resolves to
-// the namespace rather than the callable. Re-assert a callable signature
-// (options kept loose — resources/* is excluded from tsc and Vite compiles
-// this file directly). A client-side `moduleResolution: bundler` tsconfig
-// would make the plain default import callable and drop this shim.
-const flatpickr = flatpickrFactory as unknown as (
-  el: HTMLElement,
-  config?: Record<string, unknown>
-) => void
 
 // Native <input type="date"> renders its display format from the browser/OS
 // locale, which markup can't control. flatpickr gives a consistent day-first
