@@ -6,6 +6,7 @@
     <title>{{ title ? `${title} - Endotracker` : 'Endotracker' }}</title>
 
     @vite(['resources/css/app.scss', 'resources/js/app.ts'])
+    @stack('dumper')
   </head>
   <body>
     <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">

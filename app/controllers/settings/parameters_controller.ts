@@ -101,12 +101,18 @@ export default class ParametersController {
     const parameter = await Parameter.query()
       .where({ id: params.id })
       .preload('unit')
+      .preload('siUnit')
       .orderBy('created_at', 'asc')
       .firstOrFail()
 
     const referenceTypes = Parameter.referenceTypes
 
-    return view.render('settings/parameters/edit', { parameter, units, siUnits, referenceTypes })
+    return view.render('settings/parameters/edit', {
+      parameter: parameter.serialize(),
+      units: units.map((unit) => unit.serialize()),
+      siUnits: siUnits.map((unit) => unit.serialize()),
+      referenceTypes,
+    })
   }
 
   /**

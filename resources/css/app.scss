@@ -93,6 +93,13 @@ input[inputmode="numeric"]:invalid + .error span {
   }
 }
 
+// Reserve the chart's space before JS inserts the canvas (matches the chart's
+// aspectRatio: 2), so the first render doesn't reflow the page — that reflow is
+// what reads as a flicker on load.
+.graph {
+  aspect-ratio: 2 / 1;
+}
+
 strong {
   color: #404040;
 }

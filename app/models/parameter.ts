@@ -11,6 +11,9 @@ import ReportFinding from './report_finding.js'
 const nameCollator = new Intl.Collator('und', { numeric: true })
 
 export default class Parameter extends BaseModel {
+  static referenceMinTypes = ['range', 'greater_than', 'greater_than_or_equal']
+  static referenceMaxTypes = ['range', 'less_than', 'less_than_or_equal']
+
   @column({ isPrimary: true })
   declare id: number
 

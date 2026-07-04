@@ -27,20 +27,13 @@
         @each(parameter in parameters)
           @assign(useSIUnit = useSIUnits == true && !!parameter.siUnitId)
           @assign(unitAbbreviation = useSIUnit ? parameter.siUnit.abbreviation : parameter.unit.abbreviation )
-        <div
-          class="col-lg-6"
-          data-chart-id="{{parameter.id}}"
-          data-start-date="{{startYear}}"
-          data-reference-minimum="{{parameter.referenceMinimum}}"
-          data-reference-maximum="{{parameter.referenceMaximum}}"
-          data-optimal-value="{{parameter.optimalValue}}"
-        >
+        <div class="col-lg-6" data-chart-id="{{parameter.id}}">
           <h3 class="mb-0">{{ parameter.name }}</h3>
           <p class="text-body-secondary"><strong class="fw-medium">Reference value:</strong>
             @include('partials/parameter')
             {{unitAbbreviation.toLowerCase()}}
           </p>
-          <div class="graph"></div>
+          <div class="graph" data-graph="{{ graphs.get(parameter.id) }}"></div>
           <div class="data">
             <table class="data-recordings table table-hover table-sm w-100">
               <thead>
@@ -51,12 +44,7 @@
               </thead>
               <tbody>
               @each(recording in recordings.get(parameter.id))
-                @assign(recordingValue = formatNumber(useSIUnit ? recording.value * parameter.conversionFactor : recording.value, {
-                maximumSignificantDigits: 4,
-                maximumFractionDigits: 4
-                }))
-                @assign(comparison = compareFindingWithParameter(recording.value, parameter))
-                <tr data-tested-at="{{recording.testedAt}}" data-value="{{recording.value}}" data-report-id="{{recording.reportId}}">
+                <tr>
                   <td class="w-75 font-monospace">
                     <a href="{{ route("reports.show", { id: recording.reportId }, { qs: { si_units: useSIUnits } })}}#parameter-{{parameter.id}}"
                       class="link-secondary" title="View report #{{recording.reportId}}">
@@ -64,28 +52,28 @@
                     </a>
                   </td>
                   <td class="text-end w-auto">
-                    @if(comparison == 'exceeds' || comparison == 'subceeds')
+                    @if(recording.comparison == 'exceeds' || recording.comparison == 'subceeds')
                     <strong>
-                      {{ recordingValue }}
+                      {{ formatNumber(recording.value, { maximumSignificantDigits: 4, maximumFractionDigits: 4, trailingZeroDisplay: 'auto' }) }}
                     </strong>
                     @else
-                    {{ recordingValue }}
+                      {{ formatNumber(recording.value, { maximumSignificantDigits: 4, maximumFractionDigits: 4, trailingZeroDisplay: 'auto' }) }}
                     @end
                   </td>
                   <td class="w-auto text-start">
-                    @if(comparison == 'exceeds' || comparison == 'subceeds')
+                    @if(recording.comparison == 'exceeds' || recording.comparison == 'subceeds')
                     <strong>
                       {{unitAbbreviation}}
                     </strong>
                     @else
-                    {{ unitAbbreviation }}
+                      {{ unitAbbreviation }}
                     @end
                   </td>
                   <td>
                     <strong>
-                      @if(comparison == 'exceeds')
+                      @if(recording.comparison == 'exceeds')
                         &plus;
-                      @elseif(comparison == 'subceeds')
+                      @elseif(recording.comparison == 'subceeds')
                         &minus;
                       @end
                     </strong>

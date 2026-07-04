@@ -1,3 +1,4 @@
+@dump(parameter)
 <form method="POST" action="{{formAction}}">
   @unless(parameter)
     @assign(parameter = { name: "" })
@@ -38,7 +39,7 @@
   <div class="mb-3">
     <label for="unitId" class="form-label">Unit</label>
     <select class="form-select {{isInputInvalid('unitId', flashMessages)}}" name="unitId">
-      @let(selectedUnitId = old('unitId') || parameter.unitId)
+      @let(selectedUnitId = old('unitId') || parameter.unit.id)
 
       <option value="" {{ !selectedUnitId ? 'selected' : '' }}>Select a unit of measurement</option>
       @each(unit in units)
@@ -108,7 +109,7 @@
       <div class="col">
         <label for="unitId" class="form-label">SI Unit</label>
         <select class="form-select {{isInputInvalid('siUnitId', flashMessages)}}" name="siUnitId">
-          @let(selectedSIUnitId = old('siUnitId') || parameter.siUnitId)
+          @let(selectedSIUnitId = old('siUnitId') || parameter.siUnit?.id)
 
           <option value="" {{ !selectedSIUnitId ? 'selected' : '' }}>Select a unit of measurement</option>
           @each(unit in siUnits)

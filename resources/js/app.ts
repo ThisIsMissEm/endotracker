@@ -1,6 +1,6 @@
 // Import all of Bootstrap's JS
 // import * as bootstrap from 'bootstrap'
-import './dashboard.js'
+import './charts.js'
 
 import flatpickr from 'flatpickr'
 import 'flatpickr/dist/flatpickr.css'

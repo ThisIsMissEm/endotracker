@@ -2,8 +2,8 @@ import edge from 'edge.js'
 import i18nManager from '@adonisjs/i18n/services/main'
 import formatters from '@poppinss/intl-formatter'
 import { NumberFormatOptions } from '@adonisjs/i18n/types'
-import Parameter from '#models/parameter'
 import { DateTime } from 'luxon'
+import compareFindingWithParameter from '../app/utils/comparison.js'
 /**
  * Define a global property
  */
@@ -31,8 +31,8 @@ edge.global('formatDate', (value: DateTime | Date | string) => {
 })
 
 edge.global('formatNumber', (value: number, options: NumberFormatOptions) => {
-  const locale = i18nManager.locale(i18nManager.defaultLocale).locale
-  return formatters.number(locale, options).format(value)
+  return i18nManager.locale(i18nManager.defaultLocale).formatNumber(value, options)
+  // return formatters.number(locale, options).format(value)
 })
 
 edge.global(
@@ -46,50 +46,7 @@ edge.global(
   }
 )
 
-type ComparisonResult = 'within' | 'exceeds' | 'subceeds' | 'unknown'
-
-edge.global(
-  'compareFindingWithParameter',
-  (finding: number | undefined, parameter: Parameter): ComparisonResult => {
-    let result: ComparisonResult = 'unknown'
-
-    if (finding === undefined) {
-      return result
-    }
-
-    result = 'within'
-    switch (parameter.referenceType) {
-      case 'range':
-        if (finding > parameter.referenceMaximum!) {
-          result = 'exceeds'
-        } else if (finding < parameter.referenceMinimum!) {
-          result = 'subceeds'
-        }
-        break
-      case 'less_than':
-        if (finding >= parameter.referenceMaximum!) {
-          result = 'exceeds'
-        }
-        break
-      case 'less_than_or_equal':
-        if (finding > parameter.referenceMaximum!) {
-          result = 'exceeds'
-        }
-        break
-      case 'greater_than':
-        if (finding <= parameter.referenceMinimum!) {
-          result = 'subceeds'
-        }
-        break
-      case 'greater_than_or_equal':
-        if (finding < parameter.referenceMinimum!) {
-          result = 'subceeds'
-        }
-        break
-    }
-    return result
-  }
-)
+edge.global('compareFindingWithParameter', compareFindingWithParameter)
 
 edge.global('isInputInvalid', (name: string, flashMessages: any) => {
   return flashMessages.get('inputErrorsBag', {})[name] ? 'is-invalid' : ''

@@ -11,7 +11,7 @@
     "test": "node ace test",
     "lint": "eslint . && npm run typecheck",
     "format": "prettier --write .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit && tsc --noEmit -p resources/tsconfig.json"
   },
   "imports": {
     "#controllers/*": "./app/controllers/*.js",
@@ -41,7 +41,6 @@
     "@japa/runner": "^4.1.0",
     "@swc/core": "1.13.5",
     "@types/bootstrap": "^5.2.10",
-    "@types/d3": "^7.4.3",
     "@types/luxon": "^3.4.2",
     "@types/node": "^24.3.0",
     "eslint": "^9.19.0",
@@ -67,7 +66,8 @@
     "@vinejs/vine": "^3.0.0",
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
-    "d3": "^7.9.0",
+    "chart.js": "^4.5.1",
+    "chartjs-adapter-luxon": "^1.3.1",
     "edge.js": "^6.2.1",
     "flatpickr": "^4.6.13",
     "luxon": "^3.5.0",
