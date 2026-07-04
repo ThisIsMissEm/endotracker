@@ -1,6 +1,15 @@
-import env from '#start/env'
-import app from '@adonisjs/core/services/app'
+import { parse, toClientConfig } from 'pg-connection-string'
 import { defineConfig } from '@adonisjs/lucid'
+import app from '@adonisjs/core/services/app'
+
+import env from '#start/env'
+
+const connectionOptions = parse(env.get('DATABASE_URL'), { useLibpqCompat: true })
+if (connectionOptions.database === null) {
+  connectionOptions.database = `endotracker_${env.get('NODE_ENV')}`
+}
+
+const clientConfig = toClientConfig(connectionOptions)
 
 const dbConfig = defineConfig({
   connection: 'postgres',
@@ -9,13 +18,7 @@ const dbConfig = defineConfig({
     postgres: {
       client: 'pg',
       debug: !app.inProduction,
-      connection: {
-        host: env.get('DB_HOST'),
-        port: env.get('DB_PORT'),
-        user: env.get('DB_USER'),
-        password: env.get('DB_PASSWORD'),
-        database: env.get('DB_DATABASE'),
-      },
+      connection: clientConfig,
       pool: {
         min: 2,
         max: 10,
