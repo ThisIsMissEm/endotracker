@@ -9,6 +9,10 @@
 
 import router from '@adonisjs/core/services/router'
 
+router.get('/health', ({ response }) => {
+  response.ok('OK')
+})
+
 router
   .group(() => {
     router

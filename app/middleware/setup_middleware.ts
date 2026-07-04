@@ -4,8 +4,12 @@ import type { NextFn } from '@adonisjs/core/types/http'
 
 export default class SetupMiddleware {
   async handle(ctx: HttpContext, next: NextFn) {
-    const isSetupRoute = ctx.request.url().startsWith('/setup')
+    const url = ctx.request.url()
+    if (url.startsWith('/health')) {
+      return next()
+    }
 
+    const isSetupRoute = url.startsWith('/setup')
     const isConfigured = await Setting.findBy({ key: 'configured' })
     if (!isSetupRoute && isConfigured?.value !== 'true') {
       return ctx.response.redirect().toRoute('setup.show')
