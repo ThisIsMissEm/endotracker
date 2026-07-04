@@ -46,12 +46,12 @@ edge.global(
   }
 )
 
-type ComparsionResult = 'within' | 'exceeds' | 'subceeds' | 'unknown'
+type ComparisonResult = 'within' | 'exceeds' | 'subceeds' | 'unknown'
 
 edge.global(
   'compareFindingWithParameter',
-  (finding: number | undefined, parameter: Parameter): ComparsionResult => {
-    let result: ComparsionResult = 'unknown'
+  (finding: number | undefined, parameter: Parameter): ComparisonResult => {
+    let result: ComparisonResult = 'unknown'
 
     if (finding === undefined) {
       return result
