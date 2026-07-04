@@ -10,7 +10,9 @@ on:
     types: [published]
 
 env:
-  REGISTRY_IMAGE: ghcr.io/${{ github.repository }}
+  # Hardcoded lowercase: GHCR rejects any uppercase, and ${{ github.repository }}
+  # preserves the owner's casing (ThisIsMissEm). Must match the ref in compose.yaml.
+  REGISTRY_IMAGE: ghcr.io/thisismissem/endotracker
 
 # Least privilege at the top level; jobs opt into what they need.
 permissions: {}
