@@ -13,7 +13,7 @@ export default class ParametersController {
   async index({ view }: HttpContext) {
     const units = await Unit.query().orderBy('id', 'desc')
     const siUnits = await Unit.query().where('isInternationalSystem', true).orderBy('id', 'desc')
-    const parameters = await Parameter.query().preload('unit').orderBy('id', 'asc')
+    const parameters = await Parameter.sortedByName()
     const referenceTypes = Parameter.referenceTypes
 
     return view.render('settings/parameters/index', { parameters, units, siUnits, referenceTypes })

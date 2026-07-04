@@ -4,6 +4,12 @@ import { DateTime } from 'luxon'
 import Unit from './unit.js'
 import ReportFinding from './report_finding.js'
 
+// Language-neutral Unicode collation (ICU root, "und") so diacritics like ö
+// sort next to their base letter, with numeric-aware ordering (e.g. T3 before
+// T4). Built once at module scope. Kept app-side because a SQL COLLATE clause
+// isn't portable across Postgres and a future SQLite (better-sqlite3 has no ICU).
+const nameCollator = new Intl.Collator('und', { numeric: true })
+
 export default class Parameter extends BaseModel {
   @column({ isPrimary: true })
   declare id: number
@@ -91,6 +97,17 @@ export default class Parameter extends BaseModel {
     'less_than',
     'less_than_or_equal',
   ] as const
+
+  /**
+   * All parameters, ordered by name using a language-neutral Unicode collation
+   * (so ö sorts next to o, T3 before T4). Ordering is done in the app rather
+   * than SQL for portability across database engines.
+   */
+  static async sortedByName() {
+    const parameters = await this.all()
+    parameters.sort((a, b) => nameCollator.compare(a.name, b.name))
+    return parameters
+  }
 
   @hasMany(() => ReportFinding)
   declare reportFindings: HasMany<typeof ReportFinding>

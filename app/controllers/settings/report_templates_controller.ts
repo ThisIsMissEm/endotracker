@@ -34,7 +34,7 @@ export default class ReportTemplatesController {
    * Display form to create a new record
    */
   async create({ view }: HttpContext) {
-    const parameters = await Parameter.query().preload('unit').orderBy('created_at', 'asc')
+    const parameters = await Parameter.sortedByName()
     return view.render('settings/report-templates/create', { parameters })
   }
 
@@ -71,7 +71,7 @@ export default class ReportTemplatesController {
    */
   async edit({ params, view }: HttpContext) {
     const template = await ReportTemplate.findOrFail(params.id)
-    const parameters = await Parameter.query().preload('unit').orderBy('created_at', 'asc')
+    const parameters = await Parameter.sortedByName()
 
     return view.render('settings/report-templates/edit', { tpl: template, parameters })
   }

@@ -12,9 +12,9 @@
 
   @slot('content')
     @if(parameters.length)
-      <ul class="row justify-content-start align-content-between px-0 pb-2">
+      <ul class="column-list list-unstyled pb-2">
         @each(parameter in parameters)
-          <li class="col d-flex justify-content-start align-content-between align-items-center col-md-6 col-lg-4 gx-4 gy-3">
+          <li class="d-flex align-items-center mb-3">
             <div class="me-auto pe-1">
               <div class="fw-bold">
                 {{parameter.name}}
@@ -23,7 +23,7 @@
                 @end
               </div>
               <div>
-                Unit: {{parameter.unit.abbreviation}}
+                Unit: {{units.find((unit) => unit.id == parameter.unitId)?.abbreviation}}
               </div>
               <div>
                 Reference:

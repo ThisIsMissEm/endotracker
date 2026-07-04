@@ -59,6 +59,25 @@ input[inputmode="numeric"]:invalid + .error span {
   min-width: 2ch;
 }
 
+// Column-major list: items flow top-to-bottom down each column before the next,
+// so a name-sorted list reads alphabetically down the columns. 1 column on
+// mobile, 2 from `md`, 3 from `lg`.
+.column-list {
+  column-gap: 1.5rem;
+
+  @include media-breakpoint-up(md) {
+    column-count: 2;
+  }
+
+  @include media-breakpoint-up(lg) {
+    column-count: 3;
+  }
+
+  > li {
+    break-inside: avoid;
+  }
+}
+
 strong {
   color: #404040;
 }
