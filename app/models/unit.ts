@@ -1,6 +1,4 @@
-import logger from '@adonisjs/core/services/logger'
 import { BaseModel, column } from '@adonisjs/lucid/orm'
-import db from '@adonisjs/lucid/services/db'
 
 export default class Unit extends BaseModel {
   @column({ isPrimary: true })

@@ -1,7 +1,6 @@
 import vine from '@vinejs/vine'
 import Unit from '#models/unit'
 import Parameter from '#models/parameter'
-import logger from '@adonisjs/core/services/logger'
 
 const parameterSchema = vine.object({
   name: vine.string().unique({
