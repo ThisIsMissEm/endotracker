@@ -20,7 +20,7 @@ export default class UnitsController {
     response.safeHeader('Content-Disposition', 'attachment; filename="endotracker-units.json"')
     response.json({
       items: units.map((unit) => {
-        return unit.serialize({ fields: ['name', 'abbreviation'] })
+        return unit.serialize({ fields: ['name', 'abbreviation', 'isInternationalSystem'] })
       }),
     })
   }

@@ -20,15 +20,19 @@ export default class ParametersController {
   }
 
   async export({ response }: HttpContext) {
-    const parameters = await Parameter.query().preload('unit').orderBy('id', 'asc')
+    const parameters = await Parameter.query()
+      .preload('unit')
+      .preload('siUnit')
+      .orderBy('id', 'asc')
 
     response.safeHeader('Content-Disposition', 'attachment; filename="endotracker-parameters.json"')
     response.json({
       items: parameters.map((p) =>
         p.serialize({
-          fields: { omit: ['id'] },
+          fields: { omit: ['id', 'createdAt', 'updatedAt'] },
           relations: {
-            unit: { fields: { omit: ['id'] } },
+            unit: { fields: { omit: ['id', 'createdAt', 'updatedAt'] } },
+            siUnit: { fields: { omit: ['id', 'createdAt', 'updatedAt'] } },
           },
         })
       ),
