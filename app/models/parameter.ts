@@ -56,6 +56,24 @@ export default class Parameter extends BaseModel {
   })
   declare optimalValue: number | null
 
+  @column({ serializeAs: null })
+  declare siUnitId: number
+
+  @belongsTo(() => Unit, {
+    foreignKey: 'siUnitId',
+  })
+  declare siUnit: BelongsTo<typeof Unit>
+
+  @column({
+    prepare: (value: any) => {
+      return (value * 100000000).toFixed(0)
+    },
+    consume: (value) => {
+      return value / 100000000
+    },
+  })
+  declare conversionFactor: number | null
+
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
 

@@ -30,6 +30,11 @@ edge.global('formatDate', (value: DateTime | Date | string) => {
   }
 })
 
+edge.global('formatNumber', (value: number, options: NumberFormatOptions) => {
+  const locale = i18nManager.locale(i18nManager.defaultLocale).locale
+  return formatters.number(locale, options).format(value)
+})
+
 edge.global(
   'formatRange',
   (start: number | string, end: number | string, options: NumberFormatOptions = {}) => {

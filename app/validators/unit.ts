@@ -23,6 +23,9 @@ const unitSchema = vine.object({
       }
     },
   }),
+
+  // Use vine.boolean to have the result type be Boolean not true | undefined
+  isInternationalSystem: vine.boolean().optional(),
 })
 
 /**

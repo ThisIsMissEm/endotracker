@@ -5,8 +5,15 @@
 
     @include('partials/flash-messages')
 
-    <div class="pb-3 border-bottom border-2">
-      <span class="fw-bold">Tested:</span> {{i18n.formatDate(report.testedAt, { dateStyle: 'full' })}}
+    <div class="pb-3 border-bottom border-2 d-flex justify-content-between">
+      <span><strong>Tested:</strong> {{i18n.formatDate(report.testedAt, { dateStyle: 'full' })}}</span>
+      @if(hasSIUnits)
+      <span>
+        <a href="{{ route('reports.show', { id: report.id }, { qs: { si_units: useSIUnits ? 'false' : 'true' } }) }}">
+          {{ useSIUnits ? 'Show in recorded units' : 'Show in SI Units'}}
+        </a>
+      </span>
+      @end
     </div>
 
     <div id="template-sections">
@@ -28,18 +35,24 @@
             @assign(parameter = parameters.get(parameterId))
             @assign(finding = findingsByParameter.get(parameterId))
             @assign(comparison = compareFindingWithParameter(finding, parameter))
+            @assign(useSIUnit = useSIUnits == true && !!parameter.siUnitId)
+            @assign(unitAbbreviation = useSIUnit ? parameter.siUnit.abbreviation : parameter.unit.abbreviation )
             <tr id="parameter-{{parameterId}}">
               <th class="col col-md-6 ps-5">{{parameter.name}}</th>
               <td class="col col-md-2 text-center">
                 @include('partials/parameter')
-                {{parameter.unit.abbreviation.toLowerCase()}}
+                {{ unitAbbreviation }}
               </td>
               <td class="text-end col col-md-2">
                 @if(finding)
+                  @assign(findingValue = formatNumber(useSIUnit ? finding * parameter.conversionFactor : finding, {
+                  maximumSignificantDigits: 4,
+                  maximumFractionDigits: 4
+                  }))
                   @if(comparison == 'within')
-                    {{ i18n.formatNumber(finding) }}
+                    {{ findingValue }}&nbsp;{{ unitAbbreviation }}
                   @else
-                    <strong>{{ i18n.formatNumber(finding) }}</strong>
+                    <strong>{{ findingValue }}&nbsp;{{ unitAbbreviation }}</strong>
                   @end
                 @else
                   &ndash;

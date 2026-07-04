@@ -1,9 +1,18 @@
 @layouts.app()
   @slot('main')
     <h1 class="fw-bold pb-2">Dashboard</h1>
-    <p class="lead">This is an overview of your graphed parameters over time.</p>
-
-    <hr class="border-top border-2 opacity-100 pb-3" />
+    <div class="pb-3 border-bottom border-2 d-flex justify-content-between">
+      <div>
+        <p class="lead">This is an overview of your graphed parameters over time.</p>
+      </div>
+      @if(hasSIUnits)
+      <span>
+        <a href="{{ route('home', {}, { qs: { si_units: useSIUnits ? 'false' : 'true' } }) }}">
+          {{ useSIUnits ? 'Show in recorded units' : 'Show in SI Units'}}
+        </a>
+      </span>
+      @end
+      </div>
 
     <div class="container">
     <div class="row g-5">
@@ -16,6 +25,8 @@
         </div>
       @else
         @each(parameter in parameters)
+          @assign(useSIUnit = useSIUnits == true && !!parameter.siUnitId)
+          @assign(unitAbbreviation = useSIUnit ? parameter.siUnit.abbreviation : parameter.unit.abbreviation )
         <div
           class="col-lg-6"
           data-chart-id="{{parameter.id}}"
@@ -27,7 +38,7 @@
           <h3 class="mb-0">{{ parameter.name }}</h3>
           <p class="text-body-secondary"><strong class="fw-medium">Reference value:</strong>
             @include('partials/parameter')
-            {{parameter.unit.abbreviation.toLowerCase()}}
+            {{unitAbbreviation.toLowerCase()}}
           </p>
           <div class="graph"></div>
           <div class="data">
@@ -40,14 +51,36 @@
               </thead>
               <tbody>
               @each(recording in recordings.get(parameter.id))
+                @assign(recordingValue = formatNumber(useSIUnit ? recording.value * parameter.conversionFactor : recording.value, {
+                maximumSignificantDigits: 4,
+                maximumFractionDigits: 4
+                }))
+                @assign(comparison = compareFindingWithParameter(recording.value, parameter))
                 <tr data-tested-at="{{recording.testedAt}}" data-value="{{recording.value}}" data-report-id="{{recording.reportId}}">
                   <td class="w-75 font-monospace">
-                    <a href="{{ route("reports.show", { id: recording.reportId })}}#parameter-{{parameter.id}}" class="link-secondary" title="View report #{{recording.reportId}}">
+                    <a href="{{ route("reports.show", { id: recording.reportId }, { qs: { si_units: useSIUnits } })}}#parameter-{{parameter.id}}"
+                      class="link-secondary" title="View report #{{recording.reportId}}">
                       {{ formatDate(recording.testedAt) }}
                     </a>
                   </td>
-                  <td class="text-end w-auto">{{ recording.value }}</td>
-                  <td class="w-auto">{{parameter.unit.abbreviation}}</td>
+                  <td class="text-end w-auto">
+                    @if(comparison == 'exceeds' || comparison == 'subceeds')
+                    <strong>
+                      {{ recordingValue }}
+                    </strong>
+                    @else
+                    {{ recordingValue }}
+                    @end
+                  </td>
+                  <td class="w-auto">
+                    @if(comparison == 'exceeds' || comparison == 'subceeds')
+                    <strong>
+                      {{unitAbbreviation}}
+                    </strong>
+                    @else
+                    {{ unitAbbreviation }}
+                    @end
+                  </td>
                 </tr>
               @else
                 <tr><td colspan="3">There is currently no data available for this parameter.</td></tr>

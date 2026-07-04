@@ -25,6 +25,23 @@
     </div>
     @end
   </div>
+
+  <div class="mb-3">
+    <div class="form-check">
+      <input class="form-check-input {{isInputInvalid('isInternationalSystem', flashMessages)}}" type="checkbox" value="true" {{ (old('isInternationalSystem') == 'true' || unit?.isInternationalSystem) ? 'checked' : ''}} id="isInternationalSystem" name="isInternationalSystem">
+      <label class="form-check-label" for="isInternationalSystem">
+        This is a SI Unit
+      </label>
+      @inputError('isInternationalSystem')
+      <div class="invalid-feedback">
+        @each(message in $messages)
+          <p>{{ message }}</p>
+        @end
+      </div>
+      @end
+    </div>
+  </div>
+
   <button type="submit" class="btn btn-primary">{{ buttonLabel }}</button>
   @if(showCancelButton)
     <a href="{{ route('settings.units.index')}}" class="btn btn-outline-secondary">Cancel</a>

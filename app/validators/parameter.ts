@@ -1,6 +1,7 @@
 import vine from '@vinejs/vine'
 import Unit from '#models/unit'
 import Parameter from '#models/parameter'
+import logger from '@adonisjs/core/services/logger'
 
 const parameterSchema = vine.object({
   name: vine.string().unique({
@@ -41,6 +42,25 @@ const parameterSchema = vine.object({
 
   optimalValue: vine.number().positive().decimal([0, 3]).optional(),
 
+  siUnitId: vine.number().exists(async (db, value) => {
+    const row = await db
+      .from(Unit.table)
+      .select('id')
+      .where({ id: value, is_international_system: true })
+      .first()
+    return row ? true : false
+  }),
+
+  conversionFactor: vine
+    .number()
+    .positive()
+    .decimal([0, 8])
+    .optional()
+    .requiredWhen((field) => {
+      return field.parent.siUnitId !== null
+    }),
+
+  // Use vine.boolean to have the result type be Boolean not true | undefined
   showOnDashboard: vine.boolean().optional(),
 })
 

@@ -5,6 +5,7 @@ import Parameter from '#models/parameter'
 import { createReportValidator, updateReportValidator } from '#validators/report'
 import ReportFinding from '#models/report_finding'
 import { ModelAttributes } from '@adonisjs/lucid/types/model'
+import Unit from '#models/unit'
 
 export default class ReportsController {
   /**
@@ -67,7 +68,9 @@ export default class ReportsController {
   /**
    * Show individual record
    */
-  async show({ params, view }: HttpContext) {
+  async show({ request, params, view }: HttpContext) {
+    const hasSIUnits = await Unit.hasSIUnits()
+    const useSIUnits = hasSIUnits && request.qs().si_units === 'true'
     const report = await Report.findOrFail(params.id)
     await report.load('findings')
 
@@ -81,6 +84,8 @@ export default class ReportsController {
       report,
       parameters,
       findingsByParameter,
+      useSIUnits,
+      hasSIUnits,
     })
   }
 
@@ -139,7 +144,12 @@ export default class ReportsController {
 
   private async getParameters() {
     const parameters = new Map<number, Parameter>()
-    for (let parameter of await Parameter.query().preload('unit').orderBy('created_at', 'asc')) {
+    const rawParameters = await Parameter.query()
+      .preload('unit')
+      .preload('siUnit')
+      .orderBy('id', 'desc')
+
+    for (let parameter of rawParameters) {
       parameters.set(parameter.id, parameter)
     }
     return parameters

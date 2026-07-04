@@ -2,6 +2,7 @@ import Parameter from '#models/parameter'
 import Report from '#models/report'
 import ReportFinding from '#models/report_finding'
 import Setting from '#models/setting'
+import Unit from '#models/unit'
 import type { HttpContext } from '@adonisjs/core/http'
 import db from '@adonisjs/lucid/services/db'
 import { DateTime } from 'luxon'
@@ -14,7 +15,9 @@ type Recording = {
 }
 
 export default class DashboardController {
-  async index({ view }: HttpContext) {
+  async index({ view, request }: HttpContext) {
+    const hasSIUnits = await Unit.hasSIUnits()
+    const useSIUnits = hasSIUnits && request.qs().si_units === 'true'
     const recordStartDate = await Setting.findBy({ key: 'record_start_date' })
     let startYear: DateTime = DateTime.now().startOf('year')
 
@@ -27,6 +30,7 @@ export default class DashboardController {
 
     const parameters = await Parameter.query()
       .preloadOnce('unit')
+      .preloadOnce('siUnit')
       .where('show_on_dashboard', true)
       .orderBy('id', 'asc')
       .exec()
@@ -68,6 +72,8 @@ export default class DashboardController {
       parameters,
       recordings,
       reportCount: Number.parseInt(reports?.count ?? '0'),
+      useSIUnits,
+      hasSIUnits,
     })
   }
 }

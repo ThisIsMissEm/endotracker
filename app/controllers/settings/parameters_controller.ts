@@ -16,11 +16,12 @@ export default class ParametersController {
    * Display a list of resource
    */
   async index({ view }: HttpContext) {
-    const units = await Unit.all()
+    const units = await Unit.query().orderBy('id', 'desc')
+    const siUnits = await Unit.query().where('isInternationalSystem', true).orderBy('id', 'desc')
     const parameters = await Parameter.query().preload('unit').orderBy('id', 'asc')
     const referenceTypes = Parameter.referenceTypes
 
-    return view.render('settings/parameters/index', { parameters, units, referenceTypes })
+    return view.render('settings/parameters/index', { parameters, units, siUnits, referenceTypes })
   }
 
   async export({ response }: HttpContext) {
@@ -116,6 +117,10 @@ export default class ParametersController {
   async store({ request, response }: HttpContext) {
     const newParameter = await request.validateUsing(createParameterValidator)
 
+    if (newParameter.showOnDashboard === undefined) {
+      newParameter.showOnDashboard = false
+    }
+
     await Parameter.create(newParameter)
 
     return response.redirect().toRoute('settings.parameters.index')
@@ -125,7 +130,9 @@ export default class ParametersController {
    * Edit individual record
    */
   async edit({ params, view }: HttpContext) {
-    const units = await Unit.all()
+    const units = await Unit.query().orderBy('id', 'desc')
+    const siUnits = await Unit.query().where('isInternationalSystem', true).orderBy('id', 'desc')
+
     const parameter = await Parameter.query()
       .where({ id: params.id })
       .preload('unit')
@@ -134,7 +141,7 @@ export default class ParametersController {
 
     const referenceTypes = Parameter.referenceTypes
 
-    return view.render('settings/parameters/edit', { parameter, units, referenceTypes })
+    return view.render('settings/parameters/edit', { parameter, units, siUnits, referenceTypes })
   }
 
   /**
@@ -146,7 +153,7 @@ export default class ParametersController {
     const parameter = await Parameter.findOrFail(params.id)
 
     // Allow toggling the visibility to off:
-    if (!parameterProperties.showOnDashboard) {
+    if (parameterProperties.showOnDashboard === undefined) {
       parameterProperties.showOnDashboard = false
     }
 

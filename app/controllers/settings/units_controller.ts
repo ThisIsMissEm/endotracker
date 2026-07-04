@@ -58,6 +58,11 @@ export default class UnitsController {
   async store({ request, response }: HttpContext) {
     const newUnit = await request.validateUsing(createUnitValidator)
 
+    // Allow toggling the visibility to off:
+    if (newUnit.isInternationalSystem === undefined) {
+      newUnit.isInternationalSystem = false
+    }
+
     await Unit.create(newUnit)
 
     return response.redirect().toRoute('settings.units.index')
@@ -76,6 +81,10 @@ export default class UnitsController {
    */
   async update({ request, response, session }: HttpContext) {
     const { params, ...unitProperties } = await request.validateUsing(updateUnitValidator)
+    // Allow toggling the isInternationalSystem to off:
+    if (unitProperties.isInternationalSystem === undefined) {
+      unitProperties.isInternationalSystem = false
+    }
 
     const unit = await Unit.findOrFail(params.id)
 
