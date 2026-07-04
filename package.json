@@ -66,6 +66,7 @@
     "@adonisjs/shield": "^8.1.1",
     "@adonisjs/static": "^1.1.1",
     "@adonisjs/vite": "^4.0.0",
+    "@fast-csv/format": "^5.0.7",
     "@poppinss/intl-formatter": "^3.0.4",
     "@vinejs/vine": "^3.0.0",
     "bootstrap": "^5.3.3",

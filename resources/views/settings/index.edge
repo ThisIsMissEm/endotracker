@@ -61,5 +61,62 @@
         </form>
       </div>
     </div>
+
+    <div class="card mt-4">
+      <div class="card-body">
+        <h4>Export Recordings</h4>
+        <p>Export your historical recordings for selected parameters as a CSV or Markdown file.</p>
+
+        @include('partials/flash-messages')
+
+        <form method="POST" action="{{ route('settings.recordings.export') }}">
+          {{ csrfField() }}
+
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Parameters</label>
+            <div class="ms-2 checkbox-columns">
+              @each(parameter in parameters)
+              <div class="form-check">
+                <input
+                  type="checkbox"
+                  class="form-check-input"
+                  name="parameters[]"
+                  value="{{ parameter.id }}"
+                  id="param_{{ parameter.id }}"
+                  {{ parameter.showOnDashboard ? 'checked' : '' }}
+                >
+                <label class="form-check-label" for="param_{{ parameter.id }}">
+                  {{ parameter.name }}
+                </label>
+              </div>
+              @end
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Format</label>
+            <div class="ms-2">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="format" id="format_csv" value="csv" checked>
+                <label class="form-check-label" for="format_csv">CSV</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="format" id="format_markdown" value="markdown">
+                <label class="form-check-label" for="format_markdown">Markdown</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="si" id="si" value="true">
+              <label class="form-check-label" for="si">Use SI units where available</label>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Export</button>
+        </form>
+      </div>
+    </div>
   @endslot
 @end

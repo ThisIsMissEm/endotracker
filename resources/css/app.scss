@@ -59,6 +59,21 @@ input[inputmode="numeric"]:invalid + .error span {
   min-width: 2ch;
 }
 
+// Column-major checkbox list: 2 columns on mobile, 3 from the `sm` breakpoint
+// up. CSS multi-column fills each column top-to-bottom before the next.
+.checkbox-columns {
+  column-count: 2;
+  column-gap: 1.5rem;
+
+  @include media-breakpoint-up(sm) {
+    column-count: 3;
+  }
+
+  .form-check {
+    break-inside: avoid;
+  }
+}
+
 // Column-major list: items flow top-to-bottom down each column before the next,
 // so a name-sorted list reads alphabetically down the columns. 1 column on
 // mobile, 2 from `md`, 3 from `lg`.

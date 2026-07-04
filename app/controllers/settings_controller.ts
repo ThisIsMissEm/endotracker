@@ -1,4 +1,5 @@
 import Setting from '#models/setting'
+import Parameter from '#models/parameter'
 import { updateSettingsValidator } from '#validators/settings'
 import type { HttpContext } from '@adonisjs/core/http'
 import { shortDate } from '../utils/dates.js'
@@ -11,8 +12,11 @@ export default class SettingsController {
       return memo
     }, {})
 
+    const parameters = await Parameter.sortedByName()
+
     return view.render('settings/index', {
       settings: serialised,
+      parameters,
     })
   }
 

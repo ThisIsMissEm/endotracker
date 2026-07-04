@@ -62,6 +62,13 @@ router
       )
       .only(['index', 'show', 'create', 'store', 'edit', 'update', 'destroy'])
 
+    router
+      .post('recordings/export', [
+        () => import('#controllers/settings/recordings_controller'),
+        'export',
+      ])
+      .as('recordings.export')
+
     router.get('/', [() => import('#controllers/settings_controller'), 'index']).as('index')
     router.post('/', [() => import('#controllers/settings_controller'), 'update']).as('update')
   })
