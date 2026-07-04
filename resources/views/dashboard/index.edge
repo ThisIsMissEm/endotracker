@@ -72,7 +72,7 @@
                     {{ recordingValue }}
                     @end
                   </td>
-                  <td class="w-auto">
+                  <td class="w-auto text-start">
                     @if(comparison == 'exceeds' || comparison == 'subceeds')
                     <strong>
                       {{unitAbbreviation}}
@@ -80,6 +80,15 @@
                     @else
                     {{ unitAbbreviation }}
                     @end
+                  </td>
+                  <td>
+                    <strong>
+                      @if(comparison == 'exceeds')
+                        &plus;
+                      @elseif(comparison == 'subceeds')
+                        &minus;
+                      @end
+                    </strong>
                   </td>
                 </tr>
               @else
