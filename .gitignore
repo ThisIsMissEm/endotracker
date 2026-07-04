@@ -27,3 +27,6 @@ yarn-error.log
 # Data files
 data/*.json
 data/*.csv
+
+# Local reference material (not part of the project; may be third-party licensed)
+reference/
