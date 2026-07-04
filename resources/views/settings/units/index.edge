@@ -9,22 +9,29 @@
   @endslot
 
   @slot('content')
-    <ul class="row justify-content-start px-0 pb-2">
-      @each(unit in units)
-        <li class="col d-flex justify-content-start align-content-between align-items-center col-md-6 col-lg-4 gx-4 gy-3">
-          <div class="me-auto">
-            <div class="fw-bold">{{unit.name}}</div>
-            {{unit.abbreviation}}
-          </div>
-          <a
-            class="btn btn-outline-secondary"
-            href="{{route('settings.units.edit', { id: unit.id })}}"
-          >Edit</a>
-        </li>
-      @end
-    </ul>
+    @if(units.length)
+      <ul class="row justify-content-start px-0 pb-2">
+        @each(unit in units)
+          <li class="col d-flex justify-content-start align-content-between align-items-center col-md-6 col-lg-4 gx-4 gy-3">
+            <div class="me-auto">
+              <div class="fw-bold">{{unit.name}}</div>
+              {{unit.abbreviation}}
+            </div>
+            <a
+              class="btn btn-outline-secondary"
+              href="{{route('settings.units.edit', { id: unit.id })}}"
+            >Edit</a>
+          </li>
+        @end
+      </ul>
 
-    <hr class="pb-2" />
+      <hr class="pb-2" />
+    @else
+      <div class="alert alert-secondary my-4" role="alert">
+        There are currently no configured units, you can add them using the form below, or perform an import from a <code>.json</code> file.
+      </div>
+    @end
+
     <h3 id="add-unit">Add Unit</h3>
 
     @let(formAction = `${route('settings.units.store')}`)

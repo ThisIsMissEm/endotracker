@@ -3,61 +3,73 @@
   description: "View and manage the parameters that are available to be measured in reports"
 })
   @slot('headerActions')
-    <a class="btn btn-primary" href="#add-parameter">Add Parameter</a>
+    @if(units.length)
+      <a class="btn btn-primary" href="#add-parameter">Add Parameter</a>
+    @end
     <a class="btn btn-primary" href="{{route('settings.parameters.import')}}">Import</a>
     <a class="btn btn-primary" href="{{route('settings.parameters.export')}}">Export</a>
   @endslot
 
   @slot('content')
-    <ul class="row justify-content-start align-content-between px-0 pb-2">
-      @each(parameter in parameters)
-        <li class="col d-flex justify-content-start align-content-between align-items-center col-md-6 col-lg-4 gx-4 gy-3">
-          <div class="me-auto pe-1">
-            <div class="fw-bold">
-              {{parameter.name}}
-              @if(parameter.showOnDashboard)
-                <i class="bi bi-file-earmark-bar-graph-fill" title="Shown on dashboard"></i>
-              @end
+    @if(parameters.length)
+      <ul class="row justify-content-start align-content-between px-0 pb-2">
+        @each(parameter in parameters)
+          <li class="col d-flex justify-content-start align-content-between align-items-center col-md-6 col-lg-4 gx-4 gy-3">
+            <div class="me-auto pe-1">
+              <div class="fw-bold">
+                {{parameter.name}}
+                @if(parameter.showOnDashboard)
+                  <i class="bi bi-file-earmark-bar-graph-fill" title="Shown on dashboard"></i>
+                @end
+              </div>
+              <div>
+                Unit: {{parameter.unit.abbreviation}}
+              </div>
+              <div>
+                Reference:
+                <span>
+                  @if(parameter.referenceType == 'none')
+                    <em>none</em>
+                  @end
+                  @if(parameter.referenceType == 'range')
+                    {{parameter.referenceMinimum}} - {{parameter.referenceMaximum}}
+                  @end
+                  @if(parameter.referenceType == 'less_than')
+                    &lt; {{parameter.referenceMaximum}}
+                  @end
+                  @if(parameter.referenceType == 'less_than_or_equal')
+                    &lt;&equals; {{parameter.referenceMaximum}}
+                  @end
+                  @if(parameter.referenceType == 'greater_than')
+                    &gt; {{parameter.referenceMinimum}}
+                  @end
+                  @if(parameter.referenceType == 'greater_than_or_equal')
+                    &gt;&equals; {{parameter.referenceMinimum}}
+                  @end
+                </span>
+              </div>
             </div>
-            <div>
-              Unit: {{parameter.unit.abbreviation}}
-            </div>
-            <div>
-              Reference:
-              <span>
-                @if(parameter.referenceType == 'none')
-                  <em>none</em>
-                @end
-                @if(parameter.referenceType == 'range')
-                  {{parameter.referenceMinimum}} - {{parameter.referenceMaximum}}
-                @end
-                @if(parameter.referenceType == 'less_than')
-                  &lt; {{parameter.referenceMaximum}}
-                @end
-                @if(parameter.referenceType == 'less_than_or_equal')
-                  &lt;&equals; {{parameter.referenceMaximum}}
-                @end
-                @if(parameter.referenceType == 'greater_than')
-                  &gt; {{parameter.referenceMinimum}}
-                @end
-                @if(parameter.referenceType == 'greater_than_or_equal')
-                  &gt;&equals; {{parameter.referenceMinimum}}
-                @end
-              </span>
-            </div>
-          </div>
-          <a class="btn btn-outline-secondary" href="{{route('settings.parameters.edit', { id: parameter.id })}}">Edit</a>
-        </li>
-      @end
-    </ul>
-
-    @if(parameters.length > 0)
+            <a class="btn btn-outline-secondary" href="{{route('settings.parameters.edit', { id: parameter.id })}}">Edit</a>
+          </li>
+        @end
+      </ul>
       <hr class="pb-2" />
+    @else
+      <div class="alert alert-secondary my-4" role="alert">
+        @if(units.length)
+          There are currently no configured parameters, you can add them using the form below, or perform an import from a <code>.json</code> file.
+        @else
+          You currently have no configured units, you'll need to add units first before creating parameters: <a href="{{route('settings.units.index')}}">Add units</a>
+        @end
+      </div>
     @end
-    <h3 id="add-parameter">Add Parameter</h3>
 
-    @let(formAction = `${route('settings.parameters.store')}`)
-    @let(buttonLabel = 'Add Parameter')
-    @include('settings/parameters/_form')
+    @if(units.length)
+      <h3 id="add-parameter">Add Parameter</h3>
+
+      @let(formAction = `${route('settings.parameters.store')}`)
+      @let(buttonLabel = 'Add Parameter')
+      @include('settings/parameters/_form')
+    @end
   @endslot
 @end
