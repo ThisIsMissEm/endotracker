@@ -1,0 +1,70 @@
+services:
+  postgresql:
+    container_name: endotracker-pg
+    image: postgres:18-alpine
+    command: postgres -c listen_addresses=localhost
+    restart: unless-stopped
+    network_mode: host
+    shm_size: 256mb
+    healthcheck:
+      test: pg_isready -h localhost -U $$POSTGRES_USER
+      interval: 2s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    volumes:
+      - type: bind
+        source: /data/postgres
+        target: /var/lib/postgresql
+    env_file:
+      - /data/postgresql.env
+
+  caddy:
+    container_name: endotracker-caddy
+    image: caddy:2
+    network_mode: host
+    depends_on:
+      - endotracker
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: /data/caddy/data
+        target: /data
+      - type: bind
+        source: /data/caddy/etc/caddy
+        target: /etc/caddy
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+
+  endotracker:
+    container_name: endotracker
+    image: ghcr.io/thisismissem/endotracker:latest
+    restart: unless-stopped
+    depends_on:
+      postgresql:
+        condition: service_healthy
+        restart: true
+    env_file:
+      - /data/endotracker.env
+    network_mode: host
+    healthcheck:
+      # prettier-ignore
+      test: ['CMD-SHELL',"curl -s --noproxy localhost localhost:5080/health | grep -q 'OK' || exit 1"]
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+
+  watchtower:
+    container_name: watchtower
+    # we're using a fork of watchtower, as containrrr/watchtower hasn't been
+    # updated in 2 years and is incompatible with latest docker on debian:
+    image: nickfedor/watchtower:latest
+    network_mode: host
+    volumes:
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
+    restart: unless-stopped
+    environment:
+      WATCHTOWER_CLEANUP: true
+      WATCHTOWER_SCHEDULE: "@midnight"
+      WATCHTOWER_LABEL_ENABLE: true
