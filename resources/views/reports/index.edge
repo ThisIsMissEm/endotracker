@@ -11,8 +11,8 @@
           <th>#</th>
           <th>Report Name</th>
           <th>Tested</th>
-          <th>Created</th>
-          <th>Updated</th>
+          <th class="d-none d-lg-table-cell">Created</th>
+          <th class="d-none d-lg-table-cell">Updated</th>
           <th></th>
         </thead>
         @each(report in reports)
@@ -22,10 +22,10 @@
             <td>
               @!component('components/timestamp', { value: report.testedAt, format: 'full' })
             </td>
-            <td>
+            <td class="d-none d-lg-table-cell">
               @!component('components/timestamp', { value: report.createdAt, format: 'medium' })
             </td>
-            <td>
+            <td class="d-none d-lg-table-cell">
               @if(report.updatedAt)
                 @!component('components/timestamp', { value: report.updatedAt, format: 'relative' })
               @end
