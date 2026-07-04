@@ -283,7 +283,7 @@
       "referenceMaximum": 15.9,
       "showOnDashboard": true,
       "optimalValue": 0,
-      "conversionFactor": 0.032,
+      "conversionFactor": 3.18,
       "unit": {
         "name": "Nanograms per milliliter",
         "abbreviation": "ng/mL",
