@@ -80,6 +80,7 @@ router
     router.get('/', [SetupController, 'index']).as('show')
     router.post('store-start-date', [SetupController, 'storeStartDate']).as('storeStartDate')
     router.post('import-units', [SetupController, 'importUnits']).as('importUnits')
+    router.post('import-parameters', [SetupController, 'importParameters']).as('importParameters')
     router.post('complete-setup', [SetupController, 'completeSetup']).as('completeSetup')
   })
   .prefix('setup')

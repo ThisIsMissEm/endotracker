@@ -1,0 +1,637 @@
+{
+  "items": [
+    {
+      "name": "Erythrocytes",
+      "referenceType": "range",
+      "referenceMinimum": 3.9,
+      "referenceMaximum": 5.15,
+      "showOnDashboard": false,
+      "optimalValue": 0,
+      "conversionFactor": 0,
+      "unit": {
+        "name": "Million per microliter",
+        "abbreviation": "M/μL",
+        "isInternationalSystem": false
+      },
+      "siUnit": null
+    },
+    {
+      "name": "Leukozyten",
+      "referenceType": "range",
+      "referenceMinimum": 3.9,
+      "referenceMaximum": 10.2,
+      "showOnDashboard": false,
+      "optimalValue": 0,
+      "conversionFactor": 0,
+      "unit": {
+        "name": "Thousand per microliter",
+        "abbreviation": "k/μL",
+        "isInternationalSystem": false
+      },
+      "siUnit": null
+    },
+    {
+      "name": "Hämoglobin",
+      "referenceType": "range",
+      "referenceMinimum": 12,
+      "referenceMaximum": 15.4,
+      "showOnDashboard": false,
+      "optimalValue": 0,
+      "conversionFactor": 0,
+      "unit": {
+        "name": "Grams per deciliter",
+        "abbreviation": "g/dL",
+        "isInternationalSystem": false
+      },
+      "siUnit": null
+    },
+    {
+      "name": "Hämatokrit",
+      "referenceType": "range",
+      "referenceMinimum": 0.353,
+      "referenceMaximum": 0.45,
+      "showOnDashboard": false,
+      "optimalValue": 0,
+      "conversionFactor": 0,
+      "unit": {
+        "name": "Proportion per liter",
+        "abbreviation": "L/L",
+        "isInternationalSystem": false
+      },
+      "siUnit": null
+    },
+    {
+      "name": "MCH",
+      "referenceType": "range",
+      "referenceMinimum": 27,
+      "referenceMaximum": 33.5,
+      "showOnDashboard": false,
+      "optimalValue": 0,
+      "conversionFactor": 0,
+      "unit": { "name": "Picograms", "abbreviation": "pg", "isInternationalSystem": false },
+      "siUnit": null
+    },
+    {
+      "name": "MCV",
+      "referenceType": "range",
+      "referenceMinimum": 80,
+      "referenceMaximum": 99,
+      "showOnDashboard": false,
+      "optimalValue": 0,
+      "conversionFactor": 0,
+      "unit": { "name": "Femtoliters", "abbreviation": "fL", "isInternationalSystem": false },
+      "siUnit": null
+    },
+    {
+      "name": "MCHC",
+      "referenceType": "range",
+      "referenceMinimum": 31.5,
+      "referenceMaximum": 36,
+      "showOnDashboard": false,
+      "optimalValue": 0,
+      "conversionFactor": 0,
+      "unit": {
+        "name": "Grams per deciliter",
+        "abbreviation": "g/dL",
+        "isInternationalSystem": false
+      },
+      "siUnit": null
+    },
+    {
+      "name": "eGFR (estimated CKD-EPI, KREA)",
+      "referenceType": "greater_than",
+      "referenceMinimum": 90,
+      "referenceMaximum": 0,
+      "showOnDashboard": false,
+      "optimalValue": 0,
+      "conversionFactor": 0,
+      "unit": {
+        "name": "milliliters/minute for 1,73 meters²",
+        "abbreviation": "mL/min / 1,73 m²",
+        "isInternationalSystem": false
+      },
+      "siUnit": null
+    },
+    {
+      "name": "Thrombozyten",
+      "referenceType": "range",
+      "referenceMinimum": 150,
+      "referenceMaximum": 370,
+      "showOnDashboard": false,
+      "optimalValue": 0,
+      "conversionFactor": 0,
+      "unit": {
+        "name": "Thousand per microliter",
+        "abbreviation": "k/μL",
+        "isInternationalSystem": false
+      },
+      "siUnit": null
+    },
+    {
+      "name": "Erythrozyten-Verteilungsbreite",
+      "referenceType": "range",
+      "referenceMinimum": 11.5,
+      "referenceMaximum": 15,
+      "showOnDashboard": false,
+      "optimalValue": 0,
+      "conversionFactor": 0,
+      "unit": { "name": "Percentage", "abbreviation": "%", "isInternationalSystem": true },
+      "siUnit": null
+    },
+    {
+      "name": "GOT",
+      "referenceType": "less_than",
+      "referenceMinimum": 0,
+      "referenceMaximum": 35,
+      "showOnDashboard": false,
+      "optimalValue": 0,
+      "conversionFactor": 0,
+      "unit": { "name": "Units per liter", "abbreviation": "U/L", "isInternationalSystem": false },
+      "siUnit": null
+    },
+    {
+      "name": "GPT",
+      "referenceType": "less_than",
+      "referenceMinimum": 0,
+      "referenceMaximum": 35,
+      "showOnDashboard": false,
+      "optimalValue": 0,
+      "conversionFactor": 0,
+      "unit": { "name": "Units per liter", "abbreviation": "U/L", "isInternationalSystem": false },
+      "siUnit": null
+    },
+    {
+      "name": "GGT",
+      "referenceType": "less_than",
+      "referenceMinimum": 0,
+      "referenceMaximum": 40,
+      "showOnDashboard": false,
+      "optimalValue": 0,
+      "conversionFactor": 0,
+      "unit": { "name": "Units per liter", "abbreviation": "U/L", "isInternationalSystem": false },
+      "siUnit": null
+    },
+    {
+      "name": "Alk. Phosphatase",
+      "referenceType": "range",
+      "referenceMinimum": 46,
+      "referenceMaximum": 122,
+      "showOnDashboard": false,
+      "optimalValue": 0,
+      "conversionFactor": 0,
+      "unit": { "name": "Units per liter", "abbreviation": "U/L", "isInternationalSystem": false },
+      "siUnit": null
+    },
+    {
+      "name": "TSH, basal",
+      "referenceType": "range",
+      "referenceMinimum": 0.4,
+      "referenceMaximum": 4.2,
+      "showOnDashboard": false,
+      "optimalValue": 0,
+      "conversionFactor": 0,
+      "unit": {
+        "name": "Milli units per liter",
+        "abbreviation": "mlU/L",
+        "isInternationalSystem": false
+      },
+      "siUnit": null
+    },
+    {
+      "name": "freies T3",
+      "referenceType": "range",
+      "referenceMinimum": 2.8,
+      "referenceMaximum": 6.5,
+      "showOnDashboard": false,
+      "optimalValue": 0,
+      "conversionFactor": 0,
+      "unit": {
+        "name": "Picomole per litre",
+        "abbreviation": "pmol/L",
+        "isInternationalSystem": true
+      },
+      "siUnit": null
+    },
+    {
+      "name": "freies T4",
+      "referenceType": "range",
+      "referenceMinimum": 9,
+      "referenceMaximum": 19.1,
+      "showOnDashboard": false,
+      "optimalValue": 0,
+      "conversionFactor": 0,
+      "unit": {
+        "name": "Picomole per litre",
+        "abbreviation": "pmol/L",
+        "isInternationalSystem": true
+      },
+      "siUnit": null
+    },
+    {
+      "name": "FSH",
+      "referenceType": "range",
+      "referenceMinimum": 1.38,
+      "referenceMaximum": 133.41,
+      "showOnDashboard": false,
+      "optimalValue": 0,
+      "conversionFactor": 0,
+      "unit": {
+        "name": "International units per liter",
+        "abbreviation": "IU/L",
+        "isInternationalSystem": false
+      },
+      "siUnit": null
+    },
+    {
+      "name": "LH",
+      "referenceType": "range",
+      "referenceMinimum": 0.56,
+      "referenceMaximum": 89.08,
+      "showOnDashboard": false,
+      "optimalValue": 0,
+      "conversionFactor": 0,
+      "unit": {
+        "name": "International units per liter",
+        "abbreviation": "IU/L",
+        "isInternationalSystem": false
+      },
+      "siUnit": null
+    },
+    {
+      "name": "Östradiol",
+      "referenceType": "range",
+      "referenceMinimum": 100,
+      "referenceMaximum": 443,
+      "showOnDashboard": true,
+      "optimalValue": 108,
+      "conversionFactor": 3.671,
+      "unit": {
+        "name": "Picograms per millilitre",
+        "abbreviation": "pg/mL",
+        "isInternationalSystem": false
+      },
+      "siUnit": {
+        "name": "Picomole per litre",
+        "abbreviation": "pmol/L",
+        "isInternationalSystem": true
+      }
+    },
+    {
+      "name": "Progesteron",
+      "referenceType": "less_than_or_equal",
+      "referenceMinimum": 0,
+      "referenceMaximum": 15.9,
+      "showOnDashboard": true,
+      "optimalValue": 0,
+      "conversionFactor": 0.032,
+      "unit": {
+        "name": "Nanograms per milliliter",
+        "abbreviation": "ng/mL",
+        "isInternationalSystem": false
+      },
+      "siUnit": {
+        "name": "Nanomole per litre",
+        "abbreviation": "nmol/L",
+        "isInternationalSystem": true
+      }
+    },
+    {
+      "name": "Prolaktin",
+      "referenceType": "range",
+      "referenceMinimum": 5.18,
+      "referenceMaximum": 26.53,
+      "showOnDashboard": true,
+      "optimalValue": 0,
+      "conversionFactor": 1,
+      "unit": {
+        "name": "Nanograms per milliliter",
+        "abbreviation": "ng/mL",
+        "isInternationalSystem": false
+      },
+      "siUnit": {
+        "name": "Microgram per liter",
+        "abbreviation": "µg/L",
+        "isInternationalSystem": true
+      }
+    },
+    {
+      "name": "Testosteron",
+      "referenceType": "range",
+      "referenceMinimum": 0.14,
+      "referenceMaximum": 0.53,
+      "showOnDashboard": true,
+      "optimalValue": 0,
+      "conversionFactor": 3.467,
+      "unit": {
+        "name": "Nanograms per milliliter",
+        "abbreviation": "ng/mL",
+        "isInternationalSystem": false
+      },
+      "siUnit": {
+        "name": "Nanomole per litre",
+        "abbreviation": "nmol/L",
+        "isInternationalSystem": true
+      }
+    },
+    {
+      "name": "SHBG",
+      "referenceType": "range",
+      "referenceMinimum": 20,
+      "referenceMaximum": 155,
+      "showOnDashboard": true,
+      "optimalValue": 0,
+      "conversionFactor": 0,
+      "unit": {
+        "name": "Nanomole per litre",
+        "abbreviation": "nmol/L",
+        "isInternationalSystem": true
+      },
+      "siUnit": null
+    },
+    {
+      "name": "Freier Androgenindex",
+      "referenceType": "range",
+      "referenceMinimum": 0,
+      "referenceMaximum": 3.5,
+      "showOnDashboard": true,
+      "optimalValue": 0,
+      "conversionFactor": 0,
+      "unit": { "name": "Percentage", "abbreviation": "%", "isInternationalSystem": true },
+      "siUnit": null
+    },
+    {
+      "name": "Natrium",
+      "referenceType": "range",
+      "referenceMinimum": 135,
+      "referenceMaximum": 145,
+      "showOnDashboard": false,
+      "optimalValue": 0,
+      "conversionFactor": 0,
+      "unit": {
+        "name": "Millimoles per liter",
+        "abbreviation": "mmol/L",
+        "isInternationalSystem": true
+      },
+      "siUnit": null
+    },
+    {
+      "name": "Calcium",
+      "referenceType": "range",
+      "referenceMinimum": 2.09,
+      "referenceMaximum": 2.52,
+      "showOnDashboard": false,
+      "optimalValue": 0,
+      "conversionFactor": 0,
+      "unit": {
+        "name": "Millimoles per liter",
+        "abbreviation": "mmol/L",
+        "isInternationalSystem": true
+      },
+      "siUnit": null
+    },
+    {
+      "name": "korrigiertes Calcium",
+      "referenceType": "range",
+      "referenceMinimum": 2.09,
+      "referenceMaximum": 2.52,
+      "showOnDashboard": false,
+      "optimalValue": 0,
+      "conversionFactor": 0,
+      "unit": {
+        "name": "Millimoles per liter",
+        "abbreviation": "mmol/L",
+        "isInternationalSystem": true
+      },
+      "siUnit": null
+    },
+    {
+      "name": "Phosphat",
+      "referenceType": "range",
+      "referenceMinimum": 2.6,
+      "referenceMaximum": 4.5,
+      "showOnDashboard": false,
+      "optimalValue": 0,
+      "conversionFactor": 0,
+      "unit": {
+        "name": "Milligrams per decilitre",
+        "abbreviation": "mg/dL",
+        "isInternationalSystem": false
+      },
+      "siUnit": null
+    },
+    {
+      "name": "Calcium-Phosphat-Produkt",
+      "referenceType": "less_than_or_equal",
+      "referenceMinimum": 0,
+      "referenceMaximum": 4.44,
+      "showOnDashboard": false,
+      "optimalValue": 0,
+      "conversionFactor": 0,
+      "unit": {
+        "name": "Quectomolar per Quectoliter",
+        "abbreviation": "qmmol/qL",
+        "isInternationalSystem": false
+      },
+      "siUnit": null
+    },
+    {
+      "name": "Harnstoff",
+      "referenceType": "range",
+      "referenceMinimum": 15,
+      "referenceMaximum": 40,
+      "showOnDashboard": false,
+      "optimalValue": 0,
+      "conversionFactor": 0,
+      "unit": {
+        "name": "Milligrams per decilitre",
+        "abbreviation": "mg/dL",
+        "isInternationalSystem": false
+      },
+      "siUnit": null
+    },
+    {
+      "name": "Harnstoff-Stickstoff",
+      "referenceType": "range",
+      "referenceMinimum": 7,
+      "referenceMaximum": 18.7,
+      "showOnDashboard": false,
+      "optimalValue": 0,
+      "conversionFactor": 0,
+      "unit": {
+        "name": "Milligrams per decilitre",
+        "abbreviation": "mg/dL",
+        "isInternationalSystem": false
+      },
+      "siUnit": null
+    },
+    {
+      "name": "Harnsäure",
+      "referenceType": "range",
+      "referenceMinimum": 2.5,
+      "referenceMaximum": 6.2,
+      "showOnDashboard": false,
+      "optimalValue": 0,
+      "conversionFactor": 0,
+      "unit": {
+        "name": "Milligrams per decilitre",
+        "abbreviation": "mg/dL",
+        "isInternationalSystem": false
+      },
+      "siUnit": null
+    },
+    {
+      "name": "Albumin",
+      "referenceType": "range",
+      "referenceMinimum": 3.5,
+      "referenceMaximum": 5,
+      "showOnDashboard": false,
+      "optimalValue": 0,
+      "conversionFactor": 0,
+      "unit": {
+        "name": "Grams per deciliter",
+        "abbreviation": "g/dL",
+        "isInternationalSystem": false
+      },
+      "siUnit": null
+    },
+    {
+      "name": "C-reaktives Protein",
+      "referenceType": "less_than_or_equal",
+      "referenceMinimum": 0,
+      "referenceMaximum": 5,
+      "showOnDashboard": false,
+      "optimalValue": 0,
+      "conversionFactor": 0,
+      "unit": {
+        "name": "Milligrams per litre",
+        "abbreviation": "mg/L",
+        "isInternationalSystem": false
+      },
+      "siUnit": null
+    },
+    {
+      "name": "Parathormon",
+      "referenceType": "range",
+      "referenceMinimum": 16.5,
+      "referenceMaximum": 109.9,
+      "showOnDashboard": false,
+      "optimalValue": 0,
+      "conversionFactor": 0,
+      "unit": {
+        "name": "Picograms per millilitre",
+        "abbreviation": "pg/mL",
+        "isInternationalSystem": false
+      },
+      "siUnit": null
+    },
+    {
+      "name": "Cholesterin",
+      "referenceType": "less_than",
+      "referenceMinimum": 0,
+      "referenceMaximum": 200,
+      "showOnDashboard": false,
+      "optimalValue": 0,
+      "conversionFactor": 0,
+      "unit": {
+        "name": "Milligrams per decilitre",
+        "abbreviation": "mg/dL",
+        "isInternationalSystem": false
+      },
+      "siUnit": null
+    },
+    {
+      "name": "HDL-Cholesterin",
+      "referenceType": "less_than_or_equal",
+      "referenceMinimum": 0,
+      "referenceMaximum": 200,
+      "showOnDashboard": false,
+      "optimalValue": 0,
+      "conversionFactor": 0,
+      "unit": {
+        "name": "Milligrams per decilitre",
+        "abbreviation": "mg/dL",
+        "isInternationalSystem": false
+      },
+      "siUnit": null
+    },
+    {
+      "name": "LDL-Cholesterin",
+      "referenceType": "less_than_or_equal",
+      "referenceMinimum": 0,
+      "referenceMaximum": 150,
+      "showOnDashboard": false,
+      "optimalValue": 0,
+      "conversionFactor": 0,
+      "unit": {
+        "name": "Milligrams per decilitre",
+        "abbreviation": "mg/dL",
+        "isInternationalSystem": false
+      },
+      "siUnit": null
+    },
+    {
+      "name": "Triglyzeride",
+      "referenceType": "less_than_or_equal",
+      "referenceMinimum": 0,
+      "referenceMaximum": 150,
+      "showOnDashboard": false,
+      "optimalValue": 0,
+      "conversionFactor": 0,
+      "unit": {
+        "name": "Milligrams per decilitre",
+        "abbreviation": "mg/dL",
+        "isInternationalSystem": false
+      },
+      "siUnit": null
+    },
+    {
+      "name": "LDL berechnet nach Friedewald",
+      "referenceType": "less_than_or_equal",
+      "referenceMinimum": 0,
+      "referenceMaximum": 200,
+      "showOnDashboard": false,
+      "optimalValue": 0,
+      "conversionFactor": 0,
+      "unit": {
+        "name": "Milligrams per decilitre",
+        "abbreviation": "mg/dL",
+        "isInternationalSystem": false
+      },
+      "siUnit": null
+    },
+    {
+      "name": "Kreatinin",
+      "referenceType": "range",
+      "referenceMinimum": 0.45,
+      "referenceMaximum": 0.9,
+      "showOnDashboard": false,
+      "optimalValue": 0,
+      "conversionFactor": 0,
+      "unit": {
+        "name": "Milligrams per decilitre",
+        "abbreviation": "mg/dL",
+        "isInternationalSystem": false
+      },
+      "siUnit": null
+    },
+    {
+      "name": "DHT",
+      "referenceType": "range",
+      "referenceMinimum": 24,
+      "referenceMaximum": 368,
+      "showOnDashboard": false,
+      "optimalValue": 0,
+      "conversionFactor": 0.00344297,
+      "unit": {
+        "name": "Picograms per millilitre",
+        "abbreviation": "pg/mL",
+        "isInternationalSystem": false
+      },
+      "siUnit": {
+        "name": "Nanomole per litre",
+        "abbreviation": "nmol/L",
+        "isInternationalSystem": true
+      }
+    }
+  ]
+}

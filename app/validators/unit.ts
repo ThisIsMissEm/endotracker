@@ -56,6 +56,7 @@ export const importUnitsValidator = vine.compile(
         vine.object({
           name: vine.string(),
           abbreviation: vine.string(),
+          isInternationalSystem: vine.boolean().optional(),
         })
       ),
     })

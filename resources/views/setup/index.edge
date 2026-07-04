@@ -10,6 +10,8 @@
     @include('setup/steps/basics')
   @elseif(step === 'import-units')
     @include('setup/steps/import-units')
+  @elseif(step === 'import-parameters')
+    @include('setup/steps/import-parameters')
   @elseif(step === 'finish')
     @include('setup/steps/finish')
   @else

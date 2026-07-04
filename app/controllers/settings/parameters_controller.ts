@@ -2,14 +2,9 @@ import Parameter from '#models/parameter'
 import ReportTemplate from '#models/report_template'
 import db from '@adonisjs/lucid/services/db'
 import Unit from '#models/unit'
-import {
-  createParameterValidator,
-  importParametersValidator,
-  updateParameterValidator,
-} from '#validators/parameter'
+import { createParameterValidator, updateParameterValidator } from '#validators/parameter'
 import type { HttpContext } from '@adonisjs/core/http'
-import { ModelAttributes } from '@adonisjs/lucid/types/model'
-import { readFile } from 'node:fs/promises'
+import { ImportParametersService } from '#services/import_parameters_service'
 
 export default class ParametersController {
   /**
@@ -55,57 +50,12 @@ export default class ParametersController {
       return response.redirect().toRoute('settings.parameters.import')
     }
 
-    const data = await readFile(parametersFile.tmpPath, { encoding: 'utf-8' })
-    const parameters = await importParametersValidator.validate(data)
-
-    const unitsMap = parameters.items.reduce((result, parameter) => {
-      if (result.has(parameter.unit.name.toLowerCase())) {
-        return result
-      }
-
-      result.set(parameter.unit.name.toLowerCase(), parameter.unit)
-
-      return result
-    }, new Map<string, { name: string; abbreviation: string }>())
-
-    const units = await Unit.fetchOrCreateMany('name', Array.from(unitsMap.values()))
-
-    const results = await Parameter.fetchOrCreateMany(
-      'name',
-      parameters.items.reduce<Partial<ModelAttributes<InstanceType<typeof Parameter>>>[]>(
-        (acc, parameter) => {
-          const unit = units.find((u) => u.name.toLowerCase() === parameter.unit.name.toLowerCase())
-
-          if (!unit) {
-            return acc
-          }
-
-          acc.push({
-            name: parameter.name,
-            referenceType: parameter.referenceType,
-            referenceMinimum: parameter.referenceMinimum,
-            referenceMaximum: parameter.referenceMaximum,
-            optimalValue: parameter.optimalValue,
-            unitId: unit.id,
-          })
-
-          return acc
-        },
-        []
-      )
-    )
-
-    const updatedCount = results.reduce((count, row) => {
-      if (row.$isLocal) {
-        count++
-      }
-      return count
-    }, 0)
+    const results = await ImportParametersService.import(parametersFile.tmpPath)
 
     session.flash(
       'success',
-      updatedCount > 0
-        ? `Imported ${updatedCount} parameters successfully`
+      results.importedCount > 0
+        ? `Imported ${results.importedCount} parameters successfully`
         : 'All parameters already exist'
     )
     response.redirect().toRoute('settings.parameters.index')

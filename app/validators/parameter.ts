@@ -59,7 +59,7 @@ const parameterSchema = vine.object({
     .decimal([0, 8])
     .optional()
     .requiredWhen((field) => {
-      return field.parent.siUnitId !== null
+      return !!field.parent.siUnitId
     }),
 
   // Use vine.boolean to have the result type be Boolean not true | undefined
@@ -120,12 +120,28 @@ export const importParametersValidator = vine.compile(
 
           showOnDashboard: vine.boolean().optional(),
 
-          createdAt: vine.string(),
-          updatedAt: vine.string(),
+          conversionFactor: vine
+            .number()
+            .positive()
+            .decimal([0, 8])
+            .optional()
+            .requiredWhen((field) => {
+              return !!field.parent.siUnit
+            }),
+
           unit: vine.object({
             name: vine.string(),
             abbreviation: vine.string(),
+            isInternationalSystem: vine.boolean().optional(),
           }),
+
+          siUnit: vine
+            .object({
+              name: vine.string(),
+              abbreviation: vine.string(),
+              isInternationalSystem: vine.boolean().optional(),
+            })
+            .optional(),
         })
       ),
     })
