@@ -4,7 +4,8 @@
       "record_start_date": "record start date",
       "testedAt": "tested at",
       "referenceMinimum": "reference minimum",
-      "referenceMaximum": "reference maximum"
+      "referenceMaximum": "reference maximum",
+      "unitId": "unit"
     }
   }
 }

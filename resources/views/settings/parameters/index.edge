@@ -3,8 +3,8 @@
   description: "View and manage the parameters that are available to be measured in reports"
 })
   @slot('headerActions')
-    @if(units.length)
-      <a class="btn btn-primary" href="#add-parameter">Add Parameter</a>
+    @if(units.length && parameters.length)
+      <a class="btn btn-primary" href="{{route('settings.parameters.create')}}">Add Parameter</a>
     @end
     <a class="btn btn-primary" href="{{route('settings.parameters.import')}}">Import</a>
     <a class="btn btn-primary" href="{{route('settings.parameters.export')}}">Export</a>
@@ -53,7 +53,6 @@
           </li>
         @end
       </ul>
-      <hr class="pb-2" />
     @else
       <div class="alert alert-secondary my-4" role="alert">
         @if(units.length)
@@ -64,7 +63,7 @@
       </div>
     @end
 
-    @if(units.length)
+    @if(units.length && !parameters.length)
       <h3 id="add-parameter">Add Parameter</h3>
 
       @let(formAction = `${route('settings.parameters.store')}`)

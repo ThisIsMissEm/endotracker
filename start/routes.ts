@@ -32,7 +32,7 @@ router
 
     router
       .resource('parameters', () => import('#controllers/settings/parameters_controller'))
-      .only(['index', 'store', 'edit', 'update', 'destroy'])
+      .except(['show'])
 
     router
       .get('parameters/export', [

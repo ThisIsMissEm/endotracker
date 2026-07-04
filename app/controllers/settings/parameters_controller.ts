@@ -112,6 +112,17 @@ export default class ParametersController {
   }
 
   /**
+   * Display form to create a new record
+   */
+  async create({ view }: HttpContext) {
+    const units = await Unit.query().orderBy('id', 'desc')
+    const siUnits = await Unit.query().where('isInternationalSystem', true).orderBy('id', 'desc')
+    const referenceTypes = Parameter.referenceTypes
+
+    return view.render('settings/parameters/create', { units, siUnits, referenceTypes })
+  }
+
+  /**
    * Handle form submission for the create action
    */
   async store({ request, response }: HttpContext) {

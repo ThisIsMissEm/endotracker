@@ -1,0 +1,11 @@
+@layouts.settings({
+  title: `Parameters: Create`,
+  description: ""
+})
+  @slot('content')
+    @let(formAction = `${route('settings.parameters.store')}`)
+    @let(buttonLabel = 'Create Parameter')
+    @let(showCancelButton = true)
+    @include('settings/parameters/_form')
+  @endslot
+@end

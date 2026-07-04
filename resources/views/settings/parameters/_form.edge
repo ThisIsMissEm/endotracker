@@ -37,7 +37,7 @@
 
   <div class="mb-3">
     <label for="unitId" class="form-label">Unit</label>
-    <select class="form-control {{isInputInvalid('unitId', flashMessages)}}" name="unitId">
+    <select class="form-select {{isInputInvalid('unitId', flashMessages)}}" name="unitId">
       @let(selectedUnitId = old('unitId') || parameter.unitId)
 
       <option value="" {{ !selectedUnitId ? 'selected' : '' }}>Select a unit of measurement</option>
@@ -56,7 +56,7 @@
   <div class="row mb-3">
     <div class="col">
       <label for="referenceType" class="form-label">Reference Type</label>
-      <select class="form-control" name="referenceType">
+      <select class="form-select" name="referenceType">
         @each(type in referenceTypes)
           <option value="{{type}}" {{ (old('referenceType') || parameter.referenceType ) == type ? 'selected' : '' }}>{{type.replaceAll('_', ' ')}}</option>
         @end
@@ -104,10 +104,10 @@
       <li><a href="https://scymed.com">ScyMed MediCalc</a></li>
       <li><a href="https://transfemscience.org/misc/hormone-conc-unit-conv/">Transfeminine Science</a></li>
     </ul>
-    <div class="row mb-3">
+    <div class="row mb-4">
       <div class="col">
         <label for="unitId" class="form-label">SI Unit</label>
-        <select class="form-control {{isInputInvalid('siUnitId', flashMessages)}}" name="siUnitId">
+        <select class="form-select {{isInputInvalid('siUnitId', flashMessages)}}" name="siUnitId">
           @let(selectedSIUnitId = old('siUnitId') || parameter.siUnitId)
 
           <option value="" {{ !selectedSIUnitId ? 'selected' : '' }}>Select a unit of measurement</option>
