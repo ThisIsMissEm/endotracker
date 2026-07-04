@@ -7,27 +7,33 @@
   @endslot
 
   @slot('content')
-    <ul class="row justify-content-between px-0">
-      @each(tpl in templates)
-        <li class="col col-md-8 d-flex justify-content-between align-items-start gx-5 gy-4">
-          <div class="me-auto">
-            <div class="fw-bold">{{tpl.name}}</div>
-            <div>Created:
-              @!component('components/timestamp', { value: tpl.createdAt, format: 'long' })
+    @if(templates.length)
+      <ul class="row justify-content-between px-0">
+        @each(tpl in templates)
+          <li class="col col-md-8 d-flex justify-content-between align-items-start gx-5 gy-4">
+            <div class="me-auto">
+              <div class="fw-bold">{{tpl.name}}</div>
+              <div>Created:
+                @!component('components/timestamp', { value: tpl.createdAt, format: 'long' })
+              </div>
+              <div>Updated:
+                @!component('components/timestamp', { value: tpl.updatedAt, format: 'relative' })
+              </div>
             </div>
-            <div>Updated:
-              @!component('components/timestamp', { value: tpl.updatedAt, format: 'relative' })
+            <div class="d-grid gap-2 d-md-block">
+              <a class="btn btn-outline-secondary" href="{{route('settings.report_templates.edit', { id: tpl.id })}}">Edit</a>
+              <form class="d-inline" method="POST" action="{{route('settings.report_templates.destroy', { id: tpl.id })}}?_method=DELETE">
+                {{ csrfField() }}
+                <button type="submit" class="btn btn-outline-danger">Delete</button>
+              </form>
             </div>
-          </div>
-          <div class="d-grid gap-2 d-md-block">
-            <a class="btn btn-outline-secondary" href="{{route('settings.report_templates.edit', { id: tpl.id })}}">Edit</a>
-            <form class="d-inline" method="POST" action="{{route('settings.report_templates.destroy', { id: tpl.id })}}?_method=DELETE">
-              {{ csrfField() }}
-              <button type="submit" class="btn btn-outline-danger">Delete</button>
-            </form>
-          </div>
-        </li>
-      @end
-    </ul>
+          </li>
+        @end
+      </ul>
+    @else
+      <div class="alert alert-secondary my-4" role="alert">
+        You currently don't have any report templates, you'll need to create these based on your lab reports.
+      </div>
+    @end
   @endslot
 @end
