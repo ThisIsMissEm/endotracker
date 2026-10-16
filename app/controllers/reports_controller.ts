@@ -6,6 +6,7 @@ import { createReportValidator, updateReportValidator } from '#validators/report
 import ReportFinding from '#models/report_finding'
 import { ModelAttributes } from '@adonisjs/lucid/types/model'
 import Unit from '#models/unit'
+import type { TemplateContents, TemplateSection } from '#utils/types'
 
 export default class ReportsController {
   /**
@@ -42,10 +43,11 @@ export default class ReportsController {
     }
 
     const parameters = await this.getParameters()
-    const findingsByParameter = new Map()
+    const findingsByParameter = new Map<number, number>()
+    const contents = template.contents as unknown as TemplateContents
 
     return view.render('reports/create', {
-      tpl: template.contents,
+      sections: this.sectionsWithUnlisted(contents, findingsByParameter, parameters),
       templateId: template.id,
       parameters,
       findingsByParameter,
@@ -80,7 +82,11 @@ export default class ReportsController {
     const findingsByParameter = this.findingsByParameter(report)
 
     return view.render('reports/show', {
-      tpl: template.contents,
+      sections: this.sectionsWithUnlisted(
+        template.contents as unknown as TemplateContents,
+        findingsByParameter,
+        parameters
+      ),
       report,
       parameters,
       findingsByParameter,
@@ -101,7 +107,11 @@ export default class ReportsController {
     const findingsByParameter = this.findingsByParameter(report)
 
     return view.render('reports/edit', {
-      tpl: template.contents,
+      sections: this.sectionsWithUnlisted(
+        template.contents as unknown as TemplateContents,
+        findingsByParameter,
+        parameters
+      ),
       report,
       parameters,
       findingsByParameter,
@@ -153,6 +163,35 @@ export default class ReportsController {
       parameters.set(parameter.id, parameter)
     }
     return parameters
+  }
+
+  /**
+   * The template's sections, plus a trailing "Other" section holding any
+   * finding whose parameter the template no longer lists.
+   *
+   * A report is fixed to its template at creation, but the template itself
+   * stays editable — removing a parameter from it would otherwise silently
+   * hide findings that older reports already recorded against it. Returning
+   * them as an ordinary section means the views need no second code path.
+   */
+  private sectionsWithUnlisted(
+    contents: TemplateContents,
+    findingsByParameter: Map<number, number>,
+    parameters: Map<number, Parameter>
+  ): TemplateSection[] {
+    // `report_templates.contents` defaults to `{"version":"1"}`, so a row that
+    // never went through the template form has no `sections` key at all.
+    const sections = contents.sections ?? []
+    const listed = new Set(sections.flatMap((section) => section.parameters))
+    const unlisted = [...findingsByParameter.keys()]
+      .filter((parameterId) => !listed.has(parameterId))
+      .sort((a, b) => (parameters.get(a)?.name ?? '').localeCompare(parameters.get(b)?.name ?? ''))
+
+    if (unlisted.length === 0) {
+      return sections
+    }
+
+    return [...sections, { name: 'Other', parameters: unlisted }]
   }
 
   private findingsByParameter(report: Report) {

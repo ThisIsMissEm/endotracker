@@ -2,7 +2,7 @@ import Setting from '#models/setting'
 import Parameter from '#models/parameter'
 import { updateSettingsValidator } from '#validators/settings'
 import type { HttpContext } from '@adonisjs/core/http'
-import { shortDate } from '../utils/dates.js'
+import { shortDate } from '#utils/dates'
 
 export default class SettingsController {
   async index({ view }: HttpContext) {

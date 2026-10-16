@@ -73,7 +73,31 @@ export default class ParametersController {
     const siUnits = await Unit.query().where('isInternationalSystem', true).orderBy('id', 'desc')
     const referenceTypes = Parameter.referenceTypes
 
-    return view.render('settings/parameters/create', { units, siUnits, referenceTypes })
+    /**
+     * A blank parameter in the same shape `edit` serializes, so `_form.edge`
+     * can read the same properties in both actions. `new Parameter()` is not
+     * usable here: Lucid only populates `$attributes` on assignment or
+     * hydration, so an unsaved model serializes to `{}`.
+     */
+    const parameter = {
+      name: '',
+      showOnDashboard: false,
+      unit: null,
+      siUnit: null,
+      referenceType: null,
+      referenceMinimum: null,
+      referenceMaximum: null,
+      optimalValue: null,
+      conversionFactor: null,
+      conversionOffset: null,
+    }
+
+    return view.render('settings/parameters/create', {
+      parameter,
+      units: units.map((unit) => unit.serialize()),
+      siUnits: siUnits.map((unit) => unit.serialize()),
+      referenceTypes,
+    })
   }
 
   /**

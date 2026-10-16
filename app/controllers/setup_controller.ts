@@ -1,6 +1,6 @@
 import { startDateValidator } from '#validators/setup'
 import type { HttpContext } from '@adonisjs/core/http'
-import { shortDate } from '../utils/dates.js'
+import { shortDate } from '#utils/dates'
 import Setting from '#models/setting'
 import { ImportUnitsService } from '#services/import_unit_service'
 import { ImportParametersService } from '#services/import_parameters_service'

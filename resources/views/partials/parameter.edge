@@ -1,8 +1,8 @@
 @if(parameter.referenceType == 'range')
   {{
     formatRange(
-      useSIUnit ? parameter.referenceMinimum * parameter.conversionFactor : parameter.referenceMinimum,
-      useSIUnit ? parameter.referenceMaximum * parameter.conversionFactor : parameter.referenceMaximum,
+      useSIUnit ? parameter.toSI(parameter.referenceMinimum) : parameter.referenceMinimum,
+      useSIUnit ? parameter.toSI(parameter.referenceMaximum) : parameter.referenceMaximum,
       {
         maximumSignificantDigits: 4,
         maximumFractionDigits: 4
@@ -11,22 +11,22 @@
   }}
 @endif
 @if(parameter.referenceType == 'less_than')
-  &lt;&nbsp;{{formatNumber(useSIUnit ? parameter.referenceMaximum * parameter.conversionFactor : parameter.referenceMaximum, {
+  &lt;&nbsp;{{formatNumber(useSIUnit ? parameter.toSI(parameter.referenceMaximum) : parameter.referenceMaximum, {
     maximumSignificantDigits: 4
   })}}
 @endif
 @if(parameter.referenceType == 'less_than_or_equal')
-  &lt;&equals;&nbsp;{{formatNumber(useSIUnit ? parameter.referenceMaximum * parameter.conversionFactor : parameter.referenceMaximum, {
+  &lt;&equals;&nbsp;{{formatNumber(useSIUnit ? parameter.toSI(parameter.referenceMaximum) : parameter.referenceMaximum, {
     maximumSignificantDigits: 4
   })}}
 @endif
 @if(parameter.referenceType == 'greater_than')
-  &gt; {{formatNumber(useSIUnit ? parameter.referenceMinimum * parameter.conversionFactor : parameter.referenceMinimum, {
+  &gt; {{formatNumber(useSIUnit ? parameter.toSI(parameter.referenceMinimum) : parameter.referenceMinimum, {
     maximumSignificantDigits: 4
   })}}
 @endif
 @if(parameter.referenceType == 'greater_than_or_equal')
-  &gt;&equals; {{formatNumber(useSIUnit ? parameter.referenceMinimum * parameter.conversionFactor : parameter.referenceMinimum, {
+  &gt;&equals; {{formatNumber(useSIUnit ? parameter.toSI(parameter.referenceMinimum) : parameter.referenceMinimum, {
     maximumSignificantDigits: 4
   })}}
 @endif

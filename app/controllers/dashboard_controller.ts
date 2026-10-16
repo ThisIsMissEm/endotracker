@@ -7,8 +7,8 @@ import type { HttpContext } from '@adonisjs/core/http'
 import db from '@adonisjs/lucid/services/db'
 import i18nManager from '@adonisjs/i18n/services/main'
 import { DateTime } from 'luxon'
-import { Recording } from '../utils/types.js'
-import compareFindingWithParameter from '../utils/comparison.js'
+import { Recording } from '#utils/types'
+import compareFindingWithParameter from '#utils/comparison'
 import assert from 'node:assert'
 
 export default class DashboardController {
@@ -57,15 +57,14 @@ export default class DashboardController {
       const parameter = parameters.find((p) => p.id === record.parameterId)
       assert(parameter)
 
-      const useSIUnit = useSIUnits && !!parameter.siUnitId && (parameter.conversionFactor ?? 0) > 0
-      const factor = parameter.conversionFactor ?? 1
-      const convert = (value: number) => (useSIUnit ? value * factor : value)
+      const useSIUnit = useSIUnits && parameter.canConvertToSI
+      // we divide by 1000 here to match ReportFinding's conversions:
+      const value = record.value / 1000
 
       const recording = {
         ...record,
-        // we divide by 1000 here to match ReportFinding's conversions:
-        value: convert(record.value / 1000),
-        comparison: compareFindingWithParameter(record.value / 1000, parameter),
+        value: useSIUnit ? parameter.toSI(value)! : value,
+        comparison: compareFindingWithParameter(value, parameter),
       }
       const recordingsForParameter = memo.get(recording.parameterId)
       if (!recordingsForParameter) {
@@ -86,10 +85,8 @@ export default class DashboardController {
 
     const graphs = new Map<number, string>()
     for (const parameter of parameters) {
-      const useSIUnit = useSIUnits && !!parameter.siUnitId
-      const factor = parameter.conversionFactor ?? 1
-      const convert = (value: number | null) =>
-        value === null ? null : useSIUnit ? value * factor : value
+      const useSIUnit = useSIUnits && parameter.canConvertToSI
+      const convert = (value: number | null) => (useSIUnit ? parameter.toSI(value) : value)
 
       graphs.set(
         parameter.id,

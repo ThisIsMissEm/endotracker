@@ -1,7 +1,7 @@
 @layouts.app()
   @slot('main')
     <h1 class="fw-bold pb-2">Dashboard</h1>
-    <div class="pb-3 border-bottom border-2 d-flex justify-content-between">
+    <div class="pb-2 d-flex justify-content-between">
       <div>
         <p class="lead">This is an overview of your graphed parameters over time.</p>
       </div>
@@ -12,7 +12,8 @@
         </a>
       </span>
       @end
-      </div>
+    </div>
+    <hr class="border-top border-2 opacity-100 mb-5" />
 
     <div class="container">
     <div class="row g-5">
@@ -25,7 +26,7 @@
         </div>
       @else
         @each(parameter in parameters)
-          @assign(useSIUnit = useSIUnits == true && !!parameter.siUnitId)
+          @assign(useSIUnit = useSIUnits == true && parameter.canConvertToSI)
           @assign(unitAbbreviation = useSIUnit ? parameter.siUnit.abbreviation : parameter.unit.abbreviation )
         <div class="col-lg-6" data-chart-id="{{parameter.id}}">
           <h3 class="mb-0">{{ parameter.name }}</h3>

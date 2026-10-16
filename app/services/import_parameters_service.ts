@@ -68,7 +68,11 @@ export class ImportParametersService {
             optimalValue: parameter.optimalValue,
             unitId: unit.id,
             ...(siUnit
-              ? { siUnitId: siUnit.id, conversionFactor: parameter.conversionFactor }
+              ? {
+                  siUnitId: siUnit.id,
+                  conversionFactor: parameter.conversionFactor,
+                  conversionOffset: parameter.conversionOffset,
+                }
               : {}),
           })
 
