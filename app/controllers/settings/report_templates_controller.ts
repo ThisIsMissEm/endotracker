@@ -5,11 +5,7 @@ import {
   updateReportTemplateValidator,
 } from '#validators/report_template'
 import type { HttpContext } from '@adonisjs/core/http'
-
-interface TemplateSection {
-  name: string
-  parameters: number[]
-}
+import type { TemplateSection } from '#utils/types'
 
 const convert = (sections: TemplateSection[]) => {
   return JSON.stringify({

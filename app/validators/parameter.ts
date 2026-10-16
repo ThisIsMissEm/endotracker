@@ -62,6 +62,10 @@ const parameterSchema = vine.object({
       return !!field.parent.siUnitId
     }),
 
+  // No .positive(): an offset may legitimately be negative. Optional even
+  // when an SI unit is set, since most conversions are purely multiplicative.
+  conversionOffset: vine.number().decimal([0, 3]).optional(),
+
   // Use vine.boolean to have the result type be Boolean not true | undefined
   showOnDashboard: vine.boolean().optional(),
 })
@@ -128,6 +132,8 @@ export const importParametersValidator = vine.compile(
             .requiredWhen((field) => {
               return !!field.parent.siUnit
             }),
+
+          conversionOffset: vine.number().decimal([0, 3]).optional(),
 
           unit: vine.object({
             name: vine.string(),

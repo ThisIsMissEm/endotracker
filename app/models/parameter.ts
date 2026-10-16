@@ -83,6 +83,53 @@ export default class Parameter extends BaseModel {
   })
   declare conversionFactor: number | null
 
+  @column({
+    // Guarded against null so clearing the field stores NULL rather than 0:
+    // `(null * 1000).toFixed(0)` would be "0", and `null / 1000` would be 0.
+    prepare: (value: number | null) => {
+      return value === null || value === undefined ? value : (value * 1000).toFixed(0)
+    },
+    consume: (value: number | null) => {
+      return value === null || value === undefined ? value : value / 1000
+    },
+  })
+  declare conversionOffset: number | null
+
+  /**
+   * Whether this parameter can actually be shown in SI units: it needs both
+   * a target unit and a usable factor. Without the factor check, `toSI` would
+   * be a silent no-op while the UI swapped the label to the SI abbreviation,
+   * captioning recorded values with the wrong unit.
+   *
+   * The validator already requires a factor whenever an SI unit is set, so
+   * this is defence in depth rather than a reachable state today.
+   */
+  get canConvertToSI(): boolean {
+    return !!this.siUnitId && (this.conversionFactor ?? 0) > 0
+  }
+
+  /**
+   * Convert a value recorded in this parameter's unit into its SI unit.
+   *
+   * Values are always stored in the recorded (conventional) unit; SI is a
+   * display-time conversion only, so there is no inverse of this method.
+   *
+   * The offset is expressed in conventional units, which makes the stored
+   * values read the same as published conversions — e.g. HbA1c NGSP % to
+   * IFCC mmol/mol is `(value - 2.15) * 10.929`.
+   *
+   * Only valid for absolute values (findings, reference bounds, optimal
+   * values). A difference between two readings would convert without the
+   * offset.
+   */
+  toSI(value: number | null): number | null {
+    if (value === null || value === undefined) {
+      return null
+    }
+
+    return (value - (this.conversionOffset ?? 0)) * (this.conversionFactor ?? 1)
+  }
+
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
 

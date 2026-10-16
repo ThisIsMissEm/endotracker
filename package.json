@@ -9,7 +9,7 @@
     "build": "node ace build",
     "dev": "node ace serve --hmr",
     "test": "node ace test",
-    "lint": "eslint . && npm run typecheck",
+    "lint": "eslint . && pnpm run typecheck",
     "format": "prettier --write .",
     "typecheck": "tsc --noEmit && tsc --noEmit -p resources/tsconfig.json"
   },
@@ -23,6 +23,7 @@
     "#events/*": "./app/events/*.js",
     "#middleware/*": "./app/middleware/*.js",
     "#validators/*": "./app/validators/*.js",
+    "#utils/*": "./app/utils/*.js",
     "#providers/*": "./providers/*.js",
     "#policies/*": "./app/policies/*.js",
     "#abilities/*": "./app/abilities/*.js",

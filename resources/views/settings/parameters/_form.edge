@@ -1,9 +1,4 @@
-@dump(parameter)
 <form method="POST" action="{{formAction}}">
-  @unless(parameter)
-    @assign(parameter = { name: "" })
-  @end
-
   {{ csrfField() }}
 
   <div class="mb-3">
@@ -39,7 +34,7 @@
   <div class="mb-3">
     <label for="unitId" class="form-label">Unit</label>
     <select class="form-select {{isInputInvalid('unitId', flashMessages)}}" name="unitId">
-      @let(selectedUnitId = old('unitId') || parameter.unit.id)
+      @let(selectedUnitId = old('unitId') || parameter.unit?.id)
 
       <option value="" {{ !selectedUnitId ? 'selected' : '' }}>Select a unit of measurement</option>
       @each(unit in units)
@@ -100,6 +95,9 @@
   @if(siUnits.length > 0)
     <h5 class="mt-5">SI Unit</h5>
     <p>To convert from a Unit that is not an SI Unit to an SI Unit, we need a conversion factor to multiple the value by.<br> This varies based on the parameter due to the molar masses of the parameter.</p>
+    <p>Most conversions need only a factor. Where the scales do not share a zero point, give an offset as well &mdash; it is subtracted first, in the recorded unit:<br>
+      <code>SI value = (recorded value &minus; offset) &times; factor</code><br>
+      For example HbA1c converts from NGSP&nbsp;% to IFCC&nbsp;mmol/mol as <code>(value &minus; 2.15) &times; 10.929</code>.</p>
     <p>Useful links:</p>
     <ul>
       <li><a href="https://scymed.com">ScyMed MediCalc</a></li>
@@ -128,6 +126,18 @@
         <label for="conversionFactor" class="form-label">Conversion Factor</label>
         <input class="form-control {{isInputInvalid('conversionFactor', flashMessages)}}" name="conversionFactor" type="number" step="0.000000001" min="0" value="{{ old('conversionFactor') || parameter.conversionFactor }}">
         @inputError('conversionFactor')
+        <div class="invalid-feedback">
+          @each(message in $messages)
+            <p>{{ message }}</p>
+          @end
+        </div>
+        @end
+      </div>
+      <div class="col">
+        <label for="conversionOffset" class="form-label">Conversion Offset</label>
+        <input class="form-control {{isInputInvalid('conversionOffset', flashMessages)}}" name="conversionOffset" type="number" step="0.001" value="{{ old('conversionOffset') || parameter.conversionOffset }}">
+        <div class="form-text">Optional. Subtracted from the recorded value before the conversion factor is applied. Given in the recorded unit, and may be negative.</div>
+        @inputError('conversionOffset')
         <div class="invalid-feedback">
           @each(message in $messages)
             <p>{{ message }}</p>

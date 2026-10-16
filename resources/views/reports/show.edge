@@ -18,7 +18,7 @@
 
     <div id="template-sections">
       <table class="table">
-        @each((section, sectionIndex) in tpl.sections)
+        @each((section, sectionIndex) in sections)
           <tr>
             <th class="pt-5" colspan="5">
               <h4 class="fw-bold">{{section.name}}</h4>
@@ -35,7 +35,7 @@
             @assign(parameter = parameters.get(parameterId))
             @assign(finding = findingsByParameter.get(parameterId))
             @assign(comparison = compareFindingWithParameter(finding, parameter))
-            @assign(useSIUnit = useSIUnits == true && !!parameter.siUnitId)
+            @assign(useSIUnit = useSIUnits == true && parameter.canConvertToSI)
             @assign(unitAbbreviation = useSIUnit ? parameter.siUnit.abbreviation : parameter.unit.abbreviation )
             <tr id="parameter-{{parameterId}}">
               <th class="col col-md-6 ps-5">{{parameter.name}}</th>
@@ -45,7 +45,7 @@
               </td>
               <td class="text-end col col-md-2">
                 @if(finding)
-                  @assign(findingValue = formatNumber(useSIUnit ? finding * parameter.conversionFactor : finding, {
+                  @assign(findingValue = formatNumber(useSIUnit ? parameter.toSI(finding) : finding, {
                   maximumSignificantDigits: 4,
                   maximumFractionDigits: 4
                   }))

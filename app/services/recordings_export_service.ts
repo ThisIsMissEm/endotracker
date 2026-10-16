@@ -87,7 +87,7 @@ export class RecordingsExportService {
           return ''
         }
         const raw = finding.value
-        const value = useSI ? raw * parameter.conversionFactor! : raw
+        const value = useSI ? parameter.toSI(raw)! : raw
         return formatNumber(value)
       })
 

@@ -26,7 +26,7 @@
         </div>
       @else
         @each(parameter in parameters)
-          @assign(useSIUnit = useSIUnits == true && !!parameter.siUnitId)
+          @assign(useSIUnit = useSIUnits == true && parameter.canConvertToSI)
           @assign(unitAbbreviation = useSIUnit ? parameter.siUnit.abbreviation : parameter.unit.abbreviation )
         <div class="col-lg-6" data-chart-id="{{parameter.id}}">
           <h3 class="mb-0">{{ parameter.name }}</h3>

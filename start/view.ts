@@ -3,7 +3,7 @@ import i18nManager from '@adonisjs/i18n/services/main'
 import formatters from '@poppinss/intl-formatter'
 import { NumberFormatOptions } from '@adonisjs/i18n/types'
 import { DateTime } from 'luxon'
-import compareFindingWithParameter from '../app/utils/comparison.js'
+import compareFindingWithParameter from '#utils/comparison'
 /**
  * Define a global property
  */
