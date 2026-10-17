@@ -19,6 +19,7 @@
   ],
   "words": [
     "bodyparser",
+    "cacheonly",
     "defence",
     "Emelia",
     "enctype",
@@ -26,6 +27,7 @@
     "endotracker",
     "endslot",
     "errexit",
+    "esac",
     "esbuild",
     "extnames",
     "fieldset",
@@ -51,6 +53,7 @@
     "Postgre",
     "reflash",
     "serialised",
+    "shellcheck",
     "steelblue",
     "strtok",
     "subceeds",
