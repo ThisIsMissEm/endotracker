@@ -5,9 +5,15 @@ name: Publish image to GHCR
 # own runner (no QEMU emulation), pushed by digest, then combined into a single
 # multi-arch tag by the merge job. Pattern from Docker's "distribute build
 # across multiple runners" guide.
+#
+# Can also be run manually, which builds both architectures and discards the
+# result: nothing is pushed and no tags are created. Use that to check the
+# image still builds before cutting a release, since the build otherwise only
+# ever runs when a release already depends on it.
 on:
   release:
     types: [published]
+  workflow_dispatch:
 
 env:
   # Hardcoded lowercase: GHCR rejects any uppercase, and ${{ github.repository }}
@@ -53,7 +59,9 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c # v4.2.0
 
+      # Only needed when we actually push; a manual run builds and discards.
       - name: Log in to GHCR
+        if: github.event_name == 'release'
         uses: docker/login-action@af1e73f918a031802d376d3c8bbc3fe56130a9b0 # v4.4.0
         with:
           registry: ghcr.io
@@ -62,6 +70,8 @@ jobs:
 
       # Builds this arch and pushes it by digest (no tag yet). Cache is scoped
       # per-platform so the two arches don't clobber each other's layer cache.
+      # On a manual run the output is `cacheonly`: the build runs in full and
+      # the layer cache is still written, but no image leaves the runner.
       - name: Build and push by digest
         id: build
         uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7.3.0
@@ -71,11 +81,12 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha,scope=${{ matrix.platform }}
           cache-to: type=gha,mode=max,scope=${{ matrix.platform }}
-          outputs: type=image,name=${{ env.REGISTRY_IMAGE }},push-by-digest=true,name-canonical=true,push=true
+          outputs: ${{ github.event_name == 'release' && format('type=image,name={0},push-by-digest=true,name-canonical=true,push=true', env.REGISTRY_IMAGE) || 'type=cacheonly' }}
 
       # Write the digest to a file named after it, so the merge job can collect
       # one digest per arch as artifacts.
       - name: Export digest
+        if: github.event_name == 'release'
         env:
           DIGEST: ${{ steps.build.outputs.digest }}
         run: |
@@ -83,6 +94,7 @@ jobs:
           touch "$RUNNER_TEMP/digests/${DIGEST#sha256:}"
 
       - name: Upload digest
+        if: github.event_name == 'release'
         uses: actions/upload-artifact@v7
         with:
           name: digests-${{ matrix.platform_name }}
@@ -90,7 +102,10 @@ jobs:
           if-no-files-found: error
           retention-days: 1
 
+  # Release-only: the tags come from `type=semver`, which resolves to nothing
+  # on a branch ref, so `imagetools create` would run with no -t arguments.
   merge:
+    if: github.event_name == 'release'
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     needs: [build]
